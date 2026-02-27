@@ -1,0 +1,29 @@
+{
+  "candidate_id": 1394,
+  "family": "Elkies Family A (Elliptic)",
+  "params": [
+    [
+      -14.2,
+      2.5
+    ],
+    [
+      -29.09387755102041,
+      0.0
+    ]
+  ],
+  "rationality_score": 1.0,
+  "prime_scores": {
+    "2": 0.5,
+    "3": 1.0,
+    "5": 1.0,
+    "7": 1.0,
+    "11": 1.0,
+    "13": 0.5,
+    "17": 1.0,
+    "19": 1.0,
+    "23": 1.0
+  },
+  "consistency_score": 0.23333333333333334,
+  "passed": false,
+  "notes": ""
+}

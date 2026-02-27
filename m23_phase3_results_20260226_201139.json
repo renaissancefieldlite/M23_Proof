@@ -1,0 +1,3532 @@
+{
+  "timestamp": "20260226_201139",
+  "total_tested": 125,
+  "passed_count": 0,
+  "results": [
+    {
+      "candidate_id": 0,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -10.999999998745192,
+          -1.999999999372596
+        ],
+        [
+          -25.999999998745192,
+          -0.9999999993725961
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 1.0,
+        "11": 0.5,
+        "13": 1.0,
+        "17": 1.0,
+        "19": 0.5,
+        "23": 1.0
+      },
+      "consistency_score": 0.1111111111111111,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 1,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -10.999999998745192,
+          -1.499999999372596
+        ],
+        [
+          -25.999999998745192,
+          -0.9999999993725961
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 2,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -10.999999998745192,
+          -0.9999999993725961
+        ],
+        [
+          -25.999999998745192,
+          -0.9999999993725961
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 3,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -1.999999999372596
+        ],
+        [
+          -25.999999998745192,
+          -0.9999999993725961
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 4,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -0.9999999993725961
+        ],
+        [
+          -25.999999998745192,
+          -0.9999999993725961
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 5,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -8.999999998745192,
+          -1.999999999372596
+        ],
+        [
+          -25.999999998745192,
+          -0.9999999993725961
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0.011111111111111112,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 6,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -8.999999998745192,
+          -1.499999999372596
+        ],
+        [
+          -25.999999998745192,
+          -0.9999999993725961
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 7,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -8.999999998745192,
+          -0.9999999993725961
+        ],
+        [
+          -25.999999998745192,
+          -0.9999999993725961
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 1.0,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 1.0,
+        "23": 0.5
+      },
+      "consistency_score": 0.04444444444444443,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 8,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -1.499999999372596
+        ],
+        [
+          -26.999999998745192,
+          -1.499999999372596
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 9,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -1.499999999372596
+        ],
+        [
+          -26.999999998745192,
+          -0.9999999993725961
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 10,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -1.499999999372596
+        ],
+        [
+          -26.999999998745192,
+          -0.4999999993725961
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 11,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -1.499999999372596
+        ],
+        [
+          -25.999999998745192,
+          -1.499999999372596
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 12,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -1.499999999372596
+        ],
+        [
+          -25.999999998745192,
+          -0.4999999993725961
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 13,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -1.499999999372596
+        ],
+        [
+          -24.999999998745192,
+          -1.499999999372596
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 14,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -1.499999999372596
+        ],
+        [
+          -24.999999998745192,
+          -0.9999999993725961
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 15,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -1.499999999372596
+        ],
+        [
+          -24.999999998745192,
+          -0.4999999993725961
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 16,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -1.499999999372596
+        ],
+        [
+          -25.999999998745192,
+          -0.9999999993725961
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 17,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -10.999999998745192,
+          -0.9999999996538461
+        ],
+        [
+          -25.999999998745192,
+          3.461538833349209e-10
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 18,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -10.999999998745192,
+          -0.4999999996538461
+        ],
+        [
+          -25.999999998745192,
+          3.461538833349209e-10
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 19,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -10.999999998745192,
+          3.461538833349209e-10
+        ],
+        [
+          -25.999999998745192,
+          3.461538833349209e-10
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 20,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -0.9999999996538461
+        ],
+        [
+          -25.999999998745192,
+          3.461538833349209e-10
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 21,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          3.461538833349209e-10
+        ],
+        [
+          -25.999999998745192,
+          3.461538833349209e-10
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 1.0,
+        "19": 1.0,
+        "23": 1.0
+      },
+      "consistency_score": 0.05555555555555555,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 22,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -8.999999998745192,
+          -0.9999999996538461
+        ],
+        [
+          -25.999999998745192,
+          3.461538833349209e-10
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 23,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -8.999999998745192,
+          -0.4999999996538461
+        ],
+        [
+          -25.999999998745192,
+          3.461538833349209e-10
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 24,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -8.999999998745192,
+          3.461538833349209e-10
+        ],
+        [
+          -25.999999998745192,
+          3.461538833349209e-10
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 25,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -0.4999999996538461
+        ],
+        [
+          -26.999999998745192,
+          -0.4999999996538461
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 26,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -0.4999999996538461
+        ],
+        [
+          -26.999999998745192,
+          3.461538833349209e-10
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 3.0839528461809902e-18,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 27,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -0.4999999996538461
+        ],
+        [
+          -26.999999998745192,
+          0.5000000003461539
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 28,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -0.4999999996538461
+        ],
+        [
+          -25.999999998745192,
+          -0.4999999996538461
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 29,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -0.4999999996538461
+        ],
+        [
+          -25.999999998745192,
+          0.5000000003461539
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 30,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -0.4999999996538461
+        ],
+        [
+          -24.999999998745192,
+          -0.4999999996538461
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 31,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -0.4999999996538461
+        ],
+        [
+          -24.999999998745192,
+          3.461538833349209e-10
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 32,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -0.4999999996538461
+        ],
+        [
+          -24.999999998745192,
+          0.5000000003461539
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 33,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          -0.4999999996538461
+        ],
+        [
+          -25.999999998745192,
+          3.461538833349209e-10
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 34,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -10.999999998745192,
+          6.490386006419158e-11
+        ],
+        [
+          -25.999999998745192,
+          1.0000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 35,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -10.999999998745192,
+          0.5000000000649039
+        ],
+        [
+          -25.999999998745192,
+          1.0000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 36,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -10.999999998745192,
+          1.0000000000649039
+        ],
+        [
+          -25.999999998745192,
+          1.0000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 1.0,
+        "13": 0.5,
+        "17": 1.0,
+        "19": 0.5,
+        "23": 1.0
+      },
+      "consistency_score": 0.055555555555555546,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 37,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          6.490386006419158e-11
+        ],
+        [
+          -25.999999998745192,
+          1.0000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 38,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          1.0000000000649039
+        ],
+        [
+          -25.999999998745192,
+          1.0000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 39,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -8.999999998745192,
+          6.490386006419158e-11
+        ],
+        [
+          -25.999999998745192,
+          1.0000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 40,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -8.999999998745192,
+          0.5000000000649039
+        ],
+        [
+          -25.999999998745192,
+          1.0000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 1.0,
+        "19": 1.0,
+        "23": 1.0
+      },
+      "consistency_score": 0.06666666666666665,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 41,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -8.999999998745192,
+          1.0000000000649039
+        ],
+        [
+          -25.999999998745192,
+          1.0000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 1.0,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 1.0,
+        "23": 1.0
+      },
+      "consistency_score": 0.04444444444444443,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 42,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          0.5000000000649039
+        ],
+        [
+          -26.999999998745192,
+          0.5000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 43,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          0.5000000000649039
+        ],
+        [
+          -26.999999998745192,
+          1.0000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 44,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          0.5000000000649039
+        ],
+        [
+          -26.999999998745192,
+          1.5000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 45,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          0.5000000000649039
+        ],
+        [
+          -25.999999998745192,
+          0.5000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 46,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          0.5000000000649039
+        ],
+        [
+          -25.999999998745192,
+          1.5000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 47,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          0.5000000000649039
+        ],
+        [
+          -24.999999998745192,
+          0.5000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 48,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          0.5000000000649039
+        ],
+        [
+          -24.999999998745192,
+          1.0000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 1.0,
+        "17": 0.5,
+        "19": 1.0,
+        "23": 1.0
+      },
+      "consistency_score": 0.07777777777777778,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 49,
+      "family": "Elkies Family A (Elliptic)",
+      "params": [
+        [
+          -9.999999998745192,
+          0.5000000000649039
+        ],
+        [
+          -24.999999998745192,
+          1.5000000000649039
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 50,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -9.0,
+          0.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 51,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -7.0,
+          0.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 52,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          0.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 53,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -3.0,
+          0.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 54,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -1.0,
+          0.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 55,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -9.0,
+          0.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 56,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -7.0,
+          0.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 57,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -5.0,
+          0.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 58,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -3.0,
+          0.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 59,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -1.0,
+          0.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 60,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -9.0,
+          -4.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 61,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -9.0,
+          -3.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 62,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -9.0,
+          -2.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 63,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -9.0,
+          -1.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 64,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -7.0,
+          -4.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 65,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -7.0,
+          -3.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0.011111111111111112,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 66,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -7.0,
+          -2.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 67,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -7.0,
+          -1.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 68,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -4.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 69,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -3.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 70,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -1.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 71,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -3.0,
+          -4.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 72,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -3.0,
+          -3.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 73,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -3.0,
+          -2.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 74,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -3.0,
+          -1.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 75,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -1.0,
+          -4.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 76,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -1.0,
+          -3.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 77,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -1.0,
+          -2.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 78,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -1.0,
+          -1.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 79,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -9.0,
+          -4.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 80,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -9.0,
+          -3.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 81,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -9.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 82,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -9.0,
+          -1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 83,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -7.0,
+          -4.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 84,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -7.0,
+          -3.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 85,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -7.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 86,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -7.0,
+          -1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 87,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -5.0,
+          -4.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 88,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -5.0,
+          -3.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 89,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -5.0,
+          -1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 90,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -3.0,
+          -4.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 91,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -3.0,
+          -3.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 92,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -3.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 93,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -3.0,
+          -1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 94,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -1.0,
+          -4.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 95,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -1.0,
+          -3.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 96,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -1.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 97,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -1.0,
+          -1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 98,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 99,
+      "family": "Elkies Family B (Hypergeometric)",
+      "params": [
+        [
+          -9.0,
+          -3.0
+        ],
+        [
+          -5.0,
+          -1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 100,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          -4.0,
+          0.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 101,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          -2.0,
+          0.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 102,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 103,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          2.0,
+          0.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 104,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          4.0,
+          0.0
+        ]
+      ],
+      "rationality_score": 1.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 105,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          -4.0,
+          -1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 106,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          -4.0,
+          1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 107,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          -4.0,
+          2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 108,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          -4.0,
+          3.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 109,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          -2.0,
+          -1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 110,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          -2.0,
+          1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 111,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          -2.0,
+          2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 112,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          -2.0,
+          3.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 113,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          0.0,
+          -1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 114,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          0.0,
+          2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 115,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          0.0,
+          3.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 116,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          2.0,
+          -1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 117,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          2.0,
+          1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 118,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          2.0,
+          2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 119,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          2.0,
+          3.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 120,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          4.0,
+          -1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 121,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          4.0,
+          1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 122,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          4.0,
+          2.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 123,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          4.0,
+          3.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "candidate_id": 124,
+      "family": "Elkies Family C (Modular)",
+      "params": [
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "rationality_score": 0.0,
+      "prime_scores": {
+        "2": 0.5,
+        "3": 0.5,
+        "5": 0.5,
+        "7": 0.5,
+        "11": 0.5,
+        "13": 0.5,
+        "17": 0.5,
+        "19": 0.5,
+        "23": 0.5
+      },
+      "consistency_score": 0,
+      "passed": false,
+      "notes": ""
+    }
+  ]
+}
