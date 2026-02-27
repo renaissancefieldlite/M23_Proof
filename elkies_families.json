@@ -1,0 +1,57 @@
+[
+  {
+    "name": "Elkies Family A (Elliptic)",
+    "parameter_count": 2,
+    "notes": "From elliptic curves with CM. Parameters \u03bb, \u03bc \u2208 \u2102.",
+    "known_specializations": [
+      {
+        "params": [
+          [
+            -7.0,
+            0.0
+          ],
+          [
+            -23.0,
+            0.0
+          ]
+        ],
+        "notes": "Might specialize to \u211a(\u221a-7, \u221a-23)"
+      },
+      {
+        "params": [
+          [
+            -23.0,
+            0.0
+          ],
+          [
+            -23.0,
+            0.0
+          ]
+        ],
+        "notes": "Square root -23 appears in Elkies' \u211a(t) results"
+      }
+    ]
+  },
+  {
+    "name": "Elkies Family B (Hypergeometric)",
+    "parameter_count": 2,
+    "notes": "From hypergeometric functions. Parameters \u03b1, \u03b2 \u2208 \u2102.",
+    "known_specializations": null
+  },
+  {
+    "name": "Elkies Family C (Modular)",
+    "parameter_count": 1,
+    "notes": "From modular forms. Parameter \u03c4 in upper half-plane.",
+    "known_specializations": [
+      {
+        "params": [
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "notes": "\u03c4 = i (Gaussian rational) \u2013 unlikely to give \u211a coefficients"
+      }
+    ]
+  }
+]

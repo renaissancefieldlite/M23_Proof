@@ -1,0 +1,1902 @@
+[
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -9.999999999307692,
+        -1.4999999996538462
+      ],
+      [
+        -23.999999999307693,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-10.0-1.5j), (-24.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -9.999999999307692,
+        -0.9999999996538461
+      ],
+      [
+        -23.999999999307693,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-10.0-1.0j), (-24.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -9.999999999307692,
+        -0.4999999996538461
+      ],
+      [
+        -23.999999999307693,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-10.0-0.5j), (-24.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        -1.4999999996538462
+      ],
+      [
+        -23.999999999307693,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0-1.5j), (-24.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        -0.4999999996538461
+      ],
+      [
+        -23.999999999307693,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0-0.5j), (-24.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.999999999307692,
+        -1.4999999996538462
+      ],
+      [
+        -23.999999999307693,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-8.0-1.5j), (-24.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.999999999307692,
+        -0.9999999996538461
+      ],
+      [
+        -23.999999999307693,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-8.0-1.0j), (-24.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.999999999307692,
+        -0.4999999996538461
+      ],
+      [
+        -23.999999999307693,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-8.0-0.5j), (-24.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        -0.9999999996538461
+      ],
+      [
+        -24.999999999307693,
+        -0.4999999996538461
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0-1.0j), (-25.0-0.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        -0.9999999996538461
+      ],
+      [
+        -24.999999999307693,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0-1.0j), (-25.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        -0.9999999996538461
+      ],
+      [
+        -24.999999999307693,
+        0.5000000003461539
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0-1.0j), (-25.0+0.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        -0.9999999996538461
+      ],
+      [
+        -23.999999999307693,
+        -0.4999999996538461
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0-1.0j), (-24.0-0.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        -0.9999999996538461
+      ],
+      [
+        -23.999999999307693,
+        0.5000000003461539
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0-1.0j), (-24.0+0.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        -0.9999999996538461
+      ],
+      [
+        -22.999999999307693,
+        -0.4999999996538461
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0-1.0j), (-23.0-0.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        -0.9999999996538461
+      ],
+      [
+        -22.999999999307693,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0-1.0j), (-23.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        -0.9999999996538461
+      ],
+      [
+        -22.999999999307693,
+        0.5000000003461539
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0-1.0j), (-23.0+0.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        -0.9999999996538461
+      ],
+      [
+        -23.999999999307693,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0-1.0j), (-24.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -9.999999999307692,
+        -0.5
+      ],
+      [
+        -23.999999999307693,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-10.0-0.5j), (-24.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -9.999999999307692,
+        0.0
+      ],
+      [
+        -23.999999999307693,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-10.0+0.0j), (-24.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -9.999999999307692,
+        0.5
+      ],
+      [
+        -23.999999999307693,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-10.0+0.5j), (-24.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        -0.5
+      ],
+      [
+        -23.999999999307693,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0-0.5j), (-24.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.5
+      ],
+      [
+        -23.999999999307693,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+0.5j), (-24.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.999999999307692,
+        -0.5
+      ],
+      [
+        -23.999999999307693,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-8.0-0.5j), (-24.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.999999999307692,
+        0.0
+      ],
+      [
+        -23.999999999307693,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-8.0+0.0j), (-24.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.999999999307692,
+        0.5
+      ],
+      [
+        -23.999999999307693,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-8.0+0.5j), (-24.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.0
+      ],
+      [
+        -24.999999999307693,
+        0.5
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+0.0j), (-25.0+0.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.0
+      ],
+      [
+        -24.999999999307693,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+0.0j), (-25.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.0
+      ],
+      [
+        -24.999999999307693,
+        1.5
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+0.0j), (-25.0+1.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.0
+      ],
+      [
+        -23.999999999307693,
+        0.5
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+0.0j), (-24.0+0.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.0
+      ],
+      [
+        -23.999999999307693,
+        1.5
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+0.0j), (-24.0+1.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.0
+      ],
+      [
+        -22.999999999307693,
+        0.5
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+0.0j), (-23.0+0.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.0
+      ],
+      [
+        -22.999999999307693,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+0.0j), (-23.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.0
+      ],
+      [
+        -22.999999999307693,
+        1.5
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+0.0j), (-23.0+1.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.0
+      ],
+      [
+        -23.999999999307693,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+0.0j), (-24.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -9.999999999307692,
+        0.4999999996538461
+      ],
+      [
+        -23.999999999307693,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-10.0+0.5j), (-24.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -9.999999999307692,
+        0.9999999996538461
+      ],
+      [
+        -23.999999999307693,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-10.0+1.0j), (-24.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -9.999999999307692,
+        1.4999999996538462
+      ],
+      [
+        -23.999999999307693,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-10.0+1.5j), (-24.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.4999999996538461
+      ],
+      [
+        -23.999999999307693,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+0.5j), (-24.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        1.4999999996538462
+      ],
+      [
+        -23.999999999307693,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+1.5j), (-24.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.999999999307692,
+        0.4999999996538461
+      ],
+      [
+        -23.999999999307693,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-8.0+0.5j), (-24.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.999999999307692,
+        0.9999999996538461
+      ],
+      [
+        -23.999999999307693,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-8.0+1.0j), (-24.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.999999999307692,
+        1.4999999996538462
+      ],
+      [
+        -23.999999999307693,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-8.0+1.5j), (-24.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.9999999996538461
+      ],
+      [
+        -24.999999999307693,
+        1.4999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+1.0j), (-25.0+1.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.9999999996538461
+      ],
+      [
+        -24.999999999307693,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+1.0j), (-25.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.9999999996538461
+      ],
+      [
+        -24.999999999307693,
+        2.4999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+1.0j), (-25.0+2.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.9999999996538461
+      ],
+      [
+        -23.999999999307693,
+        1.4999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+1.0j), (-24.0+1.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.9999999996538461
+      ],
+      [
+        -23.999999999307693,
+        2.4999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+1.0j), (-24.0+2.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.9999999996538461
+      ],
+      [
+        -22.999999999307693,
+        1.4999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+1.0j), (-23.0+1.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.9999999996538461
+      ],
+      [
+        -22.999999999307693,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+1.0j), (-23.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.9999999996538461
+      ],
+      [
+        -22.999999999307693,
+        2.4999999996538462
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family A (Elliptic) with params [(-9.0+1.0j), (-23.0+2.5j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -9.0,
+        0.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-9.0+0.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -7.0,
+        0.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-7.0+0.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        0.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0+0.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -3.0,
+        0.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-3.0+0.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -1.0,
+        0.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-1.0+0.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -9.0,
+        0.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-9.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -7.0,
+        0.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-7.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -5.0,
+        0.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-5.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -3.0,
+        0.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-3.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -1.0,
+        0.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-1.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -9.0,
+        -4.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-9.0-4.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -9.0,
+        -3.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-9.0-3.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -9.0,
+        -2.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-9.0-2.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -9.0,
+        -1.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-9.0-1.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -7.0,
+        -4.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-7.0-4.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -7.0,
+        -3.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-7.0-3.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -7.0,
+        -2.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-7.0-2.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -7.0,
+        -1.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-7.0-1.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -4.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-4.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -3.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-3.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -1.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-1.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -3.0,
+        -4.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-3.0-4.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -3.0,
+        -3.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-3.0-3.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -3.0,
+        -2.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-3.0-2.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -3.0,
+        -1.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-3.0-1.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -1.0,
+        -4.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-1.0-4.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -1.0,
+        -3.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-1.0-3.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -1.0,
+        -2.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-1.0-2.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -1.0,
+        -1.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-1.0-1.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -9.0,
+        -4.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-9.0-4.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -9.0,
+        -3.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-9.0-3.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -9.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-9.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -9.0,
+        -1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-9.0-1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -7.0,
+        -4.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-7.0-4.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -7.0,
+        -3.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-7.0-3.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -7.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-7.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -7.0,
+        -1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-7.0-1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -5.0,
+        -4.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-5.0-4.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -5.0,
+        -3.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-5.0-3.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -5.0,
+        -1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-5.0-1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -3.0,
+        -4.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-3.0-4.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -3.0,
+        -3.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-3.0-3.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -3.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-3.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -3.0,
+        -1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-3.0-1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -1.0,
+        -4.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-1.0-4.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -1.0,
+        -3.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-1.0-3.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -1.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-1.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -1.0,
+        -1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-1.0-1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -5.0,
+        -2.0
+      ],
+      [
+        -5.0,
+        -2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-5.0-2.0j), (-5.0-2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family B (Hypergeometric)",
+    "params": [
+      [
+        -9.0,
+        -3.0
+      ],
+      [
+        -5.0,
+        -1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family B (Hypergeometric) with params [(-9.0-3.0j), (-5.0-1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        -4.0,
+        0.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(-4.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        -2.0,
+        0.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(-2.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(0.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        2.0,
+        0.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(2.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        4.0,
+        0.0
+      ]
+    ],
+    "rationality_score": 1.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(4.0+0.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        -4.0,
+        -1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(-4.0-1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        -4.0,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(-4.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        -4.0,
+        2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(-4.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        -4.0,
+        3.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(-4.0+3.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        -2.0,
+        -1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(-2.0-1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        -2.0,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(-2.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        -2.0,
+        2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(-2.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        -2.0,
+        3.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(-2.0+3.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        0.0,
+        -1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(0.0-1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        0.0,
+        2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(0.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        0.0,
+        3.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(0.0+3.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        2.0,
+        -1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(2.0-1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        2.0,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(2.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        2.0,
+        2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(2.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        2.0,
+        3.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(2.0+3.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        4.0,
+        -1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(4.0-1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        4.0,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(4.0+1.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        4.0,
+        2.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(4.0+2.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        4.0,
+        3.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(4.0+3.0j)]",
+    "coeffs": null
+  },
+  {
+    "family": "Elkies Family C (Modular)",
+    "params": [
+      [
+        0.0,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.0,
+    "polynomial_preview": "deg 23 from Elkies Family C (Modular) with params [(0.0+1.0j)]",
+    "coeffs": null
+  }
+]

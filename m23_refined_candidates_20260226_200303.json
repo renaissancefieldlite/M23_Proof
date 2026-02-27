@@ -1,0 +1,254 @@
+[
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        -0.9999999996538461
+      ],
+      [
+        -23.999999999307693,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.899999999376923
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.0
+      ],
+      [
+        -23.999999999307693,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.899999999376923
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -8.999999999307692,
+        0.9999999996538461
+      ],
+      [
+        -23.999999999307693,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.899999999376923
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.999999999653846,
+        -0.9999999996538461
+      ],
+      [
+        -22.999999999653845,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.899999999376923
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.999999999653846,
+        0.0
+      ],
+      [
+        -22.999999999653845,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.899999999376923
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.999999999653846,
+        0.9999999996538461
+      ],
+      [
+        -22.999999999653845,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.899999999376923
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.0,
+        -0.9999999996538461
+      ],
+      [
+        -22.0,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.899999999376923
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.0,
+        0.9999999996538461
+      ],
+      [
+        -22.0,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.899999999376923
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -6.000000000346154,
+        -0.9999999996538461
+      ],
+      [
+        -21.000000000346155,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.899999999376923
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -6.000000000346154,
+        0.0
+      ],
+      [
+        -21.000000000346155,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.899999999376923
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -6.000000000346154,
+        0.9999999996538461
+      ],
+      [
+        -21.000000000346155,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.899999999376923
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -5.0000000006923075,
+        -0.9999999996538461
+      ],
+      [
+        -20.000000000692307,
+        3.461538833349209e-10
+      ]
+    ],
+    "rationality_score": 0.899999999376923
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -5.0000000006923075,
+        0.0
+      ],
+      [
+        -20.000000000692307,
+        1.0
+      ]
+    ],
+    "rationality_score": 0.899999999376923
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -5.0000000006923075,
+        0.9999999996538461
+      ],
+      [
+        -20.000000000692307,
+        1.9999999996538462
+      ]
+    ],
+    "rationality_score": 0.899999999376923
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -24.0,
+        1.0
+      ],
+      [
+        -23.0,
+        0.0
+      ]
+    ],
+    "rationality_score": 0.08888888888888886
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -7.0,
+        -1.0
+      ],
+      [
+        -23.0,
+        0.0
+      ]
+    ],
+    "rationality_score": 0.05555555555555555
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -5.0,
+        -1.0
+      ],
+      [
+        -23.0,
+        0.0
+      ]
+    ],
+    "rationality_score": 0.055555555555555546
+  },
+  {
+    "family": "Elkies Family A (Elliptic)",
+    "params": [
+      [
+        -5.0,
+        0.0
+      ],
+      [
+        -23.0,
+        0.0
+      ]
+    ],
+    "rationality_score": 0.04444444444444443
+  }
+]
