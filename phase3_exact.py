@@ -2,7 +2,7 @@
 phase3_exact.py
 M23 Inverse Galois Attack – Phase 3 (EXACT ALGEBRAIC VERSION)
 Tests exact candidates using real polynomial factorization (via Sage).
-FIXED: All errors removed. Ready to run.
+FIXED: Proper number field handling for ℚ(√-23) coefficients.
 Author: Mirror Architect D / Codex 67
 """
 
@@ -42,7 +42,7 @@ def load_exact_candidates():
 # =============================================================================
 
 def generate_sage_script(candidate, index):
-    """Generate Sage script to test a candidate."""
+    """Generate Sage script to test a candidate - proper number field handling."""
     
     λr = candidate['λ_real']
     λi = candidate['λ_imag']
@@ -78,41 +78,54 @@ def test_candidate():
         # Construct full polynomial
         P = P2**2 * P3 * P4**4 + tau
 
-        print("Degree of P:", P.degree(x))
-        print("Number of terms:", len(P.coefficients()))
+        print(f"Degree of P: {{P.degree(x)}}")
+        print(f"Number of terms: {{len(P.coefficients())}}")
 
-        # Test small primes
+        # Test small primes using number field reduction
         primes = [2, 3, 5, 7, 11, 13, 17, 19, 23]
         irreducible_count = 0
 
-        print("\nFactorization mod primes:")
+        print("\\nFactorization mod primes:")
         for p in primes:
             try:
-                # Try to factor over GF(p)
-                # Need to clear denominators first
-                P_int = P.change_ring(QQ)
-                P_int = P_int * P_int.denominator()
+                # Create residue field of characteristic p
+                # Find a prime ideal above p
+                print(f"p = {{p}}: ", end="")
                 
-                try:
-                    Pp = P_int.change_ring(GF(p))
-                    factors = Pp.factor()
-                    print("p =", p, ":", factors)
-                    
-                    if len(factors) == 1 and factors[0][1] == 1:
-                        irreducible_count += 1
-                except:
-                    print("p =", p, ": (failed - reduction error)")
+                # Try to find a prime ideal of degree 1
+                prime_ideals = K.primes_above(p)
+                
+                if not prime_ideals:
+                    print("no prime ideals")
+                    continue
+                
+                # Use the first prime ideal
+                P_ideal = prime_ideals[0]
+                
+                # Create residue field
+                k = P_ideal.residue_field()
+                
+                # Reduce polynomial mod p
+                P_reduced = P.change_ring(k)
+                
+                # Factor over residue field
+                factors = P_reduced.factor()
+                print(factors)
+                
+                # Check if irreducible (single factor of degree 23)
+                if len(factors) == 1 and factors[0][1] == 1:
+                    irreducible_count += 1
                     
             except Exception as e:
-                print("p =", p, ": (error -", str(e)[:50], ")")
+                print(f"error - {{str(e)[:50]}}")
 
-        print("\nIrreducible count:", irreducible_count, "/9")
-        print("Consistency score:", irreducible_count/9.0)
+        print(f"\\nIrreducible count: {{irreducible_count}}/9")
+        print(f"Consistency score: {{irreducible_count/9.0:.3f}}")
         
         return 0
         
     except Exception as e:
-        print("Error in Sage script:", e)
+        print(f"Error in Sage script: {{e}}")
         return 1
 
 if __name__ == "__main__":
