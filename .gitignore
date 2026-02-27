@@ -1,0 +1,4 @@
+testjson/
+*.log
+*.json
+.DS_Store
