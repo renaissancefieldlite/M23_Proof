@@ -7,6 +7,7 @@ Testing exact candidates via Sage (real factorization)
 import json
 import math
 import os
+import re
 import shutil
 import subprocess
 import tempfile
@@ -17,6 +18,7 @@ CANDIDATE_FILE = os.path.join(JSON_DIR, "exact_candidates.json")
 PARTIAL_FILE = os.path.join(JSON_DIR, "partial.json")
 SAGE_BIN = os.environ.get("SAGE_BIN", "sage")
 DEFAULT_CANDIDATES_PER_RUN = int(os.environ.get("CANDIDATES_PER_RUN", "12"))
+PRIME_STATUS_RE = re.compile(r"^p =\s*(\d+)\s*:\s*(.*)$")
 
 os.makedirs(JSON_DIR, exist_ok=True)
 
@@ -252,6 +254,7 @@ def test_candidate_with_sage(candidate, index, timeout=300):
         tested = 0
         irred = 0
         candidate_applied = True
+        per_prime = []
 
         for line in result.stdout.splitlines():
             if "WARNING: candidate specialization hook is still identity" in line:
@@ -264,6 +267,17 @@ def test_candidate_with_sage(candidate, index, timeout=300):
                     tested = int(right_val)
                 except Exception:
                     pass
+            match = PRIME_STATUS_RE.match(line.strip())
+            if match:
+                prime = int(match.group(1))
+                outcome = match.group(2).strip()
+                status = {
+                    "p": prime,
+                    "raw": outcome,
+                    "irreducible": "irreducible" in outcome.lower(),
+                    "skipped": "skipping" in outcome.lower(),
+                }
+                per_prime.append(status)
 
         score = irred / tested if tested > 0 else 0.0
         success = (result.returncode == 0) and (tested > 0)
@@ -274,6 +288,7 @@ def test_candidate_with_sage(candidate, index, timeout=300):
             "tested_count": tested,
             "consistency_score": score,
             "candidate_applied": candidate_applied,
+            "per_prime": per_prime,
             "output": result.stdout[-4000:],
             "error": result.stderr[-1000:],
             "elapsed": elapsed,
@@ -287,6 +302,7 @@ def test_candidate_with_sage(candidate, index, timeout=300):
             "tested_count": 0,
             "consistency_score": 0.0,
             "candidate_applied": False,
+            "per_prime": [],
             "output": "",
             "error": f"Timeout after {timeout}s",
             "elapsed": time.time() - start,

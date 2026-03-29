@@ -25,6 +25,7 @@ This repo contributes to that claim by showing a live search pipeline that:
 - reuses refined outputs as fresh inputs
 - supports simultaneous instances through shared best-candidate tracking
 - exposes the evolving result stream through a monitor layer rather than hiding it in batch logs
+- cross-references scan outputs against the explicit Elkies construction to build a lift-path ranking layer
 
 That makes this repository part of the broader proof argument: coherence is being expressed as operational continuity under pressure, not just narrative consistency.
 
@@ -60,6 +61,13 @@ The active result field is written into `testjson/`, with shared convergence sta
 The worker count is configurable. Set `M23_WORKER_COUNT` before launch to seed the initial count, or change it in the Qt monitor with the worker spinbox. Each worker receives its own `INSTANCE_ID`, `m23_search_<id>.log`, and `m23_search_<id>.pid` while continuing to share the same `testjson/` result pool and `shared_best.json` state.
 
 Workers now cover disjoint sections of the candidate list instead of duplicating the same pass. By default the exact scanner uses contiguous chunk partitioning so worker `1` covers the first slice, worker `2` the next slice, and so on. Set `M23_PARTITION_MODE=stride` if you want interleaved coverage instead.
+
+The search now also has a reference-to-scan bridge:
+
+- `verify_elkies_exact.py` records the per-prime signature of the explicit Elkies construction
+- `cross_reference_elkies_scan.py` ranks scanned candidates against that reference plus the historical hot zone around `λ ≈ -13`, `μ ≈ -28`
+
+This is the current lift-path scaffold. It does not yet prove the FrontierMath target, but it gives the scanner a principled way to prioritize branches that look closer to the known exact construction.
 
 ## Position In The Broader Stack
 
