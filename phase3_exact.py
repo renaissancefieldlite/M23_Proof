@@ -5,6 +5,7 @@ Testing exact candidates via Sage (real factorization)
 """
 
 import json
+import math
 import os
 import shutil
 import subprocess
@@ -31,14 +32,49 @@ def load_exact_candidates():
         return []
 
 
+def parse_worker_config():
+    instance_id = os.environ.get("INSTANCE_ID", "1")
+    try:
+        worker_count = max(1, int(os.environ.get("WORKER_COUNT", "1")))
+    except ValueError:
+        worker_count = 1
+
+    try:
+        worker_index = max(1, int(instance_id))
+    except ValueError:
+        worker_index = 1
+
+    partition_mode = os.environ.get("M23_PARTITION_MODE", "chunk").strip().lower() or "chunk"
+    return instance_id, worker_index, worker_count, partition_mode
+
+
 def select_candidates_for_instance(candidates, instance_id, max_candidates):
     indexed = list(enumerate(candidates))
-    if instance_id == "2":
-        indexed = list(reversed(indexed))
-        print("Instance 2 scanning candidates from the back of the list")
+    _, worker_index, worker_count, partition_mode = parse_worker_config()
+
+    if not indexed:
+        return []
+
+    if partition_mode == "stride":
+        selected = indexed[worker_index - 1 :: worker_count]
+        print(
+            f"Worker {instance_id}/{worker_count} using stride partition "
+            f"(offset {worker_index - 1}, span {worker_count})"
+        )
     else:
-        print("Instance 1 scanning candidates from the front of the list")
-    return indexed[:max_candidates]
+        start = math.floor((worker_index - 1) * len(indexed) / worker_count)
+        end = math.floor(worker_index * len(indexed) / worker_count)
+        selected = indexed[start:end]
+        print(
+            f"Worker {instance_id}/{worker_count} scanning chunk "
+            f"[{start}:{end}] out of {len(indexed)} candidates"
+        )
+
+    if max_candidates > 0:
+        selected = selected[:max_candidates]
+
+    print(f"Worker {instance_id} selected {len(selected)} candidates for this pass")
+    return selected
 
 
 def generate_sage_script(candidate, index):
@@ -268,8 +304,10 @@ def main():
     print("M23 Inverse Galois Attack - Phase 3 (EXACT ALGEBRAIC)")
     print("=" * 70)
 
-    instance_id = os.environ.get("INSTANCE_ID", "1")
+    instance_id, _, worker_count, partition_mode = parse_worker_config()
     max_candidates = DEFAULT_CANDIDATES_PER_RUN
+    print(f"Partition mode: {partition_mode}")
+    print(f"Configured workers: {worker_count}")
 
     candidates = load_exact_candidates()
     if not candidates:

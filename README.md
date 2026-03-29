@@ -59,6 +59,8 @@ The active result field is written into `testjson/`, with shared convergence sta
 
 The worker count is configurable. Set `M23_WORKER_COUNT` before launch to seed the initial count, or change it in the Qt monitor with the worker spinbox. Each worker receives its own `INSTANCE_ID`, `m23_search_<id>.log`, and `m23_search_<id>.pid` while continuing to share the same `testjson/` result pool and `shared_best.json` state.
 
+Workers now cover disjoint sections of the candidate list instead of duplicating the same pass. By default the exact scanner uses contiguous chunk partitioning so worker `1` covers the first slice, worker `2` the next slice, and so on. Set `M23_PARTITION_MODE=stride` if you want interleaved coverage instead.
+
 ## Position In The Broader Stack
 
 This repository should be read alongside, but not collapsed into:
