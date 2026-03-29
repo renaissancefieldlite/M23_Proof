@@ -1,128 +1,176 @@
 #!/usr/bin/env python3
 """
-auto_m23_forever.py - Fully autonomous M23 search
-Runs indefinitely until target consistency reached.
-All JSON files stored in testjson/ folder.
+auto_m23_forever.py - Fully autonomous M23 search with cross-feeding
+Runs until target consistency reached.
+Supports multiple instances sharing best candidates via shared_best.json
 """
 
-import subprocess
-import time
-import json
 import glob
+import json
 import os
+import subprocess
 import sys
+import time
 from datetime import datetime
 
 JSON_DIR = "testjson"
+SHARED_BEST_FILE = "shared_best.json"
+PHASE2_SCRIPT = "phase2_exact.py"
+PHASE3_SCRIPT = "phase3_exact.py"
+PHASE4_SCRIPT = "phase4_exact.py"
+
 os.makedirs(JSON_DIR, exist_ok=True)
 
-def log_message(msg):
-    """Print with timestamp."""
+PRIMES_TESTED = 9
+TARGET_IRRED_COUNT = 6
+TARGET = TARGET_IRRED_COUNT / PRIMES_TESTED
+
+
+def log_message(msg: str) -> None:
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{timestamp}] {msg}")
     sys.stdout.flush()
 
-def get_latest_results():
+
+def list_result_files():
     pattern = os.path.join(JSON_DIR, "exact_test_results_*.json")
-    files = glob.glob(pattern)
-    if not files:
-        return None
-    return max(files)
+    return sorted(glob.glob(pattern), key=os.path.getmtime)
+
+
+def get_latest_results():
+    files = list_result_files()
+    return files[-1] if files else None
+
+
+def read_shared_best():
+    try:
+        if os.path.exists(SHARED_BEST_FILE):
+            with open(SHARED_BEST_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+    except Exception:
+        pass
+    return {"best_score": 0.0, "candidate": None, "source_file": None}
+
+
+def write_shared_best(score, candidate_file, candidate_data):
+    current = read_shared_best()
+    if score <= current.get("best_score", 0.0):
+        return
+
+    data = {
+        "best_score": score,
+        "timestamp": time.time(),
+        "source_file": candidate_file,
+        "candidate": candidate_data,
+    }
+    tmp = SHARED_BEST_FILE + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+    os.replace(tmp, SHARED_BEST_FILE)
+    log_message(f"NEW GLOBAL BEST: {score * 100:.1f}% from {os.path.basename(candidate_file)}")
+
 
 def get_best_consistency():
-    latest = get_latest_results()
-    if not latest:
-        return 0.0
-    
-    try:
-        with open(latest, 'r') as f:
-            data = json.load(f)
-        
-        best = 0.0
-        for r in data:
-            if r['result']['success']:
-                score = r['result']['consistency_score']
-                if score > best:
-                    best = score
-        return best
-    except:
-        return 0.0
+    shared = read_shared_best()
+    best_score = shared.get("best_score", 0.0)
+
+    for result_file in list_result_files():
+        try:
+            with open(result_file, "r", encoding="utf-8") as fp:
+                data = json.load(fp)
+        except Exception:
+            continue
+
+        for cand in data:
+            result = cand.get("result", {})
+            if result.get("success", False):
+                score = float(result.get("consistency_score", 0.0))
+                if score > best_score:
+                    best_score = score
+                    write_shared_best(score, result_file, cand.get("candidate"))
+    return best_score
+
 
 def check_for_success():
-    """Check if we've hit the target."""
     best = get_best_consistency()
-    log_message(f"Current best consistency: {best*100:.1f}% ({int(best*9)}/9 primes)")
-    return best >= 0.30
+    count = int(round(best * PRIMES_TESTED))
+    log_message(f"Current best consistency: {best * 100:.1f}% ({count}/{PRIMES_TESTED} primes)")
+    return best >= TARGET
+
 
 def run_phase(phase_num, script_name):
-    """Run a phase and return success."""
-    log_message(f"▶️  Running Phase {phase_num}: {script_name}")
-    result = subprocess.run(["python3", script_name],
-                           capture_output=True, text=True)
-    
+    log_message(f"Running Phase {phase_num}: {script_name}")
+    result = subprocess.run(
+        [sys.executable, script_name],
+        capture_output=True,
+        text=True,
+        cwd=os.getcwd(),
+    )
+
+    if result.stdout:
+        tail = result.stdout[-1200:]
+        log_message(f"stdout tail:\n{tail}")
+
     if result.returncode != 0:
-        log_message(f"⚠️  Phase {phase_num} returned code {result.returncode}")
+        log_message(f"Phase {phase_num} returned code {result.returncode}")
         if result.stderr:
-            log_message(f"Error: {result.stderr[-200:]}")
+            log_message(f"stderr tail:\n{result.stderr[-1200:]}")
         return False
-    
-    log_message(f"✅ Phase {phase_num} complete")
+
+    log_message(f"Phase {phase_num} complete")
     return True
 
+
 def main():
-    target = 0.30
     iteration = 0
-    max_iterations = 1000  # High safety cap
-    
+    max_iterations = 1000
+    instance_id = os.environ.get("INSTANCE_ID", "1")
+
     log_message("=" * 60)
-    log_message("M23 AUTO-PILOT — FULLY AUTONOMOUS MODE")
+    log_message(f"M23 AUTO-PILOT - INSTANCE {instance_id}")
     log_message(f"JSON directory: {JSON_DIR}")
-    log_message(f"Target: {target*100:.0f}% irreducibles (6/9 primes)")
-    log_message("Will run indefinitely until target reached")
+    log_message(f"Shared best: {SHARED_BEST_FILE}")
+    log_message(
+        f"Target: {TARGET * 100:.0f}% irreducibles ({TARGET_IRRED_COUNT}/{PRIMES_TESTED} primes)"
+    )
     log_message("=" * 60)
-    
+
     while iteration < max_iterations:
         iteration += 1
-        log_message(f"\n{'='*60}")
-        log_message(f"🔄 ITERATION {iteration}")
-        log_message(f"{'='*60}")
-        
-        # Phase 2 - Generate exact candidates
-        if not run_phase(2, "phase2_exact.py"):
-            log_message("❌ Phase 2 failed. Retrying in 10 seconds...")
+        log_message(f"\n{'=' * 60}")
+        log_message(f"INSTANCE {instance_id} ITERATION {iteration}")
+        log_message(f"{'=' * 60}")
+
+        if not run_phase(2, PHASE2_SCRIPT):
+            log_message("Phase 2 failed. Retrying in 10 seconds...")
             time.sleep(10)
             continue
-        
-        # Phase 3 - Test with Sage
-        if not run_phase(3, "phase3_exact.py"):
-            log_message("❌ Phase 3 failed. Retrying...")
+
+        if not run_phase(3, PHASE3_SCRIPT):
+            log_message("Phase 3 failed. Retrying in 5 seconds...")
+            time.sleep(5)
             continue
-        
-        # Check if we hit the target
+
         if check_for_success():
-            latest = get_latest_results()
-            log_message("\n" + "="*60)
-            log_message("🎯 TARGET REACHED! 🎯")
-            log_message(f"Best consistency: {get_best_consistency()*100:.1f}%")
-            log_message(f"Results saved in: {latest}")
-            log_message("="*60)
+            log_message("\n" + "=" * 60)
+            log_message("TARGET REACHED")
+            log_message(f"Best consistency: {get_best_consistency() * 100:.1f}%")
+            log_message(f"Check {SHARED_BEST_FILE} for winning candidate")
+            log_message("=" * 60)
             break
-        
-        # Phase 4 - Refine best candidates
-        log_message("🔄 Running Phase 4 (refinement)...")
-        subprocess.run(["python3", "phase4_exact.py"],
-                      capture_output=True)
-        
-        # Short pause between iterations
+
+        log_message("Running Phase 4 (refinement)...")
+        run_phase(4, PHASE4_SCRIPT)
         time.sleep(2)
-    
+
     if iteration >= max_iterations:
-        log_message(f"\n⚠️ Stopped after {max_iterations} iterations (safety cap)")
-        log_message(f"Final best: {get_best_consistency()*100:.1f}%")
+        log_message(f"\nStopped after {max_iterations} iterations (safety cap)")
+        log_message(f"Final best: {get_best_consistency() * 100:.1f}%")
+
 
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        log_message("\n🛑 Stopped by user")
+        log_message("\nStopped by user")
         sys.exit(0)

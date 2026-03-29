@@ -1,141 +1,148 @@
 """
 phase2_exact.py
-M23 Inverse Galois Attack – Phase 2 (EXACT ALGEBRAIC VERSION)
-Uses sympy for exact arithmetic in ℚ(√-23) and ℚ(g).
-FIXED: All JSON saved to testjson/ folder
+M23 Inverse Galois Attack - Phase 2 (EXACT ALGEBRAIC VERSION)
+Uses sympy for exact arithmetic in Q(sqrt(-23)) and Q(g).
 Author: Mirror Architect D / Codex 67
 """
 
-import json
 import glob
+import json
 import os
-from sympy import symbols, Poly, expand, sqrt, I, Rational, Number
-from sympy import I as SyI
-import numpy as np
-
-# =============================================================================
-# Configuration
-# =============================================================================
+from sympy import Rational, symbols, sqrt
 
 JSON_DIR = "testjson"
+CANDIDATE_FILE = os.path.join(JSON_DIR, "exact_candidates.json")
+REFINED_GLOB = os.path.join(JSON_DIR, "exact_refined_*.json")
+
 os.makedirs(JSON_DIR, exist_ok=True)
 
-# =============================================================================
-# 1. Load Phase 1 Data and Refined Candidates
-# =============================================================================
+g = symbols("g")
+quartic_modulus = g**4 + g**3 + 9 * g**2 - 10 * g + 8
+sqrt_m23 = sqrt(-23)
+
 
 def load_elkies_families(json_file: str = "elkies_families.json") -> list:
     """Load families from Phase 1 JSON export."""
     try:
-        with open(json_file, 'r') as f:
+        with open(json_file, "r", encoding="utf-8") as f:
             data = json.load(f)
-        print(f"📥 Loaded {len(data)} families from {json_file}")
+        print(f"Loaded {len(data)} families from {json_file}")
         return data
     except FileNotFoundError:
-        print(f"❌ Error: {json_file} not found. Run phase1.py first.")
+        print(f"Error: {json_file} not found. Run phase1.py first.")
         return []
     except json.JSONDecodeError:
-        print(f"❌ Error: {json_file} is corrupted.")
+        print(f"Error: {json_file} is corrupted.")
         return []
+
+
+def dedupe_candidates(candidates: list) -> list:
+    unique = []
+    seen = set()
+    for candidate in candidates:
+        key = (
+            candidate["λ_real"],
+            candidate["λ_imag"],
+            candidate["μ_real"],
+            candidate["μ_imag"],
+        )
+        if key not in seen:
+            seen.add(key)
+            unique.append(candidate)
+    return unique
+
 
 def load_refined_candidates() -> list:
     """Load the most recent refined candidates from Phase 4."""
-    pattern = os.path.join(JSON_DIR, "exact_refined_*.json")
-    files = glob.glob(pattern)
+    files = sorted(glob.glob(REFINED_GLOB), key=os.path.getmtime)
     if not files:
-        print("   No refined candidates found. Using default seeds.")
+        print("No refined candidates found. Using default seeds.")
         return []
-    
-    latest_file = max(files)
+
+    latest_file = files[-1]
     try:
-        with open(latest_file, 'r') as f:
+        with open(latest_file, "r", encoding="utf-8") as f:
             candidates = json.load(f)
-        print(f"   Loaded {len(candidates)} refined candidates from {latest_file}")
+        candidates = dedupe_candidates(candidates)
+        print(f"Loaded {len(candidates)} refined candidates from {latest_file}")
         return candidates
-    except:
-        print(f"   Could not load {latest_file}")
+    except Exception as exc:
+        print(f"Could not load {latest_file}: {exc}")
         return []
 
-# =============================================================================
-# 2. Define the Number Fields
-# =============================================================================
 
-# Define the quartic field ℚ(g) from Elkies' paper
-g = symbols('g')
-quartic_modulus = g**4 + g**3 + 9*g**2 - 10*g + 8
+def candidate_record(lr, li, mr, mi):
+    return {
+        "λ_real": str(lr),
+        "λ_imag": str(li),
+        "μ_real": str(mr),
+        "μ_imag": str(mi),
+        "λ_expr": f"{lr} + {li}*I",
+        "μ_expr": f"{mr} + {mi}*I",
+    }
 
-# √-23 appears in the field
-sqrt_m23 = sqrt(-23)
-
-# =============================================================================
-# 3. Parameter Space Grid (Exact Rational)
-# =============================================================================
 
 def generate_exact_grid():
     """Generate exact rational parameter grid around hot zone."""
-    
-    # λ real: around -13 to -12 (step 0.1)
-    λ_real_vals = [Rational(x, 10) for x in range(-135, -119, 1)]
-    # μ real: around -28 to -27 (step 0.1)
-    μ_real_vals = [Rational(x, 10) for x in range(-285, -269, 1)]
-    # Imaginary parts: multiples of 0.5
+    λ_real_vals = [Rational(x, 10) for x in range(-135, -119)]
+    μ_real_vals = [Rational(x, 10) for x in range(-285, -269)]
     imag_vals = [
-        -2, -Rational(3,2), -1, -Rational(1,2), 0,
-        Rational(1,2), 1, Rational(3,2), 2, Rational(5,2)
+        -2,
+        -Rational(3, 2),
+        -1,
+        -Rational(1, 2),
+        0,
+        Rational(1, 2),
+        1,
+        Rational(3, 2),
+        2,
+        Rational(5, 2),
     ]
-    
+
     candidates = []
     total = len(λ_real_vals) * len(imag_vals) * len(μ_real_vals) * len(imag_vals)
-    print(f"   Generating {total} exact algebraic candidates...")
-    
+    print(f"Generating {total} exact algebraic candidates...")
+
     count = 0
     for λr in λ_real_vals:
         for λi in imag_vals:
             for μr in μ_real_vals:
                 for μi in imag_vals:
-                    # Filter to region near best candidate
                     if abs(float(λr + 13)) > 1.0:
                         continue
                     if abs(float(μr + 28)) > 1.0:
                         continue
-                    
-                    candidates.append({
-                        'λ_real': str(λr),
-                        'λ_imag': str(λi),
-                        'μ_real': str(μr),
-                        'μ_imag': str(μi),
-                        'λ_expr': f"{λr} + {λi}*I",
-                        'μ_expr': f"{μr} + {μi}*I"
-                    })
+                    candidates.append(candidate_record(λr, λi, μr, μi))
                     count += 1
-    
-    print(f"   Generated {count} filtered exact candidates")
-    return candidates
 
-# =============================================================================
-# 4. Main
-# =============================================================================
+    print(f"Generated {count} filtered exact candidates")
+    return dedupe_candidates(candidates)
+
+
+def select_candidates():
+    refined = load_refined_candidates()
+    if refined:
+        print("Using latest refined candidates from Phase 4")
+        return refined
+    return generate_exact_grid()
+
 
 if __name__ == "__main__":
     print("=" * 70)
-    print("M23 Inverse Galois Attack – Phase 2 (EXACT ALGEBRAIC)")
-    print("Using sympy for exact arithmetic in ℚ(√-23) and ℚ(g)")
+    print("M23 Inverse Galois Attack - Phase 2 (EXACT ALGEBRAIC)")
+    print("Using sympy for exact arithmetic in Q(sqrt(-23)) and Q(g)")
     print(f"JSON directory: {JSON_DIR}")
     print("=" * 70)
-    
-    # Generate exact parameter grid
-    candidates = generate_exact_grid()
-    
-    # Save to file in JSON_DIR
-    filename = os.path.join(JSON_DIR, 'exact_candidates.json')
-    with open(filename, 'w') as f:
+
+    candidates = select_candidates()
+
+    with open(CANDIDATE_FILE, "w", encoding="utf-8") as f:
         json.dump(candidates, f, indent=2)
-    
-    print(f"\n✅ Saved {len(candidates)} exact candidates to {filename}")
-    
-    # Load families (for reference)
-    families = load_elkies_families()
-    
+
+    print(f"\nSaved {len(candidates)} exact candidates to {CANDIDATE_FILE}")
+
+    load_elkies_families()
+
     print("\nNext steps:")
     print("1. Run phase3_exact.py to test these candidates with exact arithmetic")
     print("2. Use Sage/Magma for real Galois group verification")

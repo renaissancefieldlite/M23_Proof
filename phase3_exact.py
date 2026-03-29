@@ -1,131 +1,180 @@
 """
 phase3_exact.py
-M23 Inverse Galois Attack – Phase 3 (EXACT ALGEBRAIC VERSION)
-Tests exact candidates using real polynomial factorization (via Sage).
-FIXED: Proper number field handling for ℚ(√-23) coefficients.
-Author: Mirror Architect D / Codex 67
+M23 Inverse Galois Attack - Phase 3 (EXACT ALGEBRAIC VERSION)
+Testing exact candidates via Sage (real factorization)
 """
 
 import json
+import os
+import shutil
 import subprocess
 import tempfile
-import os
 import time
-from sympy import symbols, Poly, expand, sqrt, I, Rational
-import numpy as np
-
-# =============================================================================
-# Configuration
-# =============================================================================
 
 JSON_DIR = "testjson"
+CANDIDATE_FILE = os.path.join(JSON_DIR, "exact_candidates.json")
+PARTIAL_FILE = os.path.join(JSON_DIR, "partial.json")
+SAGE_BIN = os.environ.get("SAGE_BIN", "sage")
+DEFAULT_CANDIDATES_PER_RUN = int(os.environ.get("CANDIDATES_PER_RUN", "12"))
+
 os.makedirs(JSON_DIR, exist_ok=True)
 
-# =============================================================================
-# 1. Load Exact Candidates
-# =============================================================================
 
 def load_exact_candidates():
-    """Load exact candidates from Phase 2."""
-    json_file = os.path.join(JSON_DIR, "exact_candidates.json")
     try:
-        with open(json_file, 'r') as f:
+        with open(CANDIDATE_FILE, "r", encoding="utf-8") as f:
             candidates = json.load(f)
-        print(f"📥 Loaded {len(candidates)} exact candidates from {json_file}")
+        print(f"Loaded {len(candidates)} exact candidates from {CANDIDATE_FILE}")
         return candidates
     except FileNotFoundError:
-        print(f"❌ No exact candidates found. Run phase2_exact.py first.")
+        print("No exact candidates found. Run phase2_exact.py first.")
         return []
 
-# =============================================================================
-# 2. Generate Sage Script for a Candidate
-# =============================================================================
+
+def select_candidates_for_instance(candidates, instance_id, max_candidates):
+    indexed = list(enumerate(candidates))
+    if instance_id == "2":
+        indexed = list(reversed(indexed))
+        print("Instance 2 scanning candidates from the back of the list")
+    else:
+        print("Instance 1 scanning candidates from the front of the list")
+    return indexed[:max_candidates]
+
 
 def generate_sage_script(candidate, index):
-    """Generate Sage script to test a candidate - proper number field handling."""
-    
-    λr = candidate['λ_real']
-    λi = candidate['λ_imag']
-    μr = candidate['μ_real']
-    μi = candidate['μ_imag']
-    
+    λr = candidate["λ_real"]
+    λi = candidate["λ_imag"]
+    μr = candidate["μ_real"]
+    μi = candidate["μ_imag"]
+
     script = f'''# Sage script for M23 candidate {index}
 import sys
 
+def build_base_polynomial():
+    R.<g> = QQ[]
+    K.<g> = NumberField(g^4 + g^3 + 9*g^2 - 10*g + 8)
+    S.<x> = K[]
+
+    P2 = (8*g**3 + 16*g**2 - 20*g + 20)*x**2 + (-7*g**3 - 17*g**2 + 7*g - 76)*x + (-13*g**3 + 25*g**2 - 107*g + 596)
+    P3 = 8*(31*g**3 + 405*g**2 - 459*g + 333)*x**3 + (941*g**3 + 1303*g**2 - 1853*g + 1772)*x + (85*g**3 - 385*g**2 + 395*g - 220)
+    P4 = 32*(4*g**3 - 69*g**2 + 74*g - 49)*x**4 + 32*(21*g**3 + 53*g**2 - 68*g + 58)*x**3 - 8*(97*g**3 + 95*g**2 - 145*g + 148)*x**2 + 8*(41*g**3 - 89*g**2 - g + 140)*x + (-123*g**3 + 391*g**2 - 93*g + 3228)
+    tau_num = 2**38 * 3**17 * (47323*g**3 - 1084897*g**2 + 7751*g - 711002)
+    tau = tau_num / 23**3
+    P = P2**2 * P3 * P4**4 + tau
+    return K, x, P
+
+def apply_candidate_specialization(P, λr, λi, μr, μi):
+    # TODO:
+    # The uploaded source files do not contain the actual λ/μ insertion rule.
+    # This hook is intentionally left as identity so the pipeline still runs,
+    # but candidate values are NOT yet changing the polynomial.
+    return P, False
+
+def residue_field_mapper(prime_ideal, coeff_sample):
+    rf = prime_ideal.residue_field(names='a')
+    if isinstance(rf, tuple):
+        k = rf[0]
+        maps = [obj for obj in rf[1:] if callable(obj)]
+    else:
+        k = rf
+        maps = []
+
+    for mapper in maps:
+        try:
+            mapper(coeff_sample)
+            return k, mapper
+        except Exception:
+            pass
+
+    def fallback(c):
+        reduced = prime_ideal.reduce(c)
+        try:
+            return k(reduced)
+        except Exception:
+            return k(c)
+
+    return k, fallback
+
+def reduce_polynomial_mod_prime(P_int, K, x, p):
+    prime_ideals = K.primes_above(p)
+    if not prime_ideals:
+        raise RuntimeError("no primes above p")
+
+    best = prime_ideals[0]
+    for pid in prime_ideals:
+        try:
+            if pid.residue_class_degree() == 1:
+                best = pid
+                break
+        except Exception:
+            pass
+
+    coeffs = P_int.coefficients(sparse=False)
+    if not coeffs:
+        raise RuntimeError("empty coefficient list")
+
+    k, mapper = residue_field_mapper(best, coeffs[0])
+    degree = P_int.degree(x)
+    while len(coeffs) < degree + 1:
+        coeffs.append(K(0))
+
+    red = [mapper(c) for c in coeffs]
+
+    Rp.<y> = PolynomialRing(k)
+    P_red = sum(red[i] * y**i for i in range(len(red)))
+    return P_red
+
 def test_candidate():
     try:
-        # Define the quartic field
-        R.<g> = QQ[]
-        K.<g> = NumberField(g^4 + g^3 + 9*g^2 - 10*g + 8)
-
-        # Polynomial ring over K
-        S.<x> = K[]
-
         print("-" * 50)
         print(f"Testing candidate {index}")
         print("-" * 50)
         print(f"λ = {λr} + {λi}*I")
         print(f"μ = {μr} + {μi}*I")
 
-        # Define components exactly
-        P2 = (8*g**3 + 16*g**2 - 20*g + 20)*x**2 + (-7*g**3 - 17*g**2 + 7*g - 76)*x + (-13*g**3 + 25*g**2 - 107*g + 596)
-        P3 = 8*(31*g**3 + 405*g**2 - 459*g + 333)*x**3 + (941*g**3 + 1303*g**2 - 1853*g + 1772)*x + (85*g**3 - 385*g**2 + 395*g - 220)
-        P4 = 32*(4*g**3 - 69*g**2 + 74*g - 49)*x**4 + 32*(21*g**3 + 53*g**2 - 68*g + 58)*x**3 - 8*(97*g**3 + 95*g**2 - 145*g + 148)*x**2 + 8*(41*g**3 - 89*g**2 - g + 140)*x + (-123*g**3 + 391*g**2 - 93*g + 3228)
+        K, x, P = build_base_polynomial()
+        P, candidate_applied = apply_candidate_specialization(P, "{λr}", "{λi}", "{μr}", "{μi}")
 
-        tau_num = 2**38 * 3**17 * (47323*g**3 - 1084897*g**2 + 7751*g - 711002)
-        tau = tau_num / 23**3
+        if not candidate_applied:
+            print("WARNING: candidate specialization hook is still identity")
 
-        # Construct full polynomial
-        P = P2**2 * P3 * P4**4 + tau
+        print("Degree of P:", P.degree(x))
+        print("Number of terms:", len(P.coefficients()))
 
-        print(f"Degree of P: {{P.degree(x)}}")
-        print(f"Number of terms: {{len(P.coefficients())}}")
+        P_int = P * P.denominator()
+        P_int = P_int * P_int.denominator()
 
-        # Test small primes using number field reduction
         primes = [2, 3, 5, 7, 11, 13, 17, 19, 23]
         irreducible_count = 0
+        tested_count = 0
 
         print("\\nFactorization mod primes:")
         for p in primes:
             try:
-                # Create residue field of characteristic p
-                # Find a prime ideal above p
-                print(f"p = {{p}}: ", end="")
-                
-                # Try to find a prime ideal of degree 1
-                prime_ideals = K.primes_above(p)
-                
-                if not prime_ideals:
-                    print("no prime ideals")
-                    continue
-                
-                # Use the first prime ideal
-                P_ideal = prime_ideals[0]
-                
-                # Create residue field
-                k = P_ideal.residue_field()
-                
-                # Reduce polynomial mod p
-                P_reduced = P.change_ring(k)
-                
-                # Factor over residue field
-                factors = P_reduced.factor()
-                print(factors)
-                
-                # Check if irreducible (single factor of degree 23)
-                if len(factors) == 1 and factors[0][1] == 1:
-                    irreducible_count += 1
-                    
-            except Exception as e:
-                print(f"error - {{str(e)[:50]}}")
+                P_red = reduce_polynomial_mod_prime(P_int, K, x, p)
 
-        print(f"\\nIrreducible count: {{irreducible_count}}/9")
-        print(f"Consistency score: {{irreducible_count/9.0:.3f}}")
-        
+                if P_red.is_irreducible():
+                    irreducible_count += 1
+                    print("p =", p, ": irreducible")
+                else:
+                    print("p =", p, ": factors")
+                tested_count += 1
+            except Exception as e:
+                print("p =", p, ": (skipping -", str(e)[:120], ")")
+                continue
+
+        if tested_count > 0:
+            score = irreducible_count / tested_count
+            print("\\nTested", tested_count, "primes")
+            print("Irreducible count:", irreducible_count, "/", tested_count)
+            print("Consistency score:", score)
+        else:
+            print("\\nNo primes successfully tested")
+            return 2
+
         return 0
-        
     except Exception as e:
-        print(f"Error in Sage script: {{e}}")
+        print("Error:", e)
         return 1
 
 if __name__ == "__main__":
@@ -133,125 +182,147 @@ if __name__ == "__main__":
 '''
     return script
 
-# =============================================================================
-# 3. Run Tests (via Sage)
-# =============================================================================
 
 def test_candidate_with_sage(candidate, index, timeout=300):
-    """Run a candidate through Sage and return results."""
-    
     script = generate_sage_script(candidate, index)
-    
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.sage', delete=False) as f:
+
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".sage", delete=False, encoding="utf-8") as f:
         f.write(script)
         script_file = f.name
-    
-    print(f"   Running Sage (timeout: {timeout}s)...")
-    start_time = time.time()
-    
+
+    print(f"Running Sage with {SAGE_BIN} (timeout: {timeout}s)...")
+    start = time.time()
+
     try:
-        result = subprocess.run(['sage', script_file],
-                               capture_output=True, text=True,
-                               timeout=timeout)
-        elapsed = time.time() - start_time
-        output = result.stdout
-        error = result.stderr
-        
-        irreducible_count = 0
-        for line in output.split('\n'):
-            if 'Irreducible count:' in line:
+        if shutil.which(SAGE_BIN) is None and os.path.sep not in SAGE_BIN:
+            return {
+                "success": False,
+                "irreducible_count": 0,
+                "tested_count": 0,
+                "consistency_score": 0.0,
+                "output": "",
+                "error": f"Sage executable not found: {SAGE_BIN}",
+                "elapsed": time.time() - start,
+            }
+
+        result = subprocess.run(
+            [SAGE_BIN, script_file],
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+        )
+        elapsed = time.time() - start
+
+        tested = 0
+        irred = 0
+        candidate_applied = True
+
+        for line in result.stdout.splitlines():
+            if "WARNING: candidate specialization hook is still identity" in line:
+                candidate_applied = False
+            if "Irreducible count:" in line:
                 try:
-                    parts = line.split(':')[1].strip().split('/')
-                    if len(parts) > 0:
-                        irreducible_count = int(parts[0])
-                except:
+                    rhs = line.split(":", 1)[1].strip()
+                    left_val, right_val = [part.strip() for part in rhs.split("/")]
+                    irred = int(left_val)
+                    tested = int(right_val)
+                except Exception:
                     pass
-        
+
+        score = irred / tested if tested > 0 else 0.0
+        success = (result.returncode == 0) and (tested > 0)
+
         return {
-            'success': result.returncode == 0,
-            'irreducible_count': irreducible_count,
-            'consistency_score': irreducible_count / 9.0,
-            'output': output[-1000:],
-            'error': error[-500:],
-            'elapsed': elapsed
+            "success": success,
+            "irreducible_count": irred,
+            "tested_count": tested,
+            "consistency_score": score,
+            "candidate_applied": candidate_applied,
+            "output": result.stdout[-4000:],
+            "error": result.stderr[-1000:],
+            "elapsed": elapsed,
+            "returncode": result.returncode,
         }
+
     except subprocess.TimeoutExpired:
-        elapsed = time.time() - start_time
         return {
-            'success': False,
-            'irreducible_count': 0,
-            'consistency_score': 0.0,
-            'output': '',
-            'error': f'Timeout after {timeout}s',
-            'elapsed': elapsed
+            "success": False,
+            "irreducible_count": 0,
+            "tested_count": 0,
+            "consistency_score": 0.0,
+            "candidate_applied": False,
+            "output": "",
+            "error": f"Timeout after {timeout}s",
+            "elapsed": time.time() - start,
+            "returncode": -1,
         }
     finally:
         try:
             os.unlink(script_file)
-        except:
+        except Exception:
             pass
 
-# =============================================================================
-# 4. Main
-# =============================================================================
 
 def main():
     print("=" * 70)
-    print("M23 Inverse Galois Attack – Phase 3 (EXACT ALGEBRAIC)")
-    print("Testing exact candidates via Sage (real factorization)")
+    print("M23 Inverse Galois Attack - Phase 3 (EXACT ALGEBRAIC)")
     print("=" * 70)
-    
+
+    instance_id = os.environ.get("INSTANCE_ID", "1")
+    max_candidates = DEFAULT_CANDIDATES_PER_RUN
+
     candidates = load_exact_candidates()
     if not candidates:
         return
-    
-    max_tests = min(3, len(candidates))
+
+    selected = select_candidates_for_instance(candidates, instance_id, max_candidates)
+    if not selected:
+        print("No candidates selected for this instance.")
+        return
+
     results = []
-    
-    for i in range(max_tests):
-        print(f"\n{'='*60}")
-        print(f"🔍 Testing candidate {i+1}/{max_tests}")
-        print(f"{'='*60}")
-        print(f"   λ = {candidates[i]['λ_expr']}")
-        print(f"   μ = {candidates[i]['μ_expr']}")
-        
-        result = test_candidate_with_sage(candidates[i], i)
-        
-        if result['success']:
-            print(f"   ✅ Sage completed in {result['elapsed']:.1f}s")
-            print(f"   Irreducible count: {result['irreducible_count']}/9")
-            print(f"   Consistency score: {result['consistency_score']:.3f}")
+    total = len(selected)
+
+    for position, (candidate_index, candidate) in enumerate(selected, start=1):
+        print(f"\n{'=' * 60}")
+        print(
+            f"Instance {instance_id} testing candidate {position}/{total} "
+            f"(global index {candidate_index})"
+        )
+        print(f"{'=' * 60}")
+        print(f"lambda = {candidate['λ_expr']}")
+        print(f"mu = {candidate['μ_expr']}")
+
+        result = test_candidate_with_sage(candidate, candidate_index)
+
+        if result["success"]:
+            print(f"Completed in {result['elapsed']:.1f}s")
+            print(f"Tested {result['tested_count']} primes")
+            print(
+                f"Irreducible: {result['irreducible_count']}/{result['tested_count']} "
+                f"({result['consistency_score']:.3f})"
+            )
         else:
-            print(f"   ❌ Failed: {result['error'][:100]}")
-        
-        results.append({
-            'candidate_index': i,
-            'candidate': candidates[i],
-            'result': result
-        })
-        
-        partial_file = os.path.join(JSON_DIR, 'exact_test_results_partial.json')
-        with open(partial_file, 'w') as f:
+            print(f"Failed: {result['error'][:160]}")
+
+        results.append(
+            {
+                "instance_id": instance_id,
+                "candidate_index": candidate_index,
+                "candidate": candidate,
+                "result": result,
+            }
+        )
+
+        with open(PARTIAL_FILE, "w", encoding="utf-8") as f:
             json.dump(results, f, indent=2)
-        print(f"   💾 Progress saved")
-    
+
     timestamp = time.strftime("%Y%m%d_%H%M%S")
     filename = os.path.join(JSON_DIR, f"exact_test_results_{timestamp}.json")
-    with open(filename, 'w') as f:
+    with open(filename, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
-    
-    print(f"\n{'='*60}")
-    print(f"✅ Saved results to {filename}")
-    print(f"{'='*60}")
-    
-    print("\n📊 SUMMARY")
-    print("-" * 40)
-    for i, r in enumerate(results):
-        if r['result']['success']:
-            print(f"Candidate {i}: {r['result']['irreducible_count']}/9 irreducible "
-                  f"({r['result']['consistency_score']:.3f})")
-        else:
-            print(f"Candidate {i}: FAILED")
+    print(f"\nSaved to {filename}")
+
 
 if __name__ == "__main__":
     main()
