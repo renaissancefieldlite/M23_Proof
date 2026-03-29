@@ -66,8 +66,24 @@ The search now also has a reference-to-scan bridge:
 
 - `verify_elkies_exact.py` records the per-prime signature of the explicit Elkies construction
 - `cross_reference_elkies_scan.py` ranks scanned candidates against that reference plus the historical hot zone around `λ ≈ -13`, `μ ≈ -28`
+- `descent_search.py` runs a partitionable affine descent search over the explicit Elkies construction and scores transforms by coefficient leakage in the basis `(1, g, g^2, g^3)`, coefficient height, and denominator pressure
+- `run_parallel_descent_channels.py` launches disjoint descent workers so transform bands are covered in parallel instead of duplicated
+- `Start_Parallel_Descent.command` provides a one-shot launcher for the same partitioned descent lane
 
 This is the current lift-path scaffold. It does not yet prove the FrontierMath target, but it gives the scanner a principled way to prioritize branches that look closer to the known exact construction.
+
+The descent lane can be partitioned in several ways:
+
+- `scale_band` (default): each worker owns a disjoint slice of scale factors across all shifts
+- `shift_band`: each worker owns a disjoint slice of shifts across all scales
+- `ring`: each worker owns center-out rings around the `a ≈ 1`, `b ≈ 0` anchor
+- `chunk` / `stride`: list-level partitioning when you want simpler coverage
+
+Example:
+
+```bash
+M23_DESCENT_WORKERS=8 M23_DESCENT_PARTITION_MODE=ring ./Start_Parallel_Descent.command
+```
 
 ## Position In The Broader Stack
 

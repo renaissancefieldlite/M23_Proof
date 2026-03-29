@@ -105,6 +105,7 @@ def run_phase(phase_num, script_name):
         capture_output=True,
         text=True,
         cwd=os.getcwd(),
+        stdin=subprocess.DEVNULL,
     )
 
     if result.stdout:

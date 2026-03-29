@@ -2,3 +2,5 @@ testjson/
 *.log
 *.json
 .DS_Store
+__pycache__/
+*.pyc
