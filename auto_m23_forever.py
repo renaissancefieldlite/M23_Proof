@@ -125,9 +125,11 @@ def main():
     iteration = 0
     max_iterations = 1000
     instance_id = os.environ.get("INSTANCE_ID", "1")
+    worker_count = os.environ.get("WORKER_COUNT", "unknown")
 
     log_message("=" * 60)
     log_message(f"M23 AUTO-PILOT - INSTANCE {instance_id}")
+    log_message(f"Configured worker count: {worker_count}")
     log_message(f"JSON directory: {JSON_DIR}")
     log_message(f"Shared best: {SHARED_BEST_FILE}")
     log_message(

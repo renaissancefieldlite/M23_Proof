@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
 m23_monitor_qt.py - PyQt6 Monitor for M23 Search with Start/Stop Controls
-Watches testjson/ in real-time, shows live progress from multiple instances.
+Watches testjson/ in real-time and supports a configurable worker count.
 """
 
+from dataclasses import dataclass
 import glob
 import json
 import os
@@ -15,6 +16,8 @@ from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QColor, QBrush, QFont, QPalette
 from PyQt6.QtWidgets import (
     QApplication,
+    QFrame,
+    QGroupBox,
     QHBoxLayout,
     QLabel,
     QListWidget,
@@ -23,6 +26,8 @@ from PyQt6.QtWidgets import (
     QMessageBox,
     QProgressBar,
     QPushButton,
+    QScrollArea,
+    QSpinBox,
     QSplitter,
     QStatusBar,
     QTableWidget,
@@ -35,34 +40,41 @@ from PyQt6.QtWidgets import (
 JSON_DIR = "testjson"
 REFRESH_RATE = 2000
 AUTO_SCRIPT = "auto_m23_forever.py"
-PID_FILES = {
-    "1": "m23_search_1.pid",
-    "2": "m23_search_2.pid",
-}
-LOG_FILES = {
-    "1": "m23_search_1.log",
-    "2": "m23_search_2.log",
-}
+DEFAULT_WORKER_COUNT = max(
+    1,
+    int(os.environ.get("M23_WORKER_COUNT", os.environ.get("WORKER_COUNT", "2"))),
+)
+MAX_WORKER_COUNT = max(
+    DEFAULT_WORKER_COUNT,
+    int(os.environ.get("M23_MAX_WORKERS", "32")),
+)
+
+
+def pid_path(instance_id: str) -> str:
+    return f"m23_search_{instance_id}.pid"
+
+
+def log_path(instance_id: str) -> str:
+    return f"m23_search_{instance_id}.log"
 
 
 def read_pid(instance_id: str):
-    pid_file = PID_FILES[instance_id]
     try:
-        with open(pid_file, "r", encoding="utf-8") as f:
+        with open(pid_path(instance_id), "r", encoding="utf-8") as f:
             return int(f.read().strip())
     except Exception:
         return None
 
 
 def write_pid(instance_id: str, pid: int):
-    with open(PID_FILES[instance_id], "w", encoding="utf-8") as f:
+    with open(pid_path(instance_id), "w", encoding="utf-8") as f:
         f.write(str(pid))
 
 
 def remove_pid(instance_id: str):
-    pid_file = PID_FILES[instance_id]
-    if os.path.exists(pid_file):
-        os.remove(pid_file)
+    target = pid_path(instance_id)
+    if os.path.exists(target):
+        os.remove(target)
 
 
 def process_running(pid: int) -> bool:
@@ -75,19 +87,41 @@ def process_running(pid: int) -> bool:
         return False
 
 
-def read_log_tail(log_file: str, lines: int = 8) -> str:
+def read_log_tail(target: str, lines: int = 8) -> str:
     try:
-        with open(log_file, "r", encoding="utf-8", errors="replace") as f:
+        with open(target, "r", encoding="utf-8", errors="replace") as f:
             return "".join(f.readlines()[-lines:])
     except Exception:
         return "Log not available"
 
 
+def clear_layout(layout):
+    while layout.count():
+        item = layout.takeAt(0)
+        widget = item.widget()
+        child_layout = item.layout()
+        if widget is not None:
+            widget.setParent(None)
+            widget.deleteLater()
+        elif child_layout is not None:
+            clear_layout(child_layout)
+
+
+@dataclass
+class WorkerWidgets:
+    panel: QGroupBox
+    status: QLabel
+    log: QTextEdit
+
+
 class M23Monitor(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("M23 Hunt Monitor - Dual Instance")
-        self.setGeometry(100, 100, 1400, 900)
+        self.setWindowTitle("M23 Hunt Monitor - N Worker")
+        self.setGeometry(100, 100, 1440, 980)
+
+        self.worker_widgets = {}
+        self._last_worker_count = None
 
         central = QWidget()
         self.setCentralWidget(central)
@@ -95,22 +129,22 @@ class M23Monitor(QMainWindow):
 
         self.status = QStatusBar()
         self.setStatusBar(self.status)
-        self.status.showMessage("Watching testjson/ and both instances...")
+        self.status.showMessage("Watching testjson/ and configured workers...")
 
         control_layout = QHBoxLayout()
 
-        self.start_btn = QPushButton("Start Both Instances")
+        self.start_btn = QPushButton("Start Workers")
         self.start_btn.setStyleSheet(
             "background-color: #2e2e2e; color: #00ff00; font-weight: bold; padding: 8px;"
         )
-        self.start_btn.clicked.connect(self.start_both)
+        self.start_btn.clicked.connect(self.start_all)
         control_layout.addWidget(self.start_btn)
 
-        self.stop_btn = QPushButton("Stop Both Instances")
+        self.stop_btn = QPushButton("Stop Workers")
         self.stop_btn.setStyleSheet(
             "background-color: #2e2e2e; color: #ff0000; font-weight: bold; padding: 8px;"
         )
-        self.stop_btn.clicked.connect(self.stop_both)
+        self.stop_btn.clicked.connect(self.stop_all)
         control_layout.addWidget(self.stop_btn)
 
         self.refresh_btn = QPushButton("Refresh Now")
@@ -120,18 +154,19 @@ class M23Monitor(QMainWindow):
         self.refresh_btn.clicked.connect(self.refresh)
         control_layout.addWidget(self.refresh_btn)
 
+        control_layout.addWidget(QLabel("Workers:"))
+        self.worker_spin = QSpinBox()
+        self.worker_spin.setRange(1, MAX_WORKER_COUNT)
+        self.worker_spin.setValue(DEFAULT_WORKER_COUNT)
+        self.worker_spin.valueChanged.connect(self.rebuild_worker_panels)
+        control_layout.addWidget(self.worker_spin)
+
+        self.worker_count_label = QLabel("")
+        self.worker_count_label.setStyleSheet("color: #aaaaaa;")
+        control_layout.addWidget(self.worker_count_label)
+
         control_layout.addStretch()
         layout.addLayout(control_layout)
-
-        inst_layout = QHBoxLayout()
-        self.inst1_label = QLabel("Instance 1: STOPPED")
-        self.inst1_label.setStyleSheet("font-size: 10pt; color: #ff0000;")
-        inst_layout.addWidget(self.inst1_label)
-
-        self.inst2_label = QLabel("Instance 2: STOPPED")
-        self.inst2_label.setStyleSheet("font-size: 10pt; color: #ff0000;")
-        inst_layout.addWidget(self.inst2_label)
-        layout.addLayout(inst_layout)
 
         stats_layout = QHBoxLayout()
 
@@ -161,32 +196,18 @@ class M23Monitor(QMainWindow):
         self.progress.setFormat("%p% toward 6/9 (%v/100)")
         layout.addWidget(self.progress)
 
-        log_split = QSplitter()
-        log_split.setOrientation(Qt.Orientation.Vertical)
-        layout.addWidget(log_split)
-
-        inst1_widget = QWidget()
-        inst1_layout = QVBoxLayout(inst1_widget)
-        inst1_layout.addWidget(QLabel("Instance 1 Log:"))
-        self.inst1_log = QTextEdit()
-        self.inst1_log.setReadOnly(True)
-        self.inst1_log.setFont(QFont("Courier", 9))
-        self.inst1_log.setMaximumHeight(150)
-        inst1_layout.addWidget(self.inst1_log)
-        log_split.addWidget(inst1_widget)
-
-        inst2_widget = QWidget()
-        inst2_layout = QVBoxLayout(inst2_widget)
-        inst2_layout.addWidget(QLabel("Instance 2 Log:"))
-        self.inst2_log = QTextEdit()
-        self.inst2_log.setReadOnly(True)
-        self.inst2_log.setFont(QFont("Courier", 9))
-        self.inst2_log.setMaximumHeight(150)
-        inst2_layout.addWidget(self.inst2_log)
-        log_split.addWidget(inst2_widget)
+        worker_scroll = QScrollArea()
+        worker_scroll.setWidgetResizable(True)
+        worker_scroll.setFrameShape(QFrame.Shape.NoFrame)
+        self.worker_container = QWidget()
+        self.worker_layout = QVBoxLayout(self.worker_container)
+        self.worker_layout.setContentsMargins(0, 0, 0, 0)
+        self.worker_layout.setSpacing(8)
+        worker_scroll.setWidget(self.worker_container)
+        layout.addWidget(worker_scroll)
 
         split = QSplitter()
-        layout.addWidget(split)
+        layout.addWidget(split, 2)
 
         left = QWidget()
         left_layout = QVBoxLayout(left)
@@ -203,7 +224,9 @@ class M23Monitor(QMainWindow):
 
         self.candidate_table = QTableWidget()
         self.candidate_table.setColumnCount(5)
-        self.candidate_table.setHorizontalHeaderLabels(["Idx", "lambda", "mu", "Tested", "Score"])
+        self.candidate_table.setHorizontalHeaderLabels(
+            ["Idx", "lambda", "mu", "Tested", "Score"]
+        )
         self.candidate_table.horizontalHeader().setStretchLastSection(True)
         right_layout.addWidget(QLabel("Candidates in selected file:"))
         right_layout.addWidget(self.candidate_table)
@@ -216,23 +239,73 @@ class M23Monitor(QMainWindow):
         right_layout.addWidget(self.raw_output)
 
         split.addWidget(right)
-        split.setSizes([300, 900])
+        split.setSizes([360, 1040])
 
         self.timer = QTimer()
         self.timer.timeout.connect(self.refresh)
         self.timer.start(REFRESH_RATE)
 
+        self.rebuild_worker_panels()
         self.refresh()
+
+    def worker_ids(self):
+        return [str(i) for i in range(1, self.worker_spin.value() + 1)]
+
+    def discovered_worker_ids(self):
+        ids = set()
+        for target in glob.glob("m23_search_*.pid"):
+            name = os.path.basename(target)
+            suffix = name[len("m23_search_") : -4]
+            if suffix.isdigit():
+                ids.add(suffix)
+        return sorted(ids, key=int)
+
+    def rebuild_worker_panels(self):
+        clear_layout(self.worker_layout)
+        self.worker_widgets.clear()
+
+        for instance_id in self.worker_ids():
+            panel = QGroupBox(f"Worker {instance_id}")
+            panel_layout = QVBoxLayout(panel)
+
+            status = QLabel("STOPPED")
+            status.setStyleSheet("font-size: 10pt; color: #ff0000;")
+            panel_layout.addWidget(status)
+
+            log_widget = QTextEdit()
+            log_widget.setReadOnly(True)
+            log_widget.setFont(QFont("Courier", 9))
+            log_widget.setMaximumHeight(160)
+            panel_layout.addWidget(log_widget)
+
+            self.worker_layout.addWidget(panel)
+            self.worker_widgets[instance_id] = WorkerWidgets(
+                panel=panel,
+                status=status,
+                log=log_widget,
+            )
+
+        self.worker_layout.addStretch(1)
+        self.worker_count_label.setText(
+            f"Configured workers: {self.worker_spin.value()} (max {MAX_WORKER_COUNT})"
+        )
+        self.start_btn.setText(f"Start {self.worker_spin.value()} Workers")
+        self.stop_btn.setText("Stop Workers")
+        self.status.showMessage(
+            f"Watching testjson/ and {self.worker_spin.value()} configured worker(s)..."
+        )
+        self._last_worker_count = self.worker_spin.value()
 
     def start_instance(self, instance_id: str):
         pid = read_pid(instance_id)
         if process_running(pid):
-            return False, f"Instance {instance_id} already running (PID {pid})"
+            return False, f"Worker {instance_id} already running (PID {pid})"
 
         env = os.environ.copy()
         env["INSTANCE_ID"] = instance_id
+        env["WORKER_COUNT"] = str(self.worker_spin.value())
 
-        log_handle = open(LOG_FILES[instance_id], "ab")
+        log_handle = open(log_path(instance_id), "ab")
         process = subprocess.Popen(
             [sys.executable, AUTO_SCRIPT],
             stdout=log_handle,
@@ -243,12 +316,12 @@ class M23Monitor(QMainWindow):
         )
         log_handle.close()
         write_pid(instance_id, process.pid)
-        return True, f"Instance {instance_id} started (PID {process.pid})"
+        return True, f"Worker {instance_id} started (PID {process.pid})"
 
-    def start_both(self):
+    def start_all(self):
         try:
             messages = []
-            for instance_id in ("1", "2"):
+            for instance_id in self.worker_ids():
                 _, message = self.start_instance(instance_id)
                 messages.append(message)
             self.status.showMessage(" | ".join(messages), 5000)
@@ -259,7 +332,7 @@ class M23Monitor(QMainWindow):
     def stop_instance(self, instance_id: str):
         pid = read_pid(instance_id)
         if not pid:
-            return False, f"Instance {instance_id} not running"
+            return False, f"Worker {instance_id} not running"
 
         try:
             os.killpg(pid, signal.SIGTERM)
@@ -270,12 +343,12 @@ class M23Monitor(QMainWindow):
                 pass
 
         remove_pid(instance_id)
-        return True, f"Instance {instance_id} stopped"
+        return True, f"Worker {instance_id} stopped"
 
-    def stop_both(self):
+    def stop_all(self):
         try:
             messages = []
-            for instance_id in ("1", "2"):
+            for instance_id in sorted(set(self.worker_ids()) | set(self.discovered_worker_ids()), key=int):
                 _, message = self.stop_instance(instance_id)
                 messages.append(message)
 
@@ -286,6 +359,8 @@ class M23Monitor(QMainWindow):
             QMessageBox.warning(self, "Error", f"Failed to stop: {e}")
 
     def refresh(self):
+        if self._last_worker_count != self.worker_spin.value() or not self.worker_widgets:
+            self.rebuild_worker_panels()
         self.update_instance_status()
         self.update_file_list()
         self.update_stats()
@@ -304,19 +379,20 @@ class M23Monitor(QMainWindow):
                     break
 
     def update_instance_status(self):
-        for instance_id, label, log_widget in (
-            ("1", self.inst1_label, self.inst1_log),
-            ("2", self.inst2_label, self.inst2_log),
-        ):
+        for instance_id in self.worker_ids():
+            widgets = self.worker_widgets.get(instance_id)
+            if widgets is None:
+                continue
+
             pid = read_pid(instance_id)
             if process_running(pid):
-                label.setText(f"Instance {instance_id}: RUNNING (PID {pid})")
-                label.setStyleSheet("font-size: 10pt; color: #00ff00;")
-                log_widget.setText(read_log_tail(LOG_FILES[instance_id]))
+                widgets.status.setText(f"Worker {instance_id}: RUNNING (PID {pid})")
+                widgets.status.setStyleSheet("font-size: 10pt; color: #00ff00;")
+                widgets.log.setText(read_log_tail(log_path(instance_id)))
             else:
-                label.setText(f"Instance {instance_id}: STOPPED")
-                label.setStyleSheet("font-size: 10pt; color: #ff0000;")
-                log_widget.setText(read_log_tail(LOG_FILES[instance_id], lines=5))
+                widgets.status.setText(f"Worker {instance_id}: STOPPED")
+                widgets.status.setStyleSheet("font-size: 10pt; color: #ff0000;")
+                widgets.log.setText(read_log_tail(log_path(instance_id), lines=5))
                 remove_pid(instance_id)
 
     def update_file_list(self):
@@ -338,12 +414,10 @@ class M23Monitor(QMainWindow):
 
     def update_stats(self):
         total_iters = 0
-        log_files = ["m23_search_1.log", "m23_search_2.log", "m23_search.log"]
-        for log_file in log_files:
+        for log_file in glob.glob("m23_search_*.log"):
             try:
                 with open(log_file, "r", encoding="utf-8", errors="replace") as f:
-                    log = f.read()
-                    total_iters += log.count("ITERATION")
+                    total_iters += f.read().count("ITERATION")
             except Exception:
                 pass
         self.iter_label.setText(f"Total Iterations: {total_iters}")

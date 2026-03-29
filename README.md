@@ -57,6 +57,8 @@ The active result field is written into `testjson/`, with shared convergence sta
 - `m23_search_1.log`
 - `m23_search_2.log`
 
+The worker count is configurable. Set `M23_WORKER_COUNT` before launch to seed the initial count, or change it in the Qt monitor with the worker spinbox. Each worker receives its own `INSTANCE_ID`, `m23_search_<id>.log`, and `m23_search_<id>.pid` while continuing to share the same `testjson/` result pool and `shared_best.json` state.
+
 ## Position In The Broader Stack
 
 This repository should be read alongside, but not collapsed into:

@@ -1,6 +1,8 @@
 #!/bin/bash
 cd "$(dirname "$0")"
 
+export M23_WORKER_COUNT="${M23_WORKER_COUNT:-2}"
+
 if python3 -c "import PyQt6" >/dev/null 2>&1; then
   python3 m23_monitor_qt.py
 else
