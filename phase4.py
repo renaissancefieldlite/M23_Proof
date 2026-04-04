@@ -11,6 +11,11 @@ import json
 from typing import List, Dict, Any, Tuple
 from collections import Counter
 import datetime
+import glob
+import os
+
+JSON_DIR = "testjson"
+os.makedirs(JSON_DIR, exist_ok=True)
 
 # =============================================================================
 # 1. Load Phase 3 Results
@@ -19,12 +24,11 @@ import datetime
 def load_phase3_results(json_file: str = None) -> Dict:
     """Load Phase 3 results."""
     if json_file is None:
-        import glob
-        files = glob.glob("m23_phase3_results_*.json")
+        files = glob.glob(os.path.join(JSON_DIR, "m23_phase3_results_*.json"))
         if not files:
             print("❌ No Phase 3 results found.")
             return None
-        json_file = max(files)
+        json_file = max(files, key=os.path.getmtime)
         print(f"📁 Auto-detected: {json_file}")
     
     with open(json_file, 'r') as f:
@@ -224,7 +228,7 @@ def main():
     
     # Save refined candidates for next Phase 2 iteration
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"m23_refined_candidates_{timestamp}.json"
+    filename = os.path.join(JSON_DIR, f"m23_refined_candidates_{timestamp}.json")
     
     with open(filename, "w") as f:
         json.dump(refined, f, indent=2)

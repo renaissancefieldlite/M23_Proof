@@ -38,6 +38,7 @@ from PyQt6.QtWidgets import (
 )
 
 JSON_DIR = "testjson"
+RUNTIME_DIR = os.path.join(JSON_DIR, "runtime")
 REFRESH_RATE = 2000
 AUTO_SCRIPT = "auto_m23_forever.py"
 DEFAULT_WORKER_COUNT = max(
@@ -48,14 +49,16 @@ MAX_WORKER_COUNT = max(
     DEFAULT_WORKER_COUNT,
     int(os.environ.get("M23_MAX_WORKERS", "32")),
 )
+os.makedirs(JSON_DIR, exist_ok=True)
+os.makedirs(RUNTIME_DIR, exist_ok=True)
 
 
 def pid_path(instance_id: str) -> str:
-    return f"m23_search_{instance_id}.pid"
+    return os.path.join(RUNTIME_DIR, f"m23_search_{instance_id}.pid")
 
 
 def log_path(instance_id: str) -> str:
-    return f"m23_search_{instance_id}.log"
+    return os.path.join(RUNTIME_DIR, f"m23_search_{instance_id}.log")
 
 
 def read_pid(instance_id: str):
@@ -253,7 +256,7 @@ class M23Monitor(QMainWindow):
 
     def discovered_worker_ids(self):
         ids = set()
-        for target in glob.glob("m23_search_*.pid"):
+        for target in glob.glob(os.path.join(RUNTIME_DIR, "m23_search_*.pid")):
             name = os.path.basename(target)
             suffix = name[len("m23_search_") : -4]
             if suffix.isdigit():
@@ -414,7 +417,7 @@ class M23Monitor(QMainWindow):
 
     def update_stats(self):
         total_iters = 0
-        for log_file in glob.glob("m23_search_*.log"):
+        for log_file in glob.glob(os.path.join(RUNTIME_DIR, "m23_search_*.log")):
             try:
                 with open(log_file, "r", encoding="utf-8", errors="replace") as f:
                     total_iters += f.read().count("ITERATION")

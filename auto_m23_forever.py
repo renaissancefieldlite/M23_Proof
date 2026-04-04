@@ -14,7 +14,7 @@ import time
 from datetime import datetime
 
 JSON_DIR = "testjson"
-SHARED_BEST_FILE = "shared_best.json"
+SHARED_BEST_FILE = os.path.join(JSON_DIR, "shared_best.json")
 PHASE2_SCRIPT = "phase2_exact.py"
 PHASE3_SCRIPT = "phase3_exact.py"
 PHASE4_SCRIPT = "phase4_exact.py"
@@ -134,7 +134,7 @@ def main():
     log_message(f"JSON directory: {JSON_DIR}")
     log_message(f"Shared best: {SHARED_BEST_FILE}")
     log_message(
-        f"Target: {TARGET * 100:.0f}% irreducibles ({TARGET_IRRED_COUNT}/{PRIMES_TESTED} primes)"
+        f"Target threshold: {TARGET_IRRED_COUNT}/{PRIMES_TESTED} irreducible prime checks"
     )
     log_message("=" * 60)
 

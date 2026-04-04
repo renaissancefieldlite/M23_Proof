@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from sympy import Expr, Symbol, expand, symbols
+from sympy import Expr, Rational, Symbol, expand, symbols
 
 
 @dataclass(frozen=True)
@@ -62,7 +62,9 @@ def build_elkies_construction(
         + 8 * (41 * g**3 - 89 * g**2 - g + 140) * x
         + (-123 * g**3 + 391 * g**2 - 93 * g + 3228)
     )
-    tau = (2**38 * 3**17 / 23**3) * (47323 * g**3 - 1084897 * g**2 + 7751 * g - 711002)
+    tau = Rational(2**38 * 3**17, 23**3) * (
+        47323 * g**3 - 1084897 * g**2 + 7751 * g - 711002
+    )
     polynomial = expand(p2**2 * p3 * p4**4 + tau)
 
     return ElkiesConstruction(
@@ -170,13 +172,13 @@ def main():
                 irreducible_count += 1
             tested_count += 1
             per_prime.append({{
-                "p": p,
+                "p": int(p),
                 "irreducible": irreducible,
                 "degree": int(P_red.degree()),
             }})
         except Exception as exc:
             per_prime.append({{
-                "p": p,
+                "p": int(p),
                 "irreducible": False,
                 "error": str(exc),
             }})
@@ -184,16 +186,15 @@ def main():
     score = (irreducible_count / tested_count) if tested_count else 0.0
     payload = {{
         "construction": "elkies_explicit",
-        "tested_count": tested_count,
-        "irreducible_count": irreducible_count,
-        "consistency_score": score,
+        "tested_count": int(tested_count),
+        "irreducible_count": int(irreducible_count),
+        "consistency_score": float(score),
         "per_prime": per_prime,
     }}
     print(json.dumps(payload, indent=2))
-    return 0
+    return int(0)
 
 
 if __name__ == "__main__":
     sys.exit(main())
 """
-

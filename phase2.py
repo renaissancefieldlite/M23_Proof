@@ -17,11 +17,16 @@ import random
 import glob
 import os
 
+JSON_DIR = "testjson"
+FAMILY_FILE = os.path.join(JSON_DIR, "elkies_families.json")
+REFINED_GLOB = os.path.join(JSON_DIR, "m23_refined_candidates_*.json")
+os.makedirs(JSON_DIR, exist_ok=True)
+
 # =============================================================================
 # 1. Load Phase 1 Data and Refined Candidates
 # =============================================================================
 
-def load_elkies_families(json_file: str = "elkies_families.json") -> List[Dict]:
+def load_elkies_families(json_file: str = FAMILY_FILE) -> List[Dict]:
     """Load families from Phase 1 JSON export."""
     try:
         with open(json_file, 'r') as f:
@@ -38,12 +43,12 @@ def load_elkies_families(json_file: str = "elkies_families.json") -> List[Dict]:
 
 def load_refined_candidates() -> List[Dict]:
     """Load the most recent refined candidates from Phase 4."""
-    files = glob.glob("m23_refined_candidates_*.json")
+    files = glob.glob(REFINED_GLOB)
     if not files:
         print("   No refined candidates found. Using default seeds.")
         return []
     
-    latest_file = max(files)
+    latest_file = max(files, key=os.path.getmtime)
     try:
         with open(latest_file, 'r') as f:
             candidates = json.load(f)
@@ -501,7 +506,7 @@ def main():
     if all_candidates:
         import datetime
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"m23_candidates_{timestamp}.json"
+        filename = os.path.join(JSON_DIR, f"m23_candidates_{timestamp}.json")
         
         with open(filename, "w") as f:
             # Convert for JSON serialization

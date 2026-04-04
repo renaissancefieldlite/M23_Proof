@@ -18,6 +18,7 @@ import time
 from pathlib import Path
 
 JSON_DIR = Path("testjson")
+RUNTIME_DIR = JSON_DIR / "runtime"
 SUMMARY_PREFIX = "descent_search_summary"
 WORKER_LOG_PREFIX = "m23_descent"
 
@@ -50,6 +51,7 @@ def output_label():
 def launch_workers(args, label):
     processes = []
     JSON_DIR.mkdir(exist_ok=True)
+    RUNTIME_DIR.mkdir(exist_ok=True)
 
     for worker_index in range(1, args.workers + 1):
         env = os.environ.copy()
@@ -58,7 +60,7 @@ def launch_workers(args, label):
         env["M23_DESCENT_PARTITION_MODE"] = args.partition_mode
         env["M23_RUN_LABEL"] = label
 
-        log_path = Path(f"{WORKER_LOG_PREFIX}_{worker_index}.log")
+        log_path = RUNTIME_DIR / f"{WORKER_LOG_PREFIX}_{worker_index}.log"
         log_handle = log_path.open("wb")
         env["PYTHONUNBUFFERED"] = "1"
 

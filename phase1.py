@@ -10,6 +10,11 @@ import numpy as np
 from dataclasses import dataclass
 from typing import List, Callable, Optional, Union
 import json
+import os
+
+JSON_DIR = "testjson"
+FAMILY_FILE = os.path.join(JSON_DIR, "elkies_families.json")
+os.makedirs(JSON_DIR, exist_ok=True)
 
 # =============================================================================
 # 1. Core Data Structures – Representing Elkies' Complex Families
@@ -152,7 +157,7 @@ def get_family_by_name(name: str) -> ComplexFamily:
     raise ValueError(f"Family '{name}' not found")
 
 
-def export_families_to_json(filename: str = "elkies_families.json"):
+def export_families_to_json(filename: str = FAMILY_FILE):
     """Export family metadata for Phase 2 to consume.
        Complex numbers are converted to [real, imag] pairs for JSON compatibility."""
     data = [f.to_dict() for f in FAMILIES]
@@ -162,7 +167,7 @@ def export_families_to_json(filename: str = "elkies_families.json"):
     print(f"✅ Exported {len(FAMILIES)} families to {filename}")
 
 
-def load_families_from_json(filename: str = "elkies_families.json"):
+def load_families_from_json(filename: str = FAMILY_FILE):
     """Load families from JSON (for Phase 2). Converts [real, imag] back to complex."""
     with open(filename, "r") as f:
         data = json.load(f)

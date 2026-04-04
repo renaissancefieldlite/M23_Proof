@@ -15,7 +15,10 @@ import time
 from datetime import datetime
 
 JSON_DIR = "testjson"
+RUNTIME_DIR = os.path.join(JSON_DIR, "runtime")
 PROCESS = None
+os.makedirs(JSON_DIR, exist_ok=True)
+os.makedirs(RUNTIME_DIR, exist_ok=True)
 
 class M23Monitor:
     def __init__(self, root):
@@ -206,10 +209,11 @@ class M23Monitor:
                 
         # Count iterations from log
         try:
-            with open('m23_search.log', 'r') as f:
-                log = f.read()
-                iter_count = log.count('ITERATION')
-                self.iter_label.config(text=f"Iterations: {iter_count}")
+            iter_count = 0
+            for log_file in glob.glob(os.path.join(RUNTIME_DIR, "m23_search_*.log")):
+                with open(log_file, 'r', encoding='utf-8', errors='replace') as f:
+                    iter_count += f.read().count('ITERATION')
+            self.iter_label.config(text=f"Iterations: {iter_count}")
         except:
             pass
 

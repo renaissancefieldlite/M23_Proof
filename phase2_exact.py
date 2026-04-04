@@ -13,6 +13,7 @@ from sympy import Rational, symbols, sqrt
 JSON_DIR = "testjson"
 CANDIDATE_FILE = os.path.join(JSON_DIR, "exact_candidates.json")
 REFINED_GLOB = os.path.join(JSON_DIR, "exact_refined_*.json")
+FAMILY_FILE = os.path.join(JSON_DIR, "elkies_families.json")
 
 os.makedirs(JSON_DIR, exist_ok=True)
 
@@ -21,7 +22,7 @@ quartic_modulus = g**4 + g**3 + 9 * g**2 - 10 * g + 8
 sqrt_m23 = sqrt(-23)
 
 
-def load_elkies_families(json_file: str = "elkies_families.json") -> list:
+def load_elkies_families(json_file: str = FAMILY_FILE) -> list:
     """Load families from Phase 1 JSON export."""
     try:
         with open(json_file, "r", encoding="utf-8") as f:
@@ -29,8 +30,19 @@ def load_elkies_families(json_file: str = "elkies_families.json") -> list:
         print(f"Loaded {len(data)} families from {json_file}")
         return data
     except FileNotFoundError:
-        print(f"Error: {json_file} not found. Run phase1.py first.")
-        return []
+        print(f"Missing {json_file}; attempting Phase 1 family export bootstrap.")
+        try:
+            from phase1 import export_families_to_json
+
+            export_families_to_json(json_file)
+            with open(json_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            print(f"Bootstrapped {len(data)} families into {json_file}")
+            return data
+        except Exception as exc:
+            print(f"Could not bootstrap {json_file}: {exc}")
+            print("Continuing without Phase 1 family metadata.")
+            return []
     except json.JSONDecodeError:
         print(f"Error: {json_file} is corrupted.")
         return []

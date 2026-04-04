@@ -13,6 +13,11 @@ from collections import Counter
 import itertools
 from dataclasses import dataclass, asdict
 import datetime
+import glob
+import os
+
+JSON_DIR = "testjson"
+os.makedirs(JSON_DIR, exist_ok=True)
 
 # =============================================================================
 # 1. Load Phase 2 Candidates
@@ -21,13 +26,11 @@ import datetime
 def load_candidates(json_file: str = None) -> List[Dict]:
     """Load candidates from Phase 2 JSON export."""
     if json_file is None:
-        # Auto-detect most recent candidate file
-        import glob
-        files = glob.glob("m23_candidates_*.json")
+        files = glob.glob(os.path.join(JSON_DIR, "m23_candidates_*.json"))
         if not files:
             print("❌ No candidate files found. Run phase2.py first.")
             return []
-        json_file = max(files)  # Most recent
+        json_file = max(files, key=os.path.getmtime)
         print(f"📁 Auto-detected: {json_file}")
     
     with open(json_file, 'r') as f:
@@ -361,7 +364,7 @@ def main():
     
     # Save results
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"m23_phase3_results_{timestamp}.json"
+    filename = os.path.join(JSON_DIR, f"m23_phase3_results_{timestamp}.json")
     
     output = {
         "timestamp": timestamp,
@@ -377,7 +380,7 @@ def main():
     
     # Save passed candidates separately
     if passed:
-        passed_file = f"m23_passed_candidates_{timestamp}.json"
+        passed_file = os.path.join(JSON_DIR, f"m23_passed_candidates_{timestamp}.json")
         with open(passed_file, "w") as f:
             json.dump([r.to_dict() for r in passed], f, indent=2)
         print(f"💾 Saved {len(passed)} passed candidates to {passed_file}")
