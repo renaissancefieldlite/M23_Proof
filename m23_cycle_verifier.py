@@ -23,6 +23,7 @@ def latest_path(pattern: str) -> Path | None:
 
 def default_input() -> Path | None:
     for pattern in (
+        "m23_fixed_prime_sample_*.json",
         "elkies_exact_results_*.json",
         "exact_test_results_*.json",
         "mod23_screen_*.json",
@@ -40,6 +41,17 @@ def verify_elkies_payload(payload: dict) -> dict:
     result["cycle_summary"] = summarize_cycle_entries(per_prime)
     return {
         "mode": "elkies_exact",
+        "result": result,
+    }
+
+
+def verify_fixed_prime_payload(payload: dict) -> dict:
+    result = dict(payload.get("result") or {})
+    samples = [annotate_prime_entry(entry) for entry in result.get("samples", [])]
+    result["samples"] = samples
+    result["cycle_summary"] = summarize_cycle_entries(samples)
+    return {
+        "mode": "fixed_prime_sample",
         "result": result,
     }
 
@@ -106,7 +118,11 @@ def main() -> int:
 
     payload = load_payload(input_path)
     if isinstance(payload, dict) and isinstance(payload.get("result"), dict):
-        report = verify_elkies_payload(payload)
+        result = payload.get("result") or {}
+        if isinstance(result.get("samples"), list):
+            report = verify_fixed_prime_payload(payload)
+        else:
+            report = verify_elkies_payload(payload)
         summary = report["result"]["cycle_summary"]
     elif isinstance(payload, list):
         report = verify_exact_scan_payload(payload)

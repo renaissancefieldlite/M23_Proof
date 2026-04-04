@@ -186,6 +186,8 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
     subset_totals = {str(k): 0 for k in range(1, max_subset_k + 1)}
     matched_primes: list[int] = []
     unknown_primes: list[int] = []
+    tested_primes: list[int] = []
+    t0_sample_count = 0
 
     for raw_entry in entries or []:
         entry = annotate_prime_entry(raw_entry)
@@ -198,6 +200,11 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
             continue
 
         tested_prime_count += 1
+        prime = entry.get("p")
+        if isinstance(prime, int):
+            tested_primes.append(prime)
+        if isinstance(entry.get("t0"), int):
+            t0_sample_count += 1
         signature_histogram[",".join(str(value) for value in factor_degrees)] += 1
 
         if entry.get("m23_cycle_match"):
@@ -205,19 +212,51 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
             atlas_label = entry.get("m23_atlas_label")
             if atlas_label:
                 atlas_histogram[atlas_label] += 1
-            prime = entry.get("p")
             if isinstance(prime, int):
                 matched_primes.append(prime)
             for k, value in entry.get("m23_k_subset_counts", {}).items():
                 subset_totals[k] = subset_totals.get(k, 0) + int(value)
         else:
-            prime = entry.get("p")
             if isinstance(prime, int):
                 unknown_primes.append(prime)
 
     exact_m23_cycle_rate = (
         matched_m23_prime_count / tested_prime_count if tested_prime_count else 0.0
     )
+    unique_primes = sorted(set(tested_primes))
+    distribution_rows = []
+    for row in M23_CYCLE_TABLE:
+        atlas_label = row["atlas_label"]
+        observed = int(atlas_histogram.get(atlas_label, 0))
+        expected = float(row["fraction"] * tested_prime_count)
+        distribution_rows.append(
+            {
+                "atlas_label": atlas_label,
+                "cycle_notation": row["cycle_notation"],
+                "observed_count": observed,
+                "expected_count_m23": expected,
+                "delta": observed - expected,
+            }
+        )
+
+    if tested_prime_count == 0:
+        a23_exclusion_status = "not_ready"
+        a23_exclusion_note = "No cycle data available yet."
+    elif len(unique_primes) == 1 and t0_sample_count == tested_prime_count:
+        a23_exclusion_status = "fixed_prime_sample"
+        a23_exclusion_note = (
+            "Cycle data now comes from many t0 values over one residue field. "
+            "This is the right surface for the Table-2 / Weil-bound lane, but it "
+            "is still only a sample unless the field is exhausted or the sampling "
+            "plan is justified."
+        )
+    else:
+        a23_exclusion_status = "not_ready"
+        a23_exclusion_note = (
+            "Current exact outputs mix primes and record one factorization per prime. "
+            "Elkies' non-A23 step needs many t0 samples over one large residue field "
+            "before a Table-2 / Weil-bound style contradiction can be attempted."
+        )
 
     return {
         "tested_prime_count": tested_prime_count,
@@ -225,15 +264,15 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
         "matched_m23_prime_count": matched_m23_prime_count,
         "unknown_signature_count": max(0, tested_prime_count - matched_m23_prime_count),
         "exact_m23_cycle_rate": exact_m23_cycle_rate,
+        "unique_prime_count": len(unique_primes),
+        "sampled_primes": unique_primes,
+        "t0_sample_count": t0_sample_count,
         "atlas_histogram": dict(sorted(atlas_histogram.items())),
         "signature_histogram": dict(sorted(signature_histogram.items())),
+        "distribution_rows": distribution_rows,
         "subset_orbit_totals": subset_totals,
         "matched_primes": matched_primes,
         "unknown_primes": unknown_primes,
-        "a23_exclusion_status": "not_ready",
-        "a23_exclusion_note": (
-            "Current exact outputs mix primes and record one factorization per prime. "
-            "Elkies' non-A23 step needs many t0 samples over one large residue field "
-            "before a Table-2 / Weil-bound style contradiction can be attempted."
-        ),
+        "a23_exclusion_status": a23_exclusion_status,
+        "a23_exclusion_note": a23_exclusion_note,
     }
