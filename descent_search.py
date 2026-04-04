@@ -316,6 +316,19 @@ def candidate_score(rows):
     }
 
 
+def json_safe_rows(rows):
+    safe_rows = []
+    for row in rows:
+        safe_rows.append(
+            {
+                "power": int(row["power"]),
+                "reduced": row["reduced"],
+                "basis_vector": list(row["basis_vector"]),
+            }
+        )
+    return safe_rows
+
+
 def output_path_for_worker(instance_id):
     label = os.environ.get("M23_RUN_LABEL", "").strip()
     stamp = time.strftime("%Y%m%d_%H%M%S")
@@ -359,7 +372,7 @@ def run_search():
                     "ring_band": transform["ring_band"],
                 },
                 **score,
-                "sample_coefficients": rows[:5],
+                "sample_coefficients": json_safe_rows(rows[:5]),
             }
         )
 
@@ -385,8 +398,10 @@ def run_search():
     }
 
     output_path = output_path_for_worker(instance_id)
-    with output_path.open("w", encoding="utf-8") as handle:
+    temp_path = output_path.with_suffix(output_path.suffix + ".tmp")
+    with temp_path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, indent=2)
+    temp_path.replace(output_path)
 
     print(f"Saved descent-search results to {output_path}")
     for row in ranked[:10]:

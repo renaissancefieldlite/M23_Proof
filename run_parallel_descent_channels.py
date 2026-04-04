@@ -104,9 +104,14 @@ def collect_result_files(label):
 
 def build_summary(result_files, label, args):
     merged = []
+    skipped_files = []
     for path in result_files:
-        with path.open("r", encoding="utf-8") as handle:
-            payload = json.load(handle)
+        try:
+            with path.open("r", encoding="utf-8") as handle:
+                payload = json.load(handle)
+        except Exception as exc:
+            skipped_files.append({"path": str(path), "error": str(exc)})
+            continue
         ranked = payload.get("ranked_transforms", [])
         if not ranked:
             continue
@@ -129,6 +134,7 @@ def build_summary(result_files, label, args):
         "workers": args.workers,
         "partition_mode": args.partition_mode,
         "result_files": [str(path) for path in result_files],
+        "skipped_files": skipped_files,
         "merged_best": merged,
     }
 
