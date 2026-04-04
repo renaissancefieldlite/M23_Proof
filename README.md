@@ -102,7 +102,9 @@ Workers now cover disjoint sections of the candidate list instead of duplicating
 The search now also has a reference-to-scan bridge:
 
 - `verify_elkies_exact.py` records the per-prime signature of the explicit Elkies construction
-- `cross_reference_elkies_scan.py` ranks scanned candidates against that reference plus the historical hot zone around `λ ≈ -13`, `μ ≈ -28`
+- `verify_elkies_exact.py` now records full per-prime factor-degree signatures, not only irreducible counts
+- `phase3_exact.py` now preserves those same factor-degree signatures in `exact_test_results_*.json`
+- `cross_reference_elkies_scan.py` now ranks scanned candidates by per-prime signature alignment against the Elkies reference, with the historical hot zone around `λ ≈ -13`, `μ ≈ -28` kept only as a secondary heuristic
 - `descent_search.py` runs a partitionable affine descent search over the explicit Elkies construction and scores transforms by coefficient leakage in the basis `(1, g, g^2, g^3)`, coefficient height, and denominator pressure
 - `run_parallel_descent_channels.py` launches disjoint descent workers so transform bands are covered in parallel instead of duplicated
 - `Start_Parallel_Descent.command` provides a one-shot launcher for the same partitioned descent lane

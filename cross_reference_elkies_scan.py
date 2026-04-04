@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import glob
 import json
-import math
 import os
 import time
 from pathlib import Path
@@ -74,6 +73,51 @@ def per_prime_map(items: list[dict]) -> dict[int, dict]:
     return mapping
 
 
+def normalized_factor_degrees(item: dict) -> tuple[int, ...] | None:
+    degrees = item.get("factor_degrees")
+    if not isinstance(degrees, list):
+        return None
+    try:
+        return tuple(sorted(int(value) for value in degrees))
+    except Exception:
+        return None
+
+
+def prime_alignment(reference_prime: dict, candidate_prime: dict) -> dict | None:
+    reference_signature = normalized_factor_degrees(reference_prime)
+    candidate_signature = normalized_factor_degrees(candidate_prime)
+
+    if reference_signature is not None and candidate_signature is not None:
+        exact_match = candidate_signature == reference_signature
+        same_irreducible = (
+            bool(candidate_prime.get("irreducible", False))
+            == bool(reference_prime.get("irreducible", False))
+        )
+        return {
+            "score": 1.0 if exact_match else (0.35 if same_irreducible else 0.0),
+            "used_signature": True,
+            "exact_signature_match": exact_match,
+            "candidate_signature": list(candidate_signature),
+            "reference_signature": list(reference_signature),
+        }
+
+    if (
+        isinstance(candidate_prime.get("irreducible"), bool)
+        and isinstance(reference_prime.get("irreducible"), bool)
+    ):
+        return {
+            "score": 0.2
+            if candidate_prime.get("irreducible") == reference_prime.get("irreducible")
+            else 0.0,
+            "used_signature": False,
+            "exact_signature_match": False,
+            "candidate_signature": None,
+            "reference_signature": None,
+        }
+
+    return None
+
+
 def score_parameter_hotzone(candidate: dict) -> dict:
     try:
         lambda_real = float(candidate.get("λ_real", 0.0))
@@ -110,25 +154,38 @@ def score_against_elkies(reference: dict, entry: dict) -> dict:
     reference_prime_map = per_prime_map(reference.get("per_prime", []))
 
     shared_primes = sorted(set(candidate_prime_map) & set(reference_prime_map))
-    prime_matches = 0
+    prime_alignment_sum = 0.0
     prime_total = 0
+    signature_match_count = 0
+    signature_prime_total = 0
+    exact_signature_primes = []
 
     for prime in shared_primes:
         cand = candidate_prime_map[prime]
         ref = reference_prime_map[prime]
+        comparison = prime_alignment(ref, cand)
+        if comparison is None:
+            continue
         prime_total += 1
-        if cand.get("irreducible") == ref.get("irreducible"):
-            prime_matches += 1
+        prime_alignment_sum += comparison["score"]
+        if comparison["used_signature"]:
+            signature_prime_total += 1
+            if comparison["exact_signature_match"]:
+                signature_match_count += 1
+                exact_signature_primes.append(prime)
 
-    prime_overlap_score = (prime_matches / prime_total) if prime_total else 0.0
+    prime_alignment_score = (prime_alignment_sum / prime_total) if prime_total else 0.0
+    signature_match_rate = (
+        signature_match_count / signature_prime_total if signature_prime_total else 0.0
+    )
     hotzone = score_parameter_hotzone(candidate)
     consistency_score = float(result.get("consistency_score", 0.0))
     candidate_applied = bool(result.get("candidate_applied", False))
 
     # Keep this modest while the specialization hook is still identity.
     composite = (
-        0.45 * prime_overlap_score
-        + 0.35 * consistency_score
+        0.55 * prime_alignment_score
+        + 0.25 * consistency_score
         + 0.20 * hotzone["hotzone_score"]
     )
     if not candidate_applied:
@@ -142,8 +199,12 @@ def score_against_elkies(reference: dict, entry: dict) -> dict:
         "mu_expr": candidate.get("μ_expr"),
         "consistency_score": consistency_score,
         "candidate_applied": candidate_applied,
-        "prime_overlap_score": prime_overlap_score,
-        "prime_matches": prime_matches,
+        "prime_overlap_score": prime_alignment_score,
+        "prime_alignment_score": prime_alignment_score,
+        "signature_match_rate": signature_match_rate,
+        "signature_match_count": signature_match_count,
+        "signature_prime_total": signature_prime_total,
+        "exact_signature_primes": exact_signature_primes,
         "prime_total": prime_total,
         "hotzone_score": hotzone["hotzone_score"],
         "lambda_distance": hotzone["lambda_distance"],
@@ -186,7 +247,7 @@ def main() -> None:
         print(
             f"lift={row['lift_score']:.3f} "
             f"consistency={row['consistency_score']:.3f} "
-            f"prime_overlap={row['prime_overlap_score']:.3f} "
+            f"signature_alignment={row['prime_alignment_score']:.3f} "
             f"lambda={row['lambda_expr']} mu={row['mu_expr']}"
         )
 

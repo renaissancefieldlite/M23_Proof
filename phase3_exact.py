@@ -162,6 +162,14 @@ def reduce_polynomial_mod_prime(P_int, K, x, p):
     P_red = sum(red[i] * y**i for i in range(len(red)))
     return P_red
 
+def factor_degree_signature(P_red):
+    degrees = []
+    for factor, multiplicity in P_red.factor():
+        factor_degree = int(factor.degree())
+        for _ in range(int(multiplicity)):
+            degrees.append(factor_degree)
+    return sorted(degrees)
+
 def test_candidate():
     try:
         print("-" * 50)
@@ -190,12 +198,13 @@ def test_candidate():
         for p in primes:
             try:
                 P_red = reduce_polynomial_mod_prime(P_int, K, x, p)
+                degrees = factor_degree_signature(P_red)
 
                 if P_red.is_irreducible():
                     irreducible_count += 1
-                    print("p =", p, ": irreducible")
+                    print("p =", p, ": irreducible [" + ", ".join(str(d) for d in degrees) + "]")
                 else:
-                    print("p =", p, ": factors")
+                    print("p =", p, ": factors [" + ", ".join(str(d) for d in degrees) + "]")
                 tested_count += 1
             except Exception as e:
                 print("p =", p, ": (skipping -", str(e)[:120], ")")
@@ -208,12 +217,12 @@ def test_candidate():
             print("Consistency score:", score)
         else:
             print("\\nNo primes successfully tested")
-            return 2
+            return int(2)
 
-        return 0
+        return int(0)
     except Exception as e:
         print("Error:", e)
-        return 1
+        return int(1)
 
 if __name__ == "__main__":
     sys.exit(test_candidate())
@@ -223,6 +232,10 @@ if __name__ == "__main__":
 
 def test_candidate_with_sage(candidate, index, timeout=300):
     script = generate_sage_script(candidate, index)
+    sage_home = os.path.abspath(os.path.join(JSON_DIR, ".sage_home_scan"))
+    dot_sage = os.path.join(sage_home, ".sage")
+    os.makedirs(sage_home, exist_ok=True)
+    os.makedirs(dot_sage, exist_ok=True)
 
     with tempfile.NamedTemporaryFile(mode="w", suffix=".sage", delete=False, encoding="utf-8") as f:
         f.write(script)
@@ -248,6 +261,11 @@ def test_candidate_with_sage(candidate, index, timeout=300):
             capture_output=True,
             text=True,
             timeout=timeout,
+            env={
+                **os.environ,
+                "HOME": sage_home,
+                "DOT_SAGE": dot_sage,
+            },
         )
         elapsed = time.time() - start
 
@@ -277,6 +295,16 @@ def test_candidate_with_sage(candidate, index, timeout=300):
                     "irreducible": "irreducible" in outcome.lower(),
                     "skipped": "skipping" in outcome.lower(),
                 }
+                if "[" in outcome and outcome.endswith("]"):
+                    degrees_blob = outcome.rsplit("[", 1)[1][:-1].strip()
+                    try:
+                        status["factor_degrees"] = sorted(
+                            int(chunk.strip())
+                            for chunk in degrees_blob.split(",")
+                            if chunk.strip()
+                        )
+                    except Exception:
+                        pass
                 per_prime.append(status)
 
         score = irred / tested if tested > 0 else 0.0

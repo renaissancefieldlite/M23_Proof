@@ -82,7 +82,7 @@ def build_elkies_construction(
 def build_sage_verification_script(primes: list[int] | None = None) -> str:
     """
     Return a Sage script that builds the Elkies polynomial and checks
-    irreducibility patterns modulo the provided primes.
+    factorization signatures modulo the provided primes.
     """
 
     prime_list = primes or [2, 3, 5, 7, 11, 13, 17, 19, 23]
@@ -146,6 +146,15 @@ def reduce_polynomial_mod_prime(P_int, K, x, p):
     return sum(reduced[i] * y**i for i in range(len(reduced)))
 
 
+def factor_degree_signature(P_red):
+    degrees = []
+    for factor, multiplicity in P_red.factor():
+        factor_degree = int(factor.degree())
+        for _ in range(int(multiplicity)):
+            degrees.append(factor_degree)
+    return sorted(degrees)
+
+
 def main():
     R.<g> = QQ[]
     K.<g> = NumberField(g^4 + g^3 + 9*g^2 - 10*g + 8)
@@ -167,6 +176,7 @@ def main():
     for p in primes:
         try:
             P_red = reduce_polynomial_mod_prime(P_int, K, x, p)
+            degrees = factor_degree_signature(P_red)
             irreducible = bool(P_red.is_irreducible())
             if irreducible:
                 irreducible_count += 1
@@ -175,6 +185,8 @@ def main():
                 "p": int(p),
                 "irreducible": irreducible,
                 "degree": int(P_red.degree()),
+                "factor_degrees": [int(d) for d in degrees],
+                "factor_count": int(len(degrees)),
             }})
         except Exception as exc:
             per_prime.append({{
