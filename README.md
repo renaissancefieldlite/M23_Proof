@@ -104,6 +104,8 @@ The search now also has a reference-to-scan bridge:
 - `verify_elkies_exact.py` records the per-prime signature of the explicit Elkies construction
 - `verify_elkies_exact.py` now records full per-prime factor-degree signatures, not only irreducible counts
 - `phase3_exact.py` now preserves those same factor-degree signatures in `exact_test_results_*.json`
+- `m23_cycle_signatures.py` encodes the 12 M23 cycle structures from Elkies Table 1 and annotates factor-degree signatures with ATLAS labels, expected M23 mass, and k-subset counts
+- `m23_cycle_verifier.py` turns Elkies exact results, exact scan results, or modular screen outputs into cycle-aware reports with an honest `not_ready` status for the full non-`A23` exclusion step
 - `cross_reference_elkies_scan.py` now ranks scanned candidates by per-prime signature alignment against the Elkies reference, with the historical hot zone around `λ ≈ -13`, `μ ≈ -28` kept only as a secondary heuristic
 - `descent_search.py` runs a partitionable affine descent search over the explicit Elkies construction and scores transforms by coefficient leakage in the basis `(1, g, g^2, g^3)`, coefficient height, and denominator pressure
 - `run_parallel_descent_channels.py` launches disjoint descent workers so transform bands are covered in parallel instead of duplicated

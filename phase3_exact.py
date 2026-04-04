@@ -13,6 +13,8 @@ import subprocess
 import tempfile
 import time
 
+from m23_cycle_signatures import annotate_prime_entry, summarize_cycle_entries
+
 JSON_DIR = "testjson"
 CANDIDATE_FILE = os.path.join(JSON_DIR, "exact_candidates.json")
 PARTIAL_FILE = os.path.join(JSON_DIR, "partial.json")
@@ -309,6 +311,8 @@ def test_candidate_with_sage(candidate, index, timeout=300):
 
         score = irred / tested if tested > 0 else 0.0
         success = (result.returncode == 0) and (tested > 0)
+        per_prime = [annotate_prime_entry(item) for item in per_prime]
+        cycle_summary = summarize_cycle_entries(per_prime)
 
         return {
             "success": success,
@@ -317,6 +321,7 @@ def test_candidate_with_sage(candidate, index, timeout=300):
             "consistency_score": score,
             "candidate_applied": candidate_applied,
             "per_prime": per_prime,
+            "cycle_summary": cycle_summary,
             "output": result.stdout[-4000:],
             "error": result.stderr[-1000:],
             "elapsed": elapsed,
@@ -331,6 +336,7 @@ def test_candidate_with_sage(candidate, index, timeout=300):
             "consistency_score": 0.0,
             "candidate_applied": False,
             "per_prime": [],
+            "cycle_summary": summarize_cycle_entries([]),
             "output": "",
             "error": f"Timeout after {timeout}s",
             "elapsed": time.time() - start,

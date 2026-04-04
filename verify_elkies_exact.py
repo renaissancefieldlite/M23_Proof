@@ -17,6 +17,7 @@ import time
 from pathlib import Path
 
 from elkies_exact_core import build_sage_verification_script
+from m23_cycle_signatures import annotate_prime_entry, summarize_cycle_entries
 
 JSON_DIR = Path("testjson")
 SAGE_BIN = os.environ.get("SAGE_BIN", "sage")
@@ -60,6 +61,10 @@ def run_verification(timeout: int = 300) -> dict:
             parsed = None
 
         if parsed is not None:
+            per_prime = parsed.get("per_prime")
+            if isinstance(per_prime, list):
+                parsed["per_prime"] = [annotate_prime_entry(item) for item in per_prime]
+                parsed["cycle_summary"] = summarize_cycle_entries(parsed["per_prime"])
             payload["result"] = parsed
         return payload
     finally:

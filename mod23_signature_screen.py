@@ -24,18 +24,10 @@ from sympy import Poly, Rational, denom, expand, gcd, ilcm, resultant, symbols
 
 from descent_search import candidate_score, coefficient_rows
 from elkies_exact_core import build_elkies_construction
+from m23_cycle_signatures import annotate_factor_degrees
 
 JSON_DIR = Path("testjson")
 DEFAULT_PRIMES = [47, 139, 277, 461, 599]
-ALLOWED_SIGNATURES = {
-    (23,),
-    (11, 12),
-    (8, 15),
-    (7, 8, 8),
-    (5, 6, 12),
-}
-
-
 def basis_expr(values: list[str], g):
     coeffs = [Rational(value) for value in values]
     return expand(coeffs[0] + coeffs[1] * g + coeffs[2] * g**2 + coeffs[3] * g**3)
@@ -75,7 +67,7 @@ def factor_degree_signature(integer_coeffs: list[int], prime: int) -> list[int]:
 
 
 def signature_matches(degrees: list[int]) -> bool:
-    return tuple(degrees) in ALLOWED_SIGNATURES
+    return bool(annotate_factor_degrees(degrees).get("m23_cycle_match"))
 
 
 def transformed_polynomial(candidate: dict, construction):
@@ -129,6 +121,7 @@ def screen_candidate(candidate: dict, construction, primes: list[int]) -> dict:
     for prime in primes:
         try:
             degrees = factor_degree_signature(integer_coeffs, prime)
+            cycle_annotation = annotate_factor_degrees(degrees)
             if degrees == [23]:
                 irreducible_prime_count += 1
             if signature_matches(degrees):
@@ -139,6 +132,9 @@ def screen_candidate(candidate: dict, construction, primes: list[int]) -> dict:
                     "factor_degrees": degrees,
                     "irreducible": degrees == [23],
                     "signature_match": signature_matches(degrees),
+                    "m23_cycle_match": cycle_annotation.get("m23_cycle_match"),
+                    "m23_atlas_label": cycle_annotation.get("m23_atlas_label"),
+                    "m23_cycle_notation": cycle_annotation.get("m23_cycle_notation"),
                 }
             )
         except Exception as exc:
