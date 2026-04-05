@@ -34,6 +34,12 @@ So the live lane is a triage / preparation engine:
 - stage 2 = check the promoted transforms against modular signatures
 - stage 3 = only deepen work on the survivors
 
+The live lane should now also be treated as kill-gated:
+
+- if denominator pressure or raw height blows past the configured caps, reject the candidate immediately
+- if a worker hits too many capped candidates in a row, mark that lane dead and stop the worker early
+- do not reward file count alone; reward surviving transforms only
+
 ## Why The Batch Stops
 
 `Run_Live_Search.command` is intentionally a one-batch runner.
@@ -158,3 +164,13 @@ The strongest next implementation target is:
 - a Table-2 style aggregator over fixed-prime samples that computes the
   `N_k(t0)` totals and compares them against the M23 expectation lane, with
   explicit preparation for the `k = 5` contradiction step used by Elkies
+
+Recommended tight debug command:
+
+```bash
+python3 run_parallel_descent_channels.py \
+  --workers 1 \
+  --pressure-cap 100000 \
+  --height-abs-cap 1000000000000 \
+  --dead-lane-limit 500
+```

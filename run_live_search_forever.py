@@ -82,6 +82,42 @@ def parse_args():
         default=int(os.environ.get("M23_LIVE_START_STAGE", "1") or "1"),
         help="1-based schedule stage to begin from",
     )
+    parser.add_argument(
+        "--pressure-cap",
+        type=float,
+        default=(
+            float(os.environ["M23_DESCENT_PRESSURE_CAP"])
+            if os.environ.get("M23_DESCENT_PRESSURE_CAP")
+            else None
+        ),
+        help="optional cap on denominator pressure (denominator_max) during descent",
+    )
+    parser.add_argument(
+        "--height-abs-cap",
+        type=float,
+        default=(
+            float(os.environ["M23_DESCENT_HEIGHT_ABS_CAP"])
+            if os.environ.get("M23_DESCENT_HEIGHT_ABS_CAP")
+            else None
+        ),
+        help="optional cap on the maximum absolute rational coefficient component",
+    )
+    parser.add_argument(
+        "--leakage-cap",
+        type=float,
+        default=(
+            float(os.environ["M23_DESCENT_LEAKAGE_CAP"])
+            if os.environ.get("M23_DESCENT_LEAKAGE_CAP")
+            else None
+        ),
+        help="optional cap on total leakage during descent",
+    )
+    parser.add_argument(
+        "--dead-lane-limit",
+        type=int,
+        default=int(os.environ.get("M23_DESCENT_DEAD_LANE_LIMIT", "0") or "0"),
+        help="optional consecutive rejection limit before a worker stops early",
+    )
     parser.add_argument("--python", default=sys.executable)
     parser.add_argument("--script", default="run_parallel_descent_channels.py")
     return parser.parse_args()
@@ -280,6 +316,12 @@ def write_state(
         "status": status,
         "workers": args.workers,
         "partition_mode": args.partition_mode,
+        "active_caps": {
+            "pressure_cap": args.pressure_cap,
+            "height_abs_cap": args.height_abs_cap,
+            "leakage_cap": args.leakage_cap,
+            "dead_lane_limit": args.dead_lane_limit,
+        },
         "sleep_seconds": args.sleep_seconds,
         "runs_completed": runs_completed,
         "last_summary_file": last_summary_file,
@@ -331,6 +373,14 @@ def main() -> int:
                 "M23_DESCENT_SCALE_ORDER": "center_out",
                 "M23_DESCENT_SHIFT_ORDER": "center_out",
             }
+            if args.pressure_cap is not None:
+                run_env["M23_DESCENT_PRESSURE_CAP"] = str(args.pressure_cap)
+            if args.height_abs_cap is not None:
+                run_env["M23_DESCENT_HEIGHT_ABS_CAP"] = str(args.height_abs_cap)
+            if args.leakage_cap is not None:
+                run_env["M23_DESCENT_LEAKAGE_CAP"] = str(args.leakage_cap)
+            if args.dead_lane_limit:
+                run_env["M23_DESCENT_DEAD_LANE_LIMIT"] = str(args.dead_lane_limit)
             result = subprocess.run(
                 [
                     args.python,
@@ -339,6 +389,22 @@ def main() -> int:
                     str(args.workers),
                     "--partition-mode",
                     args.partition_mode,
+                    *(
+                        ["--pressure-cap", str(args.pressure_cap)]
+                        if args.pressure_cap is not None
+                        else []
+                    ),
+                    *(
+                        ["--height-abs-cap", str(args.height_abs_cap)]
+                        if args.height_abs_cap is not None
+                        else []
+                    ),
+                    *(
+                        ["--leakage-cap", str(args.leakage_cap)]
+                        if args.leakage_cap is not None
+                        else []
+                    ),
+                    *(["--dead-lane-limit", str(args.dead_lane_limit)] if args.dead_lane_limit else []),
                 ],
                 cwd=os.getcwd(),
                 text=True,

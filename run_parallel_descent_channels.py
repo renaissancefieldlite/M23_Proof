@@ -55,6 +55,30 @@ def parse_args():
         default=sys.executable,
         help="Python executable to use",
     )
+    parser.add_argument(
+        "--pressure-cap",
+        type=float,
+        default=None,
+        help="optional cap on denominator pressure (implemented as denominator_max)",
+    )
+    parser.add_argument(
+        "--height-abs-cap",
+        type=float,
+        default=None,
+        help="optional cap on the maximum absolute rational coefficient component",
+    )
+    parser.add_argument(
+        "--leakage-cap",
+        type=float,
+        default=None,
+        help="optional cap on total basis leakage before a candidate is rejected",
+    )
+    parser.add_argument(
+        "--dead-lane-limit",
+        type=int,
+        default=0,
+        help="optional consecutive rejection limit before a worker stops early",
+    )
     return parser.parse_args()
 
 
@@ -74,6 +98,14 @@ def launch_workers(args, label):
         env["WORKER_COUNT"] = str(args.workers)
         env["M23_DESCENT_PARTITION_MODE"] = args.partition_mode
         env["M23_RUN_LABEL"] = label
+        if args.pressure_cap is not None:
+            env["M23_DESCENT_PRESSURE_CAP"] = str(args.pressure_cap)
+        if args.height_abs_cap is not None:
+            env["M23_DESCENT_HEIGHT_ABS_CAP"] = str(args.height_abs_cap)
+        if args.leakage_cap is not None:
+            env["M23_DESCENT_LEAKAGE_CAP"] = str(args.leakage_cap)
+        if args.dead_lane_limit:
+            env["M23_DESCENT_DEAD_LANE_LIMIT"] = str(args.dead_lane_limit)
 
         log_path = RUNTIME_DIR / f"{WORKER_LOG_PREFIX}_{worker_index}.log"
         log_handle = log_path.open("wb")
@@ -121,6 +153,7 @@ def collect_result_files(label):
 
 def build_summary(result_files, label, args):
     merged = []
+    worker_reports = []
     skipped_files = []
     for path in result_files:
         try:
@@ -130,6 +163,19 @@ def build_summary(result_files, label, args):
             skipped_files.append({"path": str(path), "error": str(exc)})
             continue
         ranked = payload.get("ranked_transforms", [])
+        worker_reports.append(
+            {
+                "source_file": str(path),
+                "worker": payload.get("worker", {}),
+                "caps": payload.get("caps", {}),
+                "evaluated_candidates": payload.get("grid", {}).get("evaluated_candidates"),
+                "selected_candidates": payload.get("grid", {}).get("selected_candidates"),
+                "ranked_count": payload.get("ranked_count", len(ranked)),
+                "rejected_count": payload.get("rejected_count", 0),
+                "dead_lane_triggered": bool(payload.get("dead_lane_triggered", False)),
+                "dead_lane_reason": payload.get("dead_lane_reason"),
+            }
+        )
         if not ranked:
             continue
         best = ranked[0]
@@ -150,15 +196,22 @@ def build_summary(result_files, label, args):
         "label": label,
         "workers": args.workers,
         "partition_mode": args.partition_mode,
+        "caps": {
+            "pressure_cap": args.pressure_cap,
+            "height_abs_cap": args.height_abs_cap,
+            "leakage_cap": args.leakage_cap,
+            "dead_lane_limit": args.dead_lane_limit,
+        },
         "result_files": [str(path) for path in result_files],
         "skipped_files": skipped_files,
+        "worker_reports": worker_reports,
         "merged_best": merged,
     }
 
     summary_path = JSON_DIR / f"{SUMMARY_PREFIX}_{label}.json"
     with summary_path.open("w", encoding="utf-8") as handle:
         json.dump(summary, handle, indent=2)
-    return summary_path, merged
+    return summary_path, merged, worker_reports
 
 
 def main():
@@ -168,9 +221,17 @@ def main():
     failures = wait_for_workers(processes)
 
     result_files = collect_result_files(label)
-    summary_path, merged = build_summary(result_files, label, args)
+    summary_path, merged, worker_reports = build_summary(result_files, label, args)
 
     print(f"\nWrote merged descent summary to {summary_path}", flush=True)
+    for report in worker_reports[: min(10, len(worker_reports))]:
+        worker = report.get("worker", {}).get("instance_id", "?")
+        if report.get("dead_lane_triggered"):
+            print(
+                f"worker={worker} dead_lane={report.get('dead_lane_reason')} "
+                f"rejected={report.get('rejected_count', 0)}",
+                flush=True,
+            )
     for item in merged[:10]:
         best = item["best_transform"]
         worker = item["worker"].get("instance_id", "?")

@@ -123,6 +123,7 @@ What `Run_Live_Search_Forever.command` now adds:
 - it expands the scale / shift window between batches
 - it promotes the top transforms from each batch into modular follow-up
 - it records both the search stage and the follow-up summary in `live_search_state.json`
+- it can run with kill-gates so bad lanes die early instead of churning forever
 
 The live descent lane writes into `testjson/` and `testjson/runtime/`:
 
@@ -167,6 +168,25 @@ What the live search solves right now:
 - it searches for transforms of the Elkies anchor that are algebraically cleaner
 - it reduces leakage, coefficient height, and denominator pressure before deeper verification
 - it turns the search lane into a triage engine so modular and cycle-aware checks are spent on better transforms instead of noise
+
+Example narrow debug run:
+
+```bash
+python3 run_parallel_descent_channels.py \
+  --workers 1 \
+  --pressure-cap 100000 \
+  --height-abs-cap 1000000000000 \
+  --dead-lane-limit 500
+```
+
+Example continuous live run with the same kill-gates:
+
+```bash
+M23_DESCENT_PRESSURE_CAP=100000 \
+M23_DESCENT_HEIGHT_ABS_CAP=1000000000000 \
+M23_DESCENT_DEAD_LANE_LIMIT=500 \
+./Run_Live_Search_Forever.command
+```
 
 ## Canonical M23 Hook
 

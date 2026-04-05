@@ -73,6 +73,15 @@ def render() -> str:
     lines.append(f"runs_completed: {state.get('runs_completed', 0)}")
     lines.append(f"workers: {state.get('workers', '?')}")
     lines.append(f"partition_mode: {state.get('partition_mode', '?')}")
+    caps = state.get("active_caps") or {}
+    if any(value not in (None, 0) for value in caps.values()):
+        lines.append(
+            "active_caps: "
+            f"pressure_cap={caps.get('pressure_cap')} "
+            f"height_abs_cap={caps.get('height_abs_cap')} "
+            f"leakage_cap={caps.get('leakage_cap')} "
+            f"dead_lane_limit={caps.get('dead_lane_limit')}"
+        )
     lines.append(f"last_summary_file: {state.get('last_summary_file', 'none')}")
 
     current_stage = state.get("current_stage") or {}

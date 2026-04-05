@@ -93,6 +93,25 @@ def parse_worker_config():
     return instance_id, worker_index, worker_count, partition_mode
 
 
+def parse_optional_float_env(name):
+    raw = os.environ.get(name, "").strip()
+    if not raw:
+        return None
+    try:
+        return float(raw)
+    except ValueError as exc:
+        raise ValueError(f"Invalid float in {name}: {raw}") from exc
+
+
+def parse_search_caps():
+    return {
+        "pressure_cap": parse_optional_float_env("M23_DESCENT_PRESSURE_CAP"),
+        "height_abs_cap": parse_optional_float_env("M23_DESCENT_HEIGHT_ABS_CAP"),
+        "leakage_cap": parse_optional_float_env("M23_DESCENT_LEAKAGE_CAP"),
+        "dead_lane_limit": max(0, int(os.environ.get("M23_DESCENT_DEAD_LANE_LIMIT", "0") or "0")),
+    }
+
+
 def numeric_key(value):
     return float(N(value, 50))
 
@@ -263,13 +282,17 @@ def leakage_penalty(rows):
 def rational_height_penalty(rows):
     total = 0.0
     max_height = 0.0
+    abs_total = 0.0
+    abs_max = 0.0
     for row in rows:
         rational_component = row["basis_exprs"][0]
         size = abs(complex(N(rational_component, 50)))
+        abs_total += size
+        abs_max = max(abs_max, size)
         height = math.log10(1.0 + size)
         total += height
         max_height = max(max_height, height)
-    return total, max_height
+    return total, max_height, abs_total, abs_max
 
 
 def denominator_penalty(rows):
@@ -293,7 +316,7 @@ def denominator_penalty(rows):
 
 def candidate_score(rows):
     leakage_total, leakage_max = leakage_penalty(rows)
-    height_total, height_max = rational_height_penalty(rows)
+    height_total, height_max, rational_abs_total, rational_abs_max = rational_height_penalty(rows)
     denominator_total, denominator_max, denominators = denominator_penalty(rows)
 
     composite = (
@@ -309,11 +332,27 @@ def candidate_score(rows):
         "leakage_max": leakage_max,
         "height_total": height_total,
         "height_max": height_max,
+        "rational_abs_total": rational_abs_total,
+        "rational_abs_max": rational_abs_max,
         "denominator_total": denominator_total,
         "denominator_max": denominator_max,
         "denominators": denominators,
         "descent_score": composite,
     }
+
+
+def rejection_reasons(score, caps):
+    reasons = []
+    pressure_cap = caps.get("pressure_cap")
+    if pressure_cap is not None and float(score["denominator_max"]) > float(pressure_cap):
+        reasons.append(f"pressure>{pressure_cap:g}")
+    height_abs_cap = caps.get("height_abs_cap")
+    if height_abs_cap is not None and float(score["rational_abs_max"]) > float(height_abs_cap):
+        reasons.append(f"height_abs>{height_abs_cap:g}")
+    leakage_cap = caps.get("leakage_cap")
+    if leakage_cap is not None and float(score["leakage_total"]) > float(leakage_cap):
+        reasons.append(f"leakage>{leakage_cap:g}")
+    return reasons
 
 
 def json_safe_rows(rows):
@@ -345,9 +384,12 @@ def run_search():
     candidates, scalings, shifts = build_affine_candidates()
     instance_id, worker_index, worker_count, partition_mode = parse_worker_config()
     selected, section_summary = partition_candidates(candidates, scalings, shifts)
+    caps = parse_search_caps()
 
     print(section_summary)
     print(f"Worker {instance_id} evaluating {len(selected)} transform(s)")
+    if any(value not in (None, 0) for value in caps.values()):
+        print(f"Active search caps: {caps}")
     print("Building Elkies anchor construction...")
 
     construction = build_elkies_construction()
@@ -356,10 +398,52 @@ def run_search():
     modulus = construction.field_modulus
 
     ranked = []
+    rejected_count = 0
+    rejection_examples = []
+    evaluated_count = 0
+    dead_lane_triggered = False
+    dead_lane_reason = None
+    consecutive_rejections = 0
     for original_index, transform in selected:
+        evaluated_count += 1
         transformed = expand(construction.polynomial.subs(x, transform["a"] * x + transform["b"]))
         rows = coefficient_rows(transformed, x, g, modulus)
         score = candidate_score(rows)
+        reasons = rejection_reasons(score, caps)
+        if reasons:
+            rejected_count += 1
+            consecutive_rejections += 1
+            if len(rejection_examples) < 10:
+                rejection_examples.append(
+                    {
+                        "candidate_index": original_index,
+                        "transform": {
+                            "a": str(transform["a"]),
+                            "b": str(transform["b"]),
+                            "kind": "affine",
+                        },
+                        "descent_score": score["descent_score"],
+                        "denominator_max": score["denominator_max"],
+                        "rational_abs_max": score["rational_abs_max"],
+                        "leakage_total": score["leakage_total"],
+                        "rejection_reasons": reasons,
+                    }
+                )
+                print(
+                    f"reject a={transform['a']} b={transform['b']} "
+                    f"score={score['descent_score']:.6g} reasons={','.join(reasons)}"
+                )
+            if caps["dead_lane_limit"] and consecutive_rejections >= caps["dead_lane_limit"]:
+                dead_lane_triggered = True
+                dead_lane_reason = (
+                    f"{consecutive_rejections} consecutive capped candidates "
+                    f"(limit {caps['dead_lane_limit']})"
+                )
+                print(f"DEAD LANE worker {instance_id}: {dead_lane_reason}")
+                break
+            continue
+
+        consecutive_rejections = 0
         ranked.append(
             {
                 "candidate_index": original_index,
@@ -388,12 +472,19 @@ def run_search():
             "partition_mode": partition_mode,
             "section_summary": section_summary,
         },
+        "caps": caps,
         "grid": {
             "scalings": [str(value) for value in scalings],
             "shifts": [str(value) for value in shifts],
             "total_candidates": len(candidates),
             "selected_candidates": len(selected),
+            "evaluated_candidates": evaluated_count,
         },
+        "rejected_count": rejected_count,
+        "ranked_count": len(ranked),
+        "dead_lane_triggered": dead_lane_triggered,
+        "dead_lane_reason": dead_lane_reason,
+        "rejection_examples": rejection_examples,
         "ranked_transforms": ranked,
     }
 
@@ -404,6 +495,12 @@ def run_search():
     temp_path.replace(output_path)
 
     print(f"Saved descent-search results to {output_path}")
+    print(
+        f"Survivors: {len(ranked)} kept, {rejected_count} rejected, "
+        f"evaluated={evaluated_count}"
+    )
+    if dead_lane_triggered:
+        print(f"Dead lane stop: {dead_lane_reason}")
     for row in ranked[:10]:
         print(
             f"score={row['descent_score']:.6g} "
@@ -412,6 +509,8 @@ def run_search():
             f"den_max={row['denominator_max']} "
             f"a={row['transform']['a']} b={row['transform']['b']}"
         )
+    if not ranked:
+        print("No survivors under current caps.")
 
 
 if __name__ == "__main__":
