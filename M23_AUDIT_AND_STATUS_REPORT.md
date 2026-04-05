@@ -226,14 +226,15 @@ Date of validation:
 
 What was tested:
 
-- the canonical launcher path in `Start_Monitor.command`
+- the canonical legacy-monitor launcher path now exposed as
+  `Open_Legacy_Exact_Monitor.command`
 - the Qt monitor in headless mode
 - real `start_all()` and `stop_all()` behavior with `32` configured workers
 - the recent exact result files emitted under `testjson/`
 
 Observed results:
 
-- the canonical launcher opens successfully from `Start_Monitor.command`
+- the canonical legacy monitor launcher opens successfully
 - the canonical monitor can start `32` worker processes in the Playground repo
 - the canonical monitor can stop all `32` workers cleanly
 - the recent exact result files show all `32` `instance_id` values, not just two

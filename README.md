@@ -7,6 +7,7 @@ State anchors for this lane:
 - [M23_AUDIT_AND_STATUS_REPORT.md](/Users/renaissancefieldlite1.0/Documents/Playground/M23_Proof/M23_AUDIT_AND_STATUS_REPORT.md)
 - [M23_CONTINUITY_ROADMAP_AND_RESONANT_TRIGGERS.md](/Users/renaissancefieldlite1.0/Documents/Playground/M23_Proof/M23_CONTINUITY_ROADMAP_AND_RESONANT_TRIGGERS.md)
 - [M23_ELKIES_PAPER_EXTRACT_AND_LATTICE_QUESTIONS.md](/Users/renaissancefieldlite1.0/Documents/Playground/M23_Proof/M23_ELKIES_PAPER_EXTRACT_AND_LATTICE_QUESTIONS.md)
+- [M23_NEXT_RUNGS_AND_LIVE_SEARCH.md](/Users/renaissancefieldlite1.0/Documents/Playground/M23_Proof/M23_NEXT_RUNGS_AND_LIVE_SEARCH.md)
 - [M23_RICK_HANDOFF_AND_BOOT.md](/Users/renaissancefieldlite1.0/Documents/Playground/M23_Proof/M23_RICK_HANDOFF_AND_BOOT.md)
 
 Canonical-path note:
@@ -68,34 +69,69 @@ That makes this repository part of the broader research argument: coherence is b
 
 ## Current Evolution Update
 
-This repo has been revamped to match the evolved `m23attack` lane:
+This repo now has a cleaner split between:
 
-- `Start_Monitor.command` now prefers the newer Qt monitor and falls back to the legacy monitor if PyQt6 is unavailable
-- `Start_Qt_Monitor.command` launches the dual-instance Qt monitor directly
-- `m23_monitor_qt.py` provides the current multi-instance control surface
-- `auto_m23_forever.py` now supports shared best-candidate tracking across simultaneous runs
-- `phase2_exact.py`, `phase3_exact.py`, and `phase4_exact.py` have been updated to the newer refinement loop used in the active search lane
+- the live descent search lane
+- the legacy exact monitor lane
+
+Use the live descent lane for current search work.
+Use the legacy exact monitor only when you specifically need the old exact-loop
+surface for archaeology or debugging.
 
 ## Run Surface
 
-Preferred launch:
+Live search, one batch:
 
 ```bash
-./Start_Monitor.command
+./Run_Live_Search.command
 ```
 
-Direct Qt launch:
+Live search, continuous batches:
 
 ```bash
-./Start_Qt_Monitor.command
+./Run_Live_Search_Forever.command
 ```
 
-The active result field is written into `testjson/`, with shared convergence state tracked in `testjson/shared_best.json` and per-instance logs / pid files tracked in `testjson/runtime/`:
+Live search, terminal status:
 
-- `m23_search_1.log`
-- `m23_search_2.log`
+```bash
+./Open_Live_Search_Status.command
+```
 
-The worker count is configurable. Set `M23_WORKER_COUNT` before launch to seed the initial count, or change it in the Qt monitor with the worker spinbox. Each worker receives its own `INSTANCE_ID`, `m23_search_<id>.log`, and `m23_search_<id>.pid` under `testjson/runtime/` while continuing to share the same `testjson/` result pool and `testjson/shared_best.json` state.
+Legacy exact monitor:
+
+```bash
+./Open_Legacy_Exact_Monitor.command
+```
+
+Legacy exact Qt-only monitor:
+
+```bash
+./Open_Legacy_Exact_Qt_Monitor.command
+```
+
+Why `Run_Live_Search.command` stops after one run:
+
+- it is intentionally a bounded batch runner
+- one batch gives one reproducible summary artifact
+- parameter changes between batches stay explicit
+- continuous motion belongs in `Run_Live_Search_Forever.command`
+
+The live descent lane writes into `testjson/` and `testjson/runtime/`:
+
+- worker logs:
+  `m23_descent_<id>.log`
+- worker pid files while running:
+  `m23_descent_<id>.pid`
+- worker batch outputs:
+  `descent_search_worker*_*.json`
+- merged batch summaries:
+  `descent_search_summary_*.json`
+- continuous-state file:
+  `live_search_state.json`
+
+The legacy exact lane still writes its own monitor/runtime artifacts under
+`testjson/`, including `shared_best.json` and `m23_search_<id>.log` / pid files.
 
 Workers now cover disjoint sections of the candidate list instead of duplicating the same pass. By default the exact scanner uses contiguous chunk partitioning so worker `1` covers the first slice, worker `2` the next slice, and so on. Set `M23_PARTITION_MODE=stride` if you want interleaved coverage instead.
 
@@ -110,7 +146,9 @@ The search now also has a reference-to-scan bridge:
 - `cross_reference_elkies_scan.py` now ranks scanned candidates by per-prime signature alignment against the Elkies reference, with the historical hot zone around `λ ≈ -13`, `μ ≈ -28` kept only as a secondary heuristic
 - `descent_search.py` runs a partitionable affine descent search over the explicit Elkies construction and scores transforms by coefficient leakage in the basis `(1, g, g^2, g^3)`, coefficient height, and denominator pressure
 - `run_parallel_descent_channels.py` launches disjoint descent workers so transform bands are covered in parallel instead of duplicated
-- `Start_Parallel_Descent.command` provides a one-shot launcher for the same partitioned descent lane
+- `Run_Live_Search.command` provides a one-shot launcher for the same partitioned descent lane
+- `Run_Live_Search_Forever.command` repeats those batches until stopped
+- `Open_Live_Search_Status.command` gives the live descent lane a terminal status surface instead of leaving it as raw log files only
 
 This is the current lift-path scaffold. It does not yet prove the FrontierMath target, but it gives the scanner a principled way to prioritize branches that look closer to the known exact construction.
 
@@ -157,7 +195,7 @@ The descent lane can be partitioned in several ways:
 Example:
 
 ```bash
-M23_DESCENT_WORKERS=8 M23_DESCENT_PARTITION_MODE=ring ./Start_Parallel_Descent.command
+M23_DESCENT_WORKERS=8 M23_DESCENT_PARTITION_MODE=ring ./Run_Live_Search.command
 ```
 
 ## Position In The Broader Stack

@@ -301,14 +301,14 @@ Preferred monitor:
 
 ```bash
 cd /Users/renaissancefieldlite1.0/Documents/Playground/M23_Proof
-./Start_Monitor.command
+./Open_Legacy_Exact_Monitor.command
 ```
 
 Direct Qt launch:
 
 ```bash
 cd /Users/renaissancefieldlite1.0/Documents/Playground/M23_Proof
-./Start_Qt_Monitor.command
+./Open_Legacy_Exact_Qt_Monitor.command
 ```
 
 What to watch:
@@ -332,7 +332,21 @@ Parallel descent:
 
 ```bash
 cd /Users/renaissancefieldlite1.0/Documents/Playground/M23_Proof
-./Start_Parallel_Descent.command
+./Run_Live_Search.command
+```
+
+Continuous descent:
+
+```bash
+cd /Users/renaissancefieldlite1.0/Documents/Playground/M23_Proof
+./Run_Live_Search_Forever.command
+```
+
+Live descent status:
+
+```bash
+cd /Users/renaissancefieldlite1.0/Documents/Playground/M23_Proof
+./Open_Live_Search_Status.command
 ```
 
 Key env knobs:
@@ -578,9 +592,11 @@ Your job:
 - do not substitute vibes for outputs
 
 Monitor the experiment through:
-- Start_Monitor.command
-- Start_Qt_Monitor.command
-- Start_Parallel_Descent.command
+- Open_Legacy_Exact_Monitor.command
+- Open_Legacy_Exact_Qt_Monitor.command
+- Run_Live_Search.command
+- Run_Live_Search_Forever.command
+- Open_Live_Search_Status.command
 - testjson/shared_best.json
 - testjson/runtime/
 - latest mod23_screen_current.json

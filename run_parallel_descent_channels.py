@@ -23,6 +23,20 @@ SUMMARY_PREFIX = "descent_search_summary"
 WORKER_LOG_PREFIX = "m23_descent"
 
 
+def pid_path(worker_index: int) -> Path:
+    return RUNTIME_DIR / f"{WORKER_LOG_PREFIX}_{worker_index}.pid"
+
+
+def write_pid(worker_index: int, pid: int) -> None:
+    pid_path(worker_index).write_text(str(pid), encoding="utf-8")
+
+
+def remove_pid(worker_index: int) -> None:
+    target = pid_path(worker_index)
+    if target.exists():
+        target.unlink()
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Run partitioned Elkies descent workers.")
     parser.add_argument("--workers", type=int, default=max(2, min(8, os.cpu_count() or 4)))
@@ -45,7 +59,8 @@ def parse_args():
 
 
 def output_label():
-    return time.strftime("%Y%m%d_%H%M%S")
+    millis = int((time.time() % 1) * 1000)
+    return f"{time.strftime('%Y%m%d_%H%M%S')}_{os.getpid()}_{millis:03d}"
 
 
 def launch_workers(args, label):
@@ -72,6 +87,7 @@ def launch_workers(args, label):
             env=env,
         )
         log_handle.close()
+        write_pid(worker_index, process.pid)
         processes.append((worker_index, process, log_path))
         print(
             f"Started descent worker {worker_index}/{args.workers} "
@@ -86,6 +102,7 @@ def wait_for_workers(processes):
     failures = []
     for worker_index, process, log_path in processes:
         return_code = process.wait()
+        remove_pid(worker_index)
         if return_code == 0:
             print(f"Worker {worker_index} completed successfully", flush=True)
         else:
