@@ -75,6 +75,26 @@ def render() -> str:
     lines.append(f"partition_mode: {state.get('partition_mode', '?')}")
     lines.append(f"last_summary_file: {state.get('last_summary_file', 'none')}")
 
+    current_stage = state.get("current_stage") or {}
+    if current_stage:
+        lines.append(
+            "current_stage: "
+            f"{current_stage.get('stage_index', '?')}/"
+            f"{current_stage.get('stage_name', 'unknown')} "
+            f"grid={current_stage.get('scale_count', '?')}x"
+            f"{current_stage.get('shift_count', '?')} "
+            f"candidates={current_stage.get('candidate_count', '?')}"
+        )
+    next_stage = state.get("next_stage") or {}
+    if next_stage:
+        lines.append(
+            "next_stage: "
+            f"{next_stage.get('stage_index', '?')}/"
+            f"{next_stage.get('stage_name', 'unknown')} "
+            f"grid={next_stage.get('scale_count', '?')}x"
+            f"{next_stage.get('shift_count', '?')}"
+        )
+
     best = state.get("best_overall") or {}
     if best:
         lines.append(
@@ -96,6 +116,25 @@ def render() -> str:
             f"elapsed={last.get('elapsed_seconds')} "
             f"summary={last.get('summary_file')}"
         )
+
+    followup = state.get("last_followup_summary") or {}
+    if followup:
+        lines.append(
+            "last_followup: "
+            f"rationalized={followup.get('rationalized_count', 0)}/"
+            f"{followup.get('result_count', 0)} "
+            f"cycle_rate={followup.get('cycle_rate', 0.0)} "
+            f"tested_primes={followup.get('tested_prime_count', 0)} "
+            f"matched_m23={followup.get('matched_m23_prime_count', 0)}"
+        )
+        lines.append(
+            "followup_top: "
+            f"signature_hits={followup.get('top_signature_hits', 0)} "
+            f"irreducible_primes={followup.get('top_irreducible_prime_count', 0)} "
+            f"rationalized={followup.get('top_rationalized', False)} "
+            f"a={followup.get('top_a')} b={followup.get('top_b')}"
+        )
+    lines.append(f"last_followup_file: {state.get('last_followup_file', 'none')}")
 
     lines.append("")
     lines.append("Worker View")

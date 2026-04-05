@@ -16,9 +16,40 @@ import sys
 import time
 from pathlib import Path
 
+from sympy import Rational
+
+from descent_search import DEFAULT_SCALINGS, DEFAULT_SHIFTS, ordered_values
+from mod23_signature_screen import DEFAULT_PRIMES
+
 JSON_DIR = Path("testjson")
 STATE_PATH = JSON_DIR / "live_search_state.json"
 SUMMARY_PREFIX = "descent_search_summary_"
+FOLLOWUP_PREFIX = "descent_followup_"
+FOLLOWUP_SCRIPT = "descent_followup_screen.py"
+
+EXTRA_SCALINGS = [
+    Rational(-4, 1),
+    Rational(-5, 2),
+    Rational(-5, 3),
+    Rational(-5, 4),
+    Rational(5, 4),
+    Rational(5, 3),
+    Rational(5, 2),
+    Rational(4, 1),
+]
+
+EXTRA_SHIFTS = [
+    Rational(-10, 1),
+    Rational(-9, 1),
+    Rational(-7, 1),
+    Rational(-9, 2),
+    Rational(-7, 2),
+    Rational(7, 2),
+    Rational(9, 2),
+    Rational(7, 1),
+    Rational(9, 1),
+    Rational(10, 1),
+]
 
 
 def parse_args():
@@ -31,6 +62,26 @@ def parse_args():
     )
     parser.add_argument("--sleep-seconds", type=float, default=5.0)
     parser.add_argument("--max-runs", type=int, default=0, help="0 means run until interrupted")
+    parser.add_argument(
+        "--followup-limit",
+        type=int,
+        default=int(os.environ.get("M23_LIVE_FOLLOWUP_LIMIT", "12") or "12"),
+        help="number of top transforms to promote into modular follow-up each batch",
+    )
+    parser.add_argument(
+        "--followup-primes",
+        default=os.environ.get(
+            "M23_LIVE_FOLLOWUP_PRIMES",
+            ",".join(str(prime) for prime in DEFAULT_PRIMES),
+        ),
+        help="comma-separated primes used by the modular follow-up screen",
+    )
+    parser.add_argument(
+        "--start-stage",
+        type=int,
+        default=int(os.environ.get("M23_LIVE_START_STAGE", "1") or "1"),
+        help="1-based schedule stage to begin from",
+    )
     parser.add_argument("--python", default=sys.executable)
     parser.add_argument("--script", default="run_parallel_descent_channels.py")
     return parser.parse_args()
@@ -38,6 +89,10 @@ def parse_args():
 
 def summary_files() -> list[Path]:
     return sorted(JSON_DIR.glob(f"{SUMMARY_PREFIX}*.json"), key=os.path.getmtime)
+
+
+def followup_files() -> list[Path]:
+    return sorted(JSON_DIR.glob(f"{FOLLOWUP_PREFIX}*.json"), key=os.path.getmtime)
 
 
 def atomic_json_dump(path: Path, payload: dict) -> None:
@@ -94,6 +149,119 @@ def is_better(candidate: dict | None, incumbent: dict | None) -> bool:
         return False
 
 
+def progressive_schedule() -> list[dict]:
+    scale_values = ordered_values(
+        list(DEFAULT_SCALINGS) + EXTRA_SCALINGS,
+        center=Rational(1, 1),
+        order="center_out",
+    )
+    shift_values = ordered_values(
+        list(DEFAULT_SHIFTS) + EXTRA_SHIFTS,
+        center=Rational(0, 1),
+        order="center_out",
+    )
+
+    stage_defs = [
+        ("affine_seed", 4, 5),
+        ("affine_core", 6, 7),
+        ("affine_inner", 8, 9),
+        ("affine_mid", 10, 11),
+        ("affine_mid_wide", 12, 13),
+        ("affine_outer_base", 14, 17),
+        ("affine_full_base", 16, 21),
+        ("affine_expanded_1", 20, 25),
+        ("affine_expanded_2", len(scale_values), len(shift_values)),
+    ]
+
+    schedule = []
+    for stage_index, (stage_name, scale_count, shift_count) in enumerate(stage_defs, start=1):
+        scalings = scale_values[:scale_count]
+        shifts = shift_values[:shift_count]
+        schedule.append(
+            {
+                "stage_index": stage_index,
+                "stage_name": stage_name,
+                "scale_count": len(scalings),
+                "shift_count": len(shifts),
+                "candidate_count": len(scalings) * len(shifts),
+                "scalings": [str(value) for value in scalings],
+                "shifts": [str(value) for value in shifts],
+            }
+        )
+    return schedule
+
+
+def stage_summary(stage: dict | None) -> dict | None:
+    if not stage:
+        return None
+    return {
+        "stage_index": stage.get("stage_index"),
+        "stage_name": stage.get("stage_name"),
+        "scale_count": stage.get("scale_count"),
+        "shift_count": stage.get("shift_count"),
+        "candidate_count": stage.get("candidate_count"),
+    }
+
+
+def load_followup(path: Path | None) -> dict | None:
+    return load_summary(path)
+
+
+def summarize_followup(payload: dict | None) -> dict | None:
+    if not payload:
+        return None
+    results = payload.get("results") or []
+    top = results[0] if results else {}
+    transform = top.get("transform") or {}
+    overall = payload.get("overall_cycle_summary") or {}
+    return {
+        "result_count": int(payload.get("result_count", len(results))),
+        "rationalized_count": int(payload.get("rationalized_count", 0)),
+        "tested_prime_count": int(overall.get("tested_prime_count", 0)),
+        "matched_m23_prime_count": int(overall.get("matched_m23_prime_count", 0)),
+        "cycle_rate": float(overall.get("exact_m23_cycle_rate", 0.0)),
+        "a23_exclusion_status": overall.get("a23_exclusion_status"),
+        "top_signature_hits": int(top.get("signature_hit_count", 0) or 0),
+        "top_irreducible_prime_count": int(top.get("irreducible_prime_count", 0) or 0),
+        "top_rationalized": bool(top.get("rationalized", False)),
+        "top_a": transform.get("a"),
+        "top_b": transform.get("b"),
+    }
+
+
+def run_followup(summary_path: Path | None, args, stage: dict) -> tuple[Path | None, dict | None]:
+    if summary_path is None or not summary_path.exists():
+        return None, None
+
+    output_path = JSON_DIR / f"{FOLLOWUP_PREFIX}{summary_path.stem}.json"
+    command = [
+        args.python,
+        FOLLOWUP_SCRIPT,
+        str(summary_path),
+        "--followup-limit",
+        str(args.followup_limit),
+        "--primes",
+        args.followup_primes,
+        "--output",
+        str(output_path),
+    ]
+    before = {path.name for path in followup_files()}
+    result = subprocess.run(command, cwd=os.getcwd(), text=True, capture_output=True)
+    after = followup_files()
+    new_files = [path for path in after if path.name not in before]
+    followup_path = output_path if output_path.exists() else (new_files[-1] if new_files else None)
+    payload = load_followup(followup_path)
+    wrapped = {
+        "returncode": result.returncode,
+        "stdout_tail": result.stdout[-2000:],
+        "stderr_tail": result.stderr[-1000:],
+        "file": str(followup_path) if followup_path else None,
+        "summary": summarize_followup(payload),
+        "stage": stage_summary(stage),
+    }
+    return followup_path, wrapped
+
+
 def write_state(
     *,
     status: str,
@@ -102,6 +270,10 @@ def write_state(
     last_summary_file: str | None,
     best_overall: dict | None,
     recent_runs: list[dict],
+    current_stage: dict | None,
+    next_stage: dict | None,
+    last_followup_file: str | None,
+    last_followup_summary: dict | None,
 ) -> None:
     payload = {
         "generated_at": time.strftime("%Y-%m-%d %H:%M:%S"),
@@ -112,6 +284,10 @@ def write_state(
         "runs_completed": runs_completed,
         "last_summary_file": last_summary_file,
         "best_overall": best_overall,
+        "current_stage": current_stage,
+        "next_stage": next_stage,
+        "last_followup_file": last_followup_file,
+        "last_followup_summary": last_followup_summary,
         "recent_runs": recent_runs[-12:],
     }
     atomic_json_dump(STATE_PATH, payload)
@@ -120,13 +296,19 @@ def write_state(
 def main() -> int:
     args = parse_args()
     JSON_DIR.mkdir(exist_ok=True)
+    schedule = progressive_schedule()
+    stage_cursor = max(0, int(args.start_stage) - 1)
 
     runs_completed = 0
     best_overall = None
     recent_runs: list[dict] = []
+    last_followup_file = None
+    last_followup_summary = None
 
     try:
         while True:
+            stage = schedule[stage_cursor % len(schedule)]
+            next_stage = schedule[(stage_cursor + 1) % len(schedule)]
             before = {path.name for path in summary_files()}
             write_state(
                 status="running",
@@ -135,9 +317,20 @@ def main() -> int:
                 last_summary_file=recent_runs[-1]["summary_file"] if recent_runs else None,
                 best_overall=best_overall,
                 recent_runs=recent_runs,
+                current_stage=stage_summary(stage),
+                next_stage=stage_summary(next_stage),
+                last_followup_file=last_followup_file,
+                last_followup_summary=last_followup_summary,
             )
 
             started = time.time()
+            run_env = {
+                **os.environ,
+                "M23_DESCENT_SCALINGS": ",".join(stage["scalings"]),
+                "M23_DESCENT_SHIFTS": ",".join(stage["shifts"]),
+                "M23_DESCENT_SCALE_ORDER": "center_out",
+                "M23_DESCENT_SHIFT_ORDER": "center_out",
+            }
             result = subprocess.run(
                 [
                     args.python,
@@ -149,6 +342,7 @@ def main() -> int:
                 ],
                 cwd=os.getcwd(),
                 text=True,
+                env=run_env,
             )
             elapsed = time.time() - started
 
@@ -161,6 +355,14 @@ def main() -> int:
             if is_better(best_summary, best_overall):
                 best_overall = best_summary
 
+            followup_path = None
+            followup_result = None
+            if summary_path is not None and result.returncode == 0:
+                followup_path, followup_result = run_followup(summary_path, args, stage)
+                if followup_result is not None:
+                    last_followup_file = followup_result.get("file")
+                    last_followup_summary = followup_result.get("summary")
+
             runs_completed += 1
             recent_runs.append(
                 {
@@ -169,12 +371,16 @@ def main() -> int:
                     "returncode": result.returncode,
                     "summary_file": str(summary_path) if summary_path else None,
                     "batch_best": best_summary,
+                    "stage": stage_summary(stage),
+                    "followup_file": str(followup_path) if followup_path else None,
+                    "followup": followup_result,
                 }
             )
 
             print(
                 f"[live-search] batch={runs_completed} returncode={result.returncode} "
-                f"elapsed={elapsed:.1f}s summary={summary_path}",
+                f"elapsed={elapsed:.1f}s stage={stage['stage_name']} "
+                f"grid={stage['scale_count']}x{stage['shift_count']} summary={summary_path}",
                 flush=True,
             )
             if best_summary is not None:
@@ -193,6 +399,23 @@ def main() -> int:
                     f"a={best_overall['a']} b={best_overall['b']}",
                     flush=True,
                 )
+            if followup_result is not None and followup_result.get("summary") is not None:
+                summary_bits = followup_result["summary"]
+                print(
+                    "[live-search] followup "
+                    f"rationalized={summary_bits['rationalized_count']}/"
+                    f"{summary_bits['result_count']} "
+                    f"cycle_rate={summary_bits['cycle_rate']:.3f} "
+                    f"top_signature_hits={summary_bits['top_signature_hits']}",
+                    flush=True,
+                )
+            elif followup_result is not None:
+                print(
+                    "[live-search] followup "
+                    f"returncode={followup_result['returncode']} "
+                    f"file={followup_result['file']}",
+                    flush=True,
+                )
 
             if result.returncode != 0:
                 write_state(
@@ -202,6 +425,10 @@ def main() -> int:
                     last_summary_file=str(summary_path) if summary_path else None,
                     best_overall=best_overall,
                     recent_runs=recent_runs,
+                    current_stage=stage_summary(stage),
+                    next_stage=stage_summary(next_stage),
+                    last_followup_file=last_followup_file,
+                    last_followup_summary=last_followup_summary,
                 )
                 return result.returncode
 
@@ -213,9 +440,14 @@ def main() -> int:
                     last_summary_file=str(summary_path) if summary_path else None,
                     best_overall=best_overall,
                     recent_runs=recent_runs,
+                    current_stage=stage_summary(stage),
+                    next_stage=stage_summary(next_stage),
+                    last_followup_file=last_followup_file,
+                    last_followup_summary=last_followup_summary,
                 )
                 return 0
 
+            stage_cursor += 1
             write_state(
                 status="sleeping",
                 runs_completed=runs_completed,
@@ -223,9 +455,15 @@ def main() -> int:
                 last_summary_file=str(summary_path) if summary_path else None,
                 best_overall=best_overall,
                 recent_runs=recent_runs,
+                current_stage=stage_summary(schedule[stage_cursor % len(schedule)]),
+                next_stage=stage_summary(schedule[(stage_cursor + 1) % len(schedule)]),
+                last_followup_file=last_followup_file,
+                last_followup_summary=last_followup_summary,
             )
             time.sleep(max(0.0, args.sleep_seconds))
     except KeyboardInterrupt:
+        current_stage = schedule[stage_cursor % len(schedule)]
+        next_stage = schedule[(stage_cursor + 1) % len(schedule)]
         write_state(
             status="stopped",
             runs_completed=runs_completed,
@@ -233,6 +471,10 @@ def main() -> int:
             last_summary_file=recent_runs[-1]["summary_file"] if recent_runs else None,
             best_overall=best_overall,
             recent_runs=recent_runs,
+            current_stage=stage_summary(current_stage),
+            next_stage=stage_summary(next_stage),
+            last_followup_file=last_followup_file,
+            last_followup_summary=last_followup_summary,
         )
         print("\n[live-search] stopped by user", flush=True)
         return 0

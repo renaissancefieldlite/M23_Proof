@@ -117,6 +117,13 @@ Why `Run_Live_Search.command` stops after one run:
 - parameter changes between batches stay explicit
 - continuous motion belongs in `Run_Live_Search_Forever.command`
 
+What `Run_Live_Search_Forever.command` now adds:
+
+- it walks through a staged affine search schedule instead of replaying one fixed grid
+- it expands the scale / shift window between batches
+- it promotes the top transforms from each batch into modular follow-up
+- it records both the search stage and the follow-up summary in `live_search_state.json`
+
 The live descent lane writes into `testjson/` and `testjson/runtime/`:
 
 - worker logs:
@@ -127,6 +134,8 @@ The live descent lane writes into `testjson/` and `testjson/runtime/`:
   `descent_search_worker*_*.json`
 - merged batch summaries:
   `descent_search_summary_*.json`
+- descent follow-up summaries:
+  `descent_followup_*.json`
 - continuous-state file:
   `live_search_state.json`
 
@@ -151,6 +160,13 @@ The search now also has a reference-to-scan bridge:
 - `Open_Live_Search_Status.command` gives the live descent lane a terminal status surface instead of leaving it as raw log files only
 
 This is the current lift-path scaffold. It does not yet prove the FrontierMath target, but it gives the scanner a principled way to prioritize branches that look closer to the known exact construction.
+
+What the live search solves right now:
+
+- it does not directly prove `M23`
+- it searches for transforms of the Elkies anchor that are algebraically cleaner
+- it reduces leakage, coefficient height, and denominator pressure before deeper verification
+- it turns the search lane into a triage engine so modular and cycle-aware checks are spent on better transforms instead of noise
 
 ## Canonical M23 Hook
 
