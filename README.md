@@ -11,6 +11,18 @@ The process in this repo is the method. It does four things:
 
 There is no off-the-shelf model for this lane. The search process built here is part of the work: generate, screen, verify, refine, and keep state across runs until the lane either produces a real survivor or shows where it fails.
 
+## Proof-Search Map
+
+```mermaid
+flowchart LR
+    A["Elkies quartic-field anchor"] --> B["Transform search\n(affine + Tschirnhaus)"]
+    B --> C["Exact screening\nleakage / height / denominator"]
+    C --> D["Modular signature checks\nfactor degrees + M23 cycle labels"]
+    D --> E["Fixed-prime t0 sampling\nmany samples over one residue field"]
+    E --> F["Distribution tests\nTable-2 / N_k / Weil-bound lane"]
+    F --> G["M23 vs A23 discrimination"]
+```
+
 ## Current Status
 
 - the repo is grounded in a real Elkies construction
@@ -18,6 +30,16 @@ There is no off-the-shelf model for this lane. The search process built here is 
 - the repo is not yet a completed proof or solved `M23` target
 - the live descent lane is useful for narrowing transforms and promoting follow-up checks
 - the old exact monitor lane is legacy / compatibility infrastructure, not the main proof surface
+
+```mermaid
+flowchart TD
+    A["Real Elkies anchor"] --> B["Live search lane is active"]
+    B --> C["Transform narrowing works"]
+    C --> D["Cycle-aware verifier exists"]
+    D --> E["Fixed-prime sampler exists"]
+    E --> F["Full non-A23 exclusion not done yet"]
+    F --> G["Solved M23 target: not reached yet"]
+```
 
 ## State Anchors
 
@@ -69,6 +91,15 @@ Use the legacy exact monitor only when you specifically need the old exact-loop
 surface for archaeology or debugging.
 
 ## Run Surface
+
+```mermaid
+flowchart LR
+    A["Run_Live_Search.command"] --> B["One bounded descent batch"]
+    C["Run_Live_Search_Forever.command"] --> D["Staged repeating batches"]
+    D --> E["Automatic descent follow-up"]
+    F["Open_Live_Search_Status.command"] --> G["Terminal watcher\nstate + worker logs + caps"]
+    H["Open_Legacy_Exact_Monitor.command"] --> I["Legacy exact lane only"]
+```
 
 Live search, one batch:
 
@@ -179,6 +210,14 @@ M23_DESCENT_DEAD_LANE_LIMIT=500 \
 ```
 
 ## Canonical M23 Hook
+
+```mermaid
+flowchart LR
+    A["tschirnhaus_generate.py"] --> B["mod23_signature_screen.py"]
+    B --> C["lift_survivors.py"]
+    C --> D["m23_cycle_verifier.py"]
+    D --> E["m23_fixed_prime_sampler.py"]
+```
 
 The repo is no longer treating the old `λ/μ` family as the canonical generator. The current pipeline is:
 
