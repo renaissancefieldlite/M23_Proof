@@ -152,6 +152,25 @@ def main() -> int:
         f"matched_m23={summary.get('matched_m23_prime_count', 0)}",
         f"cycle_rate={summary.get('exact_m23_cycle_rate', 0.0):.3f}",
     )
+    print(
+        "Full-cycle metrics:",
+        f"support_compatible={summary.get('full_cycle_support_compatible', False)}",
+        f"logL={summary.get('full_cycle_log_likelihood_m23')}",
+        f"KL={summary.get('full_cycle_kl_divergence_m23')}",
+        f"unknown_signatures={summary.get('unknown_signature_count', 0)}",
+    )
+    print("Full-cycle expected vs observed (M23):")
+    for row in summary.get("distribution_rows", []):
+        print(
+            " ",
+            f"{row.get('atlas_label')}:",
+            f"obs={row.get('observed_count', 0)}",
+            f"obs_freq={row.get('observed_frequency', 0.0):.4f}",
+            f"exp={row.get('expected_count_m23', 0.0):.3f}",
+            f"exp_freq={row.get('expected_frequency_m23', 0.0):.4f}",
+            f"delta={row.get('delta', 0.0):+.3f}",
+            f"cycle={row.get('cycle_notation')}",
+        )
     if report.get("mode") == "fixed_prime_sample":
         fixed_result = report.get("result", {})
         n5_counts = fixed_result.get("n5_observed_counts", {})

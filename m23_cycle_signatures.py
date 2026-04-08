@@ -105,6 +105,13 @@ M23_SIGNATURE_MAP = {
 }
 
 
+def expected_cycle_distribution() -> dict[str, Fraction]:
+    return {
+        row["atlas_label"]: row["fraction"]
+        for row in M23_CYCLE_TABLE
+    }
+
+
 def fixed_k_subset_count(factor_degrees: tuple[int, ...], k: int) -> int:
     """
     Elkies page 6 lemma:
@@ -292,19 +299,52 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
     )
     unique_primes = sorted(set(tested_primes))
     distribution_rows = []
+    expected_distribution = expected_cycle_distribution()
+    observed_frequency_histogram: dict[str, float] = {}
+    expected_distribution_json = {
+        atlas_label: float(fraction)
+        for atlas_label, fraction in expected_distribution.items()
+    }
     for row in M23_CYCLE_TABLE:
         atlas_label = row["atlas_label"]
         observed = int(atlas_histogram.get(atlas_label, 0))
         expected = float(row["fraction"] * tested_prime_count)
+        observed_frequency = (
+            observed / tested_prime_count if tested_prime_count else 0.0
+        )
+        expected_frequency = float(row["fraction"])
+        observed_frequency_histogram[atlas_label] = observed_frequency
         distribution_rows.append(
             {
                 "atlas_label": atlas_label,
                 "cycle_notation": row["cycle_notation"],
                 "observed_count": observed,
+                "observed_frequency": observed_frequency,
                 "expected_count_m23": expected,
+                "expected_frequency_m23": expected_frequency,
                 "delta": observed - expected,
             }
         )
+
+    full_cycle_support_compatible = (
+        tested_prime_count > 0 and matched_m23_prime_count == tested_prime_count
+    )
+    if full_cycle_support_compatible:
+        full_cycle_log_likelihood_m23 = 0.0
+        full_cycle_kl_divergence_m23 = 0.0
+        for row in M23_CYCLE_TABLE:
+            atlas_label = row["atlas_label"]
+            observed = int(atlas_histogram.get(atlas_label, 0))
+            expected_prob = float(expected_distribution[atlas_label])
+            if observed > 0:
+                full_cycle_log_likelihood_m23 += observed * math.log(expected_prob)
+                observed_prob = observed / tested_prime_count
+                full_cycle_kl_divergence_m23 += observed_prob * math.log(
+                    observed_prob / expected_prob
+                )
+    else:
+        full_cycle_log_likelihood_m23 = None
+        full_cycle_kl_divergence_m23 = None
 
     if tested_prime_count == 0:
         a23_exclusion_status = "not_ready"
@@ -335,8 +375,13 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
         "sampled_primes": unique_primes,
         "t0_sample_count": t0_sample_count,
         "atlas_histogram": dict(sorted(atlas_histogram.items())),
+        "atlas_observed_frequencies": dict(sorted(observed_frequency_histogram.items())),
+        "atlas_expected_distribution_m23": dict(sorted(expected_distribution_json.items())),
         "signature_histogram": dict(sorted(signature_histogram.items())),
         "distribution_rows": distribution_rows,
+        "full_cycle_support_compatible": bool(full_cycle_support_compatible),
+        "full_cycle_log_likelihood_m23": full_cycle_log_likelihood_m23,
+        "full_cycle_kl_divergence_m23": full_cycle_kl_divergence_m23,
         "subset_orbit_totals": subset_totals,
         "matched_primes": matched_primes,
         "unknown_primes": unknown_primes,

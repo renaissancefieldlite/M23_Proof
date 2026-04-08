@@ -247,6 +247,25 @@ def main() -> int:
             f"cycle_rate={summary.get('exact_m23_cycle_rate', 0.0):.3f}",
             f"status={summary.get('a23_exclusion_status', 'not_ready')}",
         )
+        print(
+            "Full-cycle metrics:",
+            f"support_compatible={summary.get('full_cycle_support_compatible', False)}",
+            f"logL={summary.get('full_cycle_log_likelihood_m23')}",
+            f"KL={summary.get('full_cycle_kl_divergence_m23')}",
+            f"unknown_signatures={summary.get('unknown_signature_count', 0)}",
+        )
+        print("Full-cycle expected vs observed (M23):")
+        for row in summary.get("distribution_rows", []):
+            print(
+                " ",
+                f"{row.get('atlas_label')}:",
+                f"obs={row.get('observed_count', 0)}",
+                f"obs_freq={row.get('observed_frequency', 0.0):.4f}",
+                f"exp={row.get('expected_count_m23', 0.0):.3f}",
+                f"exp_freq={row.get('expected_frequency_m23', 0.0):.4f}",
+                f"delta={row.get('delta', 0.0):+.3f}",
+                f"cycle={row.get('cycle_notation')}",
+            )
         n5_counts = result.get("n5_observed_counts", {})
         n5_expected = result.get("n5_expected_distribution_m23", {})
         print(
