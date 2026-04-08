@@ -444,6 +444,25 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
             }
         )
 
+    transitivity_rows = [row for row in subset_average_rows if int(row["k"]) <= 4]
+    transitivity_summary = {
+        "k_values": [int(row["k"]) for row in transitivity_rows],
+        "max_abs_delta_k1_to_k4": (
+            max(abs(float(row["delta"])) for row in transitivity_rows)
+            if transitivity_rows
+            else None
+        ),
+        "mean_abs_delta_k1_to_k4": (
+            sum(abs(float(row["delta"])) for row in transitivity_rows) / len(transitivity_rows)
+            if transitivity_rows
+            else None
+        ),
+    }
+    k5_focus = next(
+        (row for row in subset_average_rows if int(row["k"]) == 5),
+        None,
+    )
+
     return {
         "tested_prime_count": tested_prime_count,
         "skipped_prime_count": skipped_prime_count,
@@ -474,6 +493,8 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
             for key, value in expected_subset_statistics.items()
         },
         "subset_average_rows": subset_average_rows,
+        "transitivity_summary": transitivity_summary,
+        "k5_focus": k5_focus,
         "matched_primes": matched_primes,
         "unknown_primes": unknown_primes,
         "a23_exclusion_status": a23_exclusion_status,

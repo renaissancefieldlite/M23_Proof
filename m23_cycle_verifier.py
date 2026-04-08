@@ -331,6 +331,24 @@ def main() -> int:
                 f"exp_var={row.get('expected_variance_m23')}",
                 f"var_delta={row.get('variance_delta')}",
             )
+        transitivity = summary.get("transitivity_summary", {})
+        print(
+            "Transitivity summary:",
+            f"k_values={transitivity.get('k_values')}",
+            f"max_abs_delta={transitivity.get('max_abs_delta_k1_to_k4')}",
+            f"mean_abs_delta={transitivity.get('mean_abs_delta_k1_to_k4')}",
+        )
+        k5_focus = summary.get("k5_focus")
+        if isinstance(k5_focus, dict):
+            print(
+                "K5 focus:",
+                f"obs_avg={k5_focus.get('observed_average')}",
+                f"exp_avg={k5_focus.get('expected_average_m23')}",
+                f"delta={k5_focus.get('delta')}",
+                f"obs_var={k5_focus.get('observed_variance')}",
+                f"exp_var={k5_focus.get('expected_variance_m23')}",
+                f"var_delta={k5_focus.get('variance_delta')}",
+            )
         combined_n5 = report.get("combined_n5_summary", {})
         print(
             "Combined N5 metrics:",
@@ -379,6 +397,24 @@ def main() -> int:
             f"obs_var={row.get('observed_variance')}",
             f"exp_var={row.get('expected_variance_m23')}",
             f"var_delta={row.get('variance_delta')}",
+        )
+    transitivity = summary.get("transitivity_summary", {})
+    print(
+        "Transitivity summary:",
+        f"k_values={transitivity.get('k_values')}",
+        f"max_abs_delta={transitivity.get('max_abs_delta_k1_to_k4')}",
+        f"mean_abs_delta={transitivity.get('mean_abs_delta_k1_to_k4')}",
+    )
+    k5_focus = summary.get("k5_focus")
+    if isinstance(k5_focus, dict):
+        print(
+            "K5 focus:",
+            f"obs_avg={k5_focus.get('observed_average')}",
+            f"exp_avg={k5_focus.get('expected_average_m23')}",
+            f"delta={k5_focus.get('delta')}",
+            f"obs_var={k5_focus.get('observed_variance')}",
+            f"exp_var={k5_focus.get('expected_variance_m23')}",
+            f"var_delta={k5_focus.get('variance_delta')}",
         )
     if report.get("mode") == "fixed_prime_sample":
         fixed_result = report.get("result", {})
