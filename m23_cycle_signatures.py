@@ -222,6 +222,7 @@ def summarize_n5_entries(entries: list[dict]) -> dict:
         observed_frequencies_json = {str(key): 0.0 for key in ordered_keys}
         log_likelihood = None
         kl_divergence = None
+        g_test_statistic = None
     else:
         observed_frequencies_json = {
             str(key): (observed_counts.get(key, 0) / total_samples)
@@ -237,9 +238,11 @@ def summarize_n5_entries(entries: list[dict]) -> dict:
                     log_likelihood += count * math.log(prob)
                     observed_prob = count / total_samples
                     kl_divergence += observed_prob * math.log(observed_prob / prob)
+            g_test_statistic = 2.0 * total_samples * kl_divergence
         else:
             log_likelihood = None
             kl_divergence = None
+            g_test_statistic = None
 
     return {
         "n5_observed_counts": observed_counts_json,
@@ -247,6 +250,7 @@ def summarize_n5_entries(entries: list[dict]) -> dict:
         "n5_expected_distribution_m23": expected_json,
         "n5_log_likelihood_m23": log_likelihood,
         "n5_kl_divergence_m23": kl_divergence,
+        "n5_g_test_statistic_m23": g_test_statistic,
         "n5_support_compatible": bool(support_compatible),
     }
 
@@ -342,9 +346,11 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
                 full_cycle_kl_divergence_m23 += observed_prob * math.log(
                     observed_prob / expected_prob
                 )
+        full_cycle_g_test_statistic_m23 = 2.0 * tested_prime_count * full_cycle_kl_divergence_m23
     else:
         full_cycle_log_likelihood_m23 = None
         full_cycle_kl_divergence_m23 = None
+        full_cycle_g_test_statistic_m23 = None
 
     if tested_prime_count == 0:
         a23_exclusion_status = "not_ready"
@@ -382,6 +388,7 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
         "full_cycle_support_compatible": bool(full_cycle_support_compatible),
         "full_cycle_log_likelihood_m23": full_cycle_log_likelihood_m23,
         "full_cycle_kl_divergence_m23": full_cycle_kl_divergence_m23,
+        "full_cycle_g_test_statistic_m23": full_cycle_g_test_statistic_m23,
         "subset_orbit_totals": subset_totals,
         "matched_primes": matched_primes,
         "unknown_primes": unknown_primes,

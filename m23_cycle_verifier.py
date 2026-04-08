@@ -207,6 +207,9 @@ def combine_fixed_prime_results(paths: list[Path]) -> dict:
         "combined_kl_divergence_m23": combined_cycle_summary.get(
             "full_cycle_kl_divergence_m23"
         ),
+        "combined_g_test_statistic_m23": combined_cycle_summary.get(
+            "full_cycle_g_test_statistic_m23"
+        ),
         "expected_combined_log_likelihood_m23": (
             total_samples * expected_log_likelihood_per_sample()
             if total_samples > 0
@@ -289,6 +292,7 @@ def main() -> int:
             f"logL={report.get('combined_log_likelihood_m23')}",
             f"expected_logL={report.get('expected_combined_log_likelihood_m23')}",
             f"KL={report.get('combined_kl_divergence_m23')}",
+            f"G={report.get('combined_g_test_statistic_m23')}",
             f"unknown_signatures={summary.get('unknown_signature_count', 0)}",
         )
         print("Per-prime contributions:")
@@ -320,6 +324,7 @@ def main() -> int:
             f"support_compatible={combined_n5.get('n5_support_compatible', False)}",
             f"logL={combined_n5.get('n5_log_likelihood_m23')}",
             f"KL={combined_n5.get('n5_kl_divergence_m23')}",
+            f"G={combined_n5.get('n5_g_test_statistic_m23')}",
         )
         return 0
 
@@ -334,6 +339,7 @@ def main() -> int:
         f"support_compatible={summary.get('full_cycle_support_compatible', False)}",
         f"logL={summary.get('full_cycle_log_likelihood_m23')}",
         f"KL={summary.get('full_cycle_kl_divergence_m23')}",
+        f"G={summary.get('full_cycle_g_test_statistic_m23')}",
         f"unknown_signatures={summary.get('unknown_signature_count', 0)}",
     )
     print("Full-cycle expected vs observed (M23):")
@@ -367,6 +373,7 @@ def main() -> int:
             f"support_compatible={fixed_result.get('n5_support_compatible', False)}",
             f"logL={fixed_result.get('n5_log_likelihood_m23')}",
             f"KL={fixed_result.get('n5_kl_divergence_m23')}",
+            f"G={fixed_result.get('n5_g_test_statistic_m23')}",
         )
     return 0
 
