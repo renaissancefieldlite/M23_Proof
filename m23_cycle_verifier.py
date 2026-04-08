@@ -327,6 +327,9 @@ def main() -> int:
                 f"obs_avg={row.get('observed_average')}",
                 f"exp_avg={row.get('expected_average_m23')}",
                 f"delta={row.get('delta')}",
+                f"obs_var={row.get('observed_variance')}",
+                f"exp_var={row.get('expected_variance_m23')}",
+                f"var_delta={row.get('variance_delta')}",
             )
         combined_n5 = report.get("combined_n5_summary", {})
         print(
@@ -373,6 +376,9 @@ def main() -> int:
             f"obs_avg={row.get('observed_average')}",
             f"exp_avg={row.get('expected_average_m23')}",
             f"delta={row.get('delta')}",
+            f"obs_var={row.get('observed_variance')}",
+            f"exp_var={row.get('expected_variance_m23')}",
+            f"var_delta={row.get('variance_delta')}",
         )
     if report.get("mode") == "fixed_prime_sample":
         fixed_result = report.get("result", {})

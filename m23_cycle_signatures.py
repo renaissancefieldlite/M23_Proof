@@ -122,6 +122,24 @@ def expected_fixed_k_subset_averages(max_subset_k: int = 5) -> dict[str, float]:
     return expected
 
 
+def expected_fixed_k_subset_statistics(max_subset_k: int = 5) -> dict[str, dict[str, float]]:
+    statistics: dict[str, dict[str, float]] = {}
+    for k in range(1, max_subset_k + 1):
+        mean = 0.0
+        second_moment = 0.0
+        for row in M23_CYCLE_TABLE:
+            fixed_count = fixed_k_subset_count(row["factor_degrees"], k)
+            probability = float(row["fraction"])
+            mean += probability * fixed_count
+            second_moment += probability * (fixed_count ** 2)
+        statistics[str(k)] = {
+            "expected_average_m23": mean,
+            "expected_second_moment_m23": second_moment,
+            "expected_variance_m23": second_moment - (mean ** 2),
+        }
+    return statistics
+
+
 def fixed_k_subset_count(factor_degrees: tuple[int, ...], k: int) -> int:
     """
     Elkies page 6 lemma:
@@ -272,6 +290,7 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
     signature_histogram: Counter[str] = Counter()
     atlas_histogram: Counter[str] = Counter()
     subset_totals = {str(k): 0 for k in range(1, max_subset_k + 1)}
+    subset_square_totals = {str(k): 0 for k in range(1, max_subset_k + 1)}
     matched_primes: list[int] = []
     unknown_primes: list[int] = []
     tested_primes: list[int] = []
@@ -295,7 +314,9 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
             t0_sample_count += 1
         signature_histogram[",".join(str(value) for value in factor_degrees)] += 1
         for k, value in entry.get("m23_k_subset_counts", {}).items():
-            subset_totals[k] = subset_totals.get(k, 0) + int(value)
+            int_value = int(value)
+            subset_totals[k] = subset_totals.get(k, 0) + int_value
+            subset_square_totals[k] = subset_square_totals.get(k, 0) + (int_value * int_value)
 
         if entry.get("m23_cycle_match"):
             matched_m23_prime_count += 1
@@ -314,7 +335,7 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
     unique_primes = sorted(set(tested_primes))
     distribution_rows = []
     expected_distribution = expected_cycle_distribution()
-    expected_subset_averages = expected_fixed_k_subset_averages(max_subset_k=max_subset_k)
+    expected_subset_statistics = expected_fixed_k_subset_statistics(max_subset_k=max_subset_k)
     observed_frequency_histogram: dict[str, float] = {}
     expected_distribution_json = {
         atlas_label: float(fraction)
@@ -387,20 +408,37 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
     for k in range(1, max_subset_k + 1):
         key = str(k)
         observed_total = int(subset_totals.get(key, 0))
+        observed_square_total = int(subset_square_totals.get(key, 0))
         observed_average = (
             observed_total / tested_prime_count if tested_prime_count else None
         )
-        expected_average = expected_subset_averages[key]
+        if tested_prime_count > 1:
+            observed_variance = (
+                observed_square_total
+                - ((observed_total ** 2) / tested_prime_count)
+            ) / (tested_prime_count - 1)
+        else:
+            observed_variance = None
+        expected_average = expected_subset_statistics[key]["expected_average_m23"]
+        expected_variance = expected_subset_statistics[key]["expected_variance_m23"]
         subset_observed_averages[key] = observed_average
         subset_average_rows.append(
             {
                 "k": k,
                 "observed_total": observed_total,
+                "observed_square_total": observed_square_total,
                 "observed_average": observed_average,
                 "expected_average_m23": expected_average,
                 "delta": (
                     observed_average - expected_average
                     if observed_average is not None
+                    else None
+                ),
+                "observed_variance": observed_variance,
+                "expected_variance_m23": expected_variance,
+                "variance_delta": (
+                    observed_variance - expected_variance
+                    if observed_variance is not None
                     else None
                 ),
             }
@@ -425,8 +463,16 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
         "full_cycle_kl_divergence_m23": full_cycle_kl_divergence_m23,
         "full_cycle_g_test_statistic_m23": full_cycle_g_test_statistic_m23,
         "subset_orbit_totals": subset_totals,
+        "subset_square_totals": subset_square_totals,
         "subset_observed_averages": subset_observed_averages,
-        "subset_expected_averages_m23": expected_subset_averages,
+        "subset_expected_averages_m23": {
+            key: value["expected_average_m23"]
+            for key, value in expected_subset_statistics.items()
+        },
+        "subset_expected_variances_m23": {
+            key: value["expected_variance_m23"]
+            for key, value in expected_subset_statistics.items()
+        },
         "subset_average_rows": subset_average_rows,
         "matched_primes": matched_primes,
         "unknown_primes": unknown_primes,
