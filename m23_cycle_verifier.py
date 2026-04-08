@@ -318,6 +318,16 @@ def main() -> int:
                 f"delta={row.get('delta', 0.0):+.3f}",
                 f"cycle={row.get('cycle_notation')}",
             )
+        print("Fixed-k subset averages (Table-2 lane):")
+        for row in summary.get("subset_average_rows", []):
+            print(
+                " ",
+                f"k={row.get('k')}:",
+                f"obs_total={row.get('observed_total')}",
+                f"obs_avg={row.get('observed_average')}",
+                f"exp_avg={row.get('expected_average_m23')}",
+                f"delta={row.get('delta')}",
+            )
         combined_n5 = report.get("combined_n5_summary", {})
         print(
             "Combined N5 metrics:",
@@ -353,6 +363,16 @@ def main() -> int:
             f"exp_freq={row.get('expected_frequency_m23', 0.0):.4f}",
             f"delta={row.get('delta', 0.0):+.3f}",
             f"cycle={row.get('cycle_notation')}",
+        )
+    print("Fixed-k subset averages (Table-2 lane):")
+    for row in summary.get("subset_average_rows", []):
+        print(
+            " ",
+            f"k={row.get('k')}:",
+            f"obs_total={row.get('observed_total')}",
+            f"obs_avg={row.get('observed_average')}",
+            f"exp_avg={row.get('expected_average_m23')}",
+            f"delta={row.get('delta')}",
         )
     if report.get("mode") == "fixed_prime_sample":
         fixed_result = report.get("result", {})
