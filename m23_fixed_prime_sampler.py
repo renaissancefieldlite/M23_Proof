@@ -13,7 +13,7 @@ import tempfile
 import time
 from pathlib import Path
 
-from m23_cycle_signatures import annotate_prime_entry, summarize_cycle_entries
+from m23_cycle_signatures import annotate_prime_entry, summarize_cycle_entries, summarize_n5_entries
 
 JSON_DIR = Path("testjson")
 SAGE_BIN = os.environ.get("SAGE_BIN", "sage")
@@ -198,6 +198,7 @@ def run_sampler(prime: int, sample_count: int, start_t0: int, step: int, timeout
             samples = [annotate_prime_entry(item) for item in parsed.get("samples", [])]
             parsed["samples"] = samples
             parsed["cycle_summary"] = summarize_cycle_entries(samples)
+            parsed.update(summarize_n5_entries(samples))
             payload["result"] = parsed
         return payload
     finally:
@@ -237,13 +238,25 @@ def main() -> int:
 
     print(f"Saved fixed-prime sample to {output_path}")
     if "result" in payload:
-        summary = payload["result"].get("cycle_summary", {})
+        result = payload["result"]
+        summary = result.get("cycle_summary", {})
         print(
             "Cycle summary:",
             f"tested={summary.get('tested_prime_count', 0)}",
             f"matched_m23={summary.get('matched_m23_prime_count', 0)}",
             f"cycle_rate={summary.get('exact_m23_cycle_rate', 0.0):.3f}",
             f"status={summary.get('a23_exclusion_status', 'not_ready')}",
+        )
+        n5_counts = result.get("n5_observed_counts", {})
+        n5_expected = result.get("n5_expected_distribution_m23", {})
+        print(
+            "N5 summary:",
+            f"counts=0:{n5_counts.get('0', 0)},1:{n5_counts.get('1', 0)},4:{n5_counts.get('4', 0)}",
+            f"expected=0:{n5_expected.get('0', 0.0):.4f},"
+            f"1:{n5_expected.get('1', 0.0):.4f},4:{n5_expected.get('4', 0.0):.4f}",
+            f"support_compatible={result.get('n5_support_compatible', False)}",
+            f"logL={result.get('n5_log_likelihood_m23')}",
+            f"KL={result.get('n5_kl_divergence_m23')}",
         )
     else:
         print("Sampler output was not parseable JSON.")

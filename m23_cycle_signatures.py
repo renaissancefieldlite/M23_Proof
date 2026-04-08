@@ -14,6 +14,7 @@ from __future__ import annotations
 
 from collections import Counter
 from fractions import Fraction
+import math
 
 
 def repeated_cycle_lengths(*spec: tuple[int, int]) -> tuple[int, ...]:
@@ -175,6 +176,72 @@ def annotate_prime_entry(entry: dict, factor_key: str = "factor_degrees") -> dic
     annotated = dict(entry)
     annotated.update(annotate_factor_degrees(annotated.get(factor_key)))
     return annotated
+
+
+def expected_n5_distribution() -> dict[int, Fraction]:
+    return {
+        0: Fraction(4, 5),
+        1: Fraction(2, 15),
+        4: Fraction(1, 15),
+    }
+
+
+def summarize_n5_entries(entries: list[dict]) -> dict:
+    expected = expected_n5_distribution()
+    observed_counts: Counter[int] = Counter()
+    total_samples = 0
+    support_compatible = True
+
+    for raw_entry in entries or []:
+        entry = annotate_prime_entry(raw_entry)
+        if entry.get("skipped") or entry.get("error"):
+            continue
+
+        factor_degrees = entry.get("factor_degrees")
+        if not isinstance(factor_degrees, list):
+            continue
+
+        n5 = sum(1 for value in factor_degrees if int(value) == 5)
+        observed_counts[n5] += 1
+        total_samples += 1
+        if n5 not in expected:
+            support_compatible = False
+
+    ordered_keys = sorted(set(expected) | set(observed_counts))
+    observed_counts_json = {str(key): int(observed_counts.get(key, 0)) for key in ordered_keys}
+    expected_json = {str(key): float(expected[key]) for key in sorted(expected)}
+
+    if total_samples == 0:
+        observed_frequencies_json = {str(key): 0.0 for key in ordered_keys}
+        log_likelihood = None
+        kl_divergence = None
+    else:
+        observed_frequencies_json = {
+            str(key): (observed_counts.get(key, 0) / total_samples)
+            for key in ordered_keys
+        }
+        if support_compatible:
+            log_likelihood = 0.0
+            kl_divergence = 0.0
+            for key in sorted(expected):
+                count = observed_counts.get(key, 0)
+                prob = float(expected[key])
+                if count > 0:
+                    log_likelihood += count * math.log(prob)
+                    observed_prob = count / total_samples
+                    kl_divergence += observed_prob * math.log(observed_prob / prob)
+        else:
+            log_likelihood = None
+            kl_divergence = None
+
+    return {
+        "n5_observed_counts": observed_counts_json,
+        "n5_observed_frequencies": observed_frequencies_json,
+        "n5_expected_distribution_m23": expected_json,
+        "n5_log_likelihood_m23": log_likelihood,
+        "n5_kl_divergence_m23": kl_divergence,
+        "n5_support_compatible": bool(support_compatible),
+    }
 
 
 def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:

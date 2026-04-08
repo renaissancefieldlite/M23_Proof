@@ -11,7 +11,7 @@ import os
 import time
 from pathlib import Path
 
-from m23_cycle_signatures import annotate_prime_entry, summarize_cycle_entries
+from m23_cycle_signatures import annotate_prime_entry, summarize_cycle_entries, summarize_n5_entries
 
 JSON_DIR = Path("testjson")
 
@@ -50,6 +50,7 @@ def verify_fixed_prime_payload(payload: dict) -> dict:
     samples = [annotate_prime_entry(entry) for entry in result.get("samples", [])]
     result["samples"] = samples
     result["cycle_summary"] = summarize_cycle_entries(samples)
+    result.update(summarize_n5_entries(samples))
     return {
         "mode": "fixed_prime_sample",
         "result": result,
@@ -151,6 +152,26 @@ def main() -> int:
         f"matched_m23={summary.get('matched_m23_prime_count', 0)}",
         f"cycle_rate={summary.get('exact_m23_cycle_rate', 0.0):.3f}",
     )
+    if report.get("mode") == "fixed_prime_sample":
+        fixed_result = report.get("result", {})
+        n5_counts = fixed_result.get("n5_observed_counts", {})
+        n5_expected = fixed_result.get("n5_expected_distribution_m23", {})
+        print(
+            "N5 summary:",
+            f"counts=0:{n5_counts.get('0', 0)},1:{n5_counts.get('1', 0)},4:{n5_counts.get('4', 0)}",
+        )
+        print(
+            "N5 expected (M23):",
+            f"0:{n5_expected.get('0', 0.0):.4f}",
+            f"1:{n5_expected.get('1', 0.0):.4f}",
+            f"4:{n5_expected.get('4', 0.0):.4f}",
+        )
+        print(
+            "N5 metrics:",
+            f"support_compatible={fixed_result.get('n5_support_compatible', False)}",
+            f"logL={fixed_result.get('n5_log_likelihood_m23')}",
+            f"KL={fixed_result.get('n5_kl_divergence_m23')}",
+        )
     return 0
 
 
