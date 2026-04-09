@@ -140,6 +140,14 @@ def expected_fixed_k_subset_statistics(max_subset_k: int = 5) -> dict[str, dict[
     return statistics
 
 
+def fixed_k_value_distribution(k: int) -> dict[int, Fraction]:
+    distribution: dict[int, Fraction] = {}
+    for row in M23_CYCLE_TABLE:
+        fixed_count = fixed_k_subset_count(row["factor_degrees"], k)
+        distribution[fixed_count] = distribution.get(fixed_count, Fraction(0, 1)) + row["fraction"]
+    return dict(sorted(distribution.items()))
+
+
 def fixed_k_subset_count(factor_degrees: tuple[int, ...], k: int) -> int:
     """
     Elkies page 6 lemma:

@@ -11,11 +11,13 @@ import json
 import math
 import os
 import time
+from fractions import Fraction
 from pathlib import Path
 
 from m23_cycle_signatures import (
     annotate_prime_entry,
     expected_cycle_distribution,
+    fixed_k_value_distribution,
     summarize_cycle_entries,
     summarize_n5_entries,
 )
@@ -148,6 +150,34 @@ def expected_log_likelihood_per_sample() -> float:
     )
 
 
+def exact_fixed_k_lower_tail_probability(
+    sample_count: int,
+    observed_total: int,
+    value_distribution: dict[int, Fraction],
+) -> Fraction:
+    if sample_count <= 0:
+        return Fraction(1, 1)
+    if observed_total < 0:
+        return Fraction(0, 1)
+
+    dp: dict[int, Fraction] = {0: Fraction(1, 1)}
+    for _ in range(sample_count):
+        next_dp: dict[int, Fraction] = {}
+        for running_total, running_prob in dp.items():
+            for value, probability in value_distribution.items():
+                new_total = running_total + int(value)
+                if new_total > observed_total:
+                    continue
+                next_dp[new_total] = next_dp.get(new_total, Fraction(0, 1)) + (
+                    running_prob * probability
+                )
+        dp = next_dp
+        if not dp:
+            return Fraction(0, 1)
+
+    return sum(dp.values(), Fraction(0, 1))
+
+
 def combine_fixed_prime_results(paths: list[Path]) -> dict:
     if not paths:
         raise SystemExit("Combine mode did not receive any matching fixed-prime sample files.")
@@ -181,6 +211,22 @@ def combine_fixed_prime_results(paths: list[Path]) -> dict:
     combined_n5_summary = summarize_n5_entries(combined_samples)
     total_samples = int(combined_cycle_summary.get("tested_prime_count", 0))
     unique_prime_count = int(combined_cycle_summary.get("unique_prime_count", 0))
+    k5_focus = combined_cycle_summary.get("k5_focus")
+    if isinstance(k5_focus, dict):
+        k5_observed_total = int(k5_focus.get("observed_total", 0))
+        k5_distribution = fixed_k_value_distribution(5)
+        k5_tail_fraction = exact_fixed_k_lower_tail_probability(
+            sample_count=total_samples,
+            observed_total=k5_observed_total,
+            value_distribution=k5_distribution,
+        )
+        combined_cycle_summary["k5_tail_summary"] = {
+            "observed_total": k5_observed_total,
+            "sample_count": total_samples,
+            "lower_tail_probability_num": int(k5_tail_fraction.numerator),
+            "lower_tail_probability_den": int(k5_tail_fraction.denominator),
+            "lower_tail_probability": float(k5_tail_fraction),
+        }
 
     if unique_prime_count < 2:
         verdict = "insufficient_prime_count"
@@ -348,6 +394,15 @@ def main() -> int:
                 f"obs_var={k5_focus.get('observed_variance')}",
                 f"exp_var={k5_focus.get('expected_variance_m23')}",
                 f"var_delta={k5_focus.get('variance_delta')}",
+            )
+        k5_tail = summary.get("k5_tail_summary")
+        if isinstance(k5_tail, dict):
+            print(
+                "K5 exact tail:",
+                f"observed_total={k5_tail.get('observed_total')}",
+                f"samples={k5_tail.get('sample_count')}",
+                f"p_lower={k5_tail.get('lower_tail_probability')}",
+                f"exact={k5_tail.get('lower_tail_probability_num')}/{k5_tail.get('lower_tail_probability_den')}",
             )
         combined_n5 = report.get("combined_n5_summary", {})
         print(
