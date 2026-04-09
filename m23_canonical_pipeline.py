@@ -13,6 +13,7 @@ widen the generator family instead of guessing.
 from __future__ import annotations
 
 import argparse
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -31,11 +32,18 @@ def main() -> int:
     parser.add_argument("--candidate-limit", type=int, default=64)
     parser.add_argument("--screen-limit", type=int, default=16)
     parser.add_argument("--primes", default="47,139,277,461,599")
+    parser.add_argument("--survivor-index", type=int, default=0)
+    parser.add_argument("--sampler-prime", type=int, default=100000007)
+    parser.add_argument("--sampler-sample-count", type=int, default=64)
+    parser.add_argument("--sampler-start-t0", type=int, default=0)
+    parser.add_argument("--sampler-step", type=int, default=1)
     args = parser.parse_args()
 
     JSON_DIR.mkdir(exist_ok=True)
     candidate_path = JSON_DIR / "tschirnhaus_candidates_current.json"
     screen_path = JSON_DIR / "mod23_screen_current.json"
+    survivor_path = JSON_DIR / "lift_survivors_current.json"
+    sample_path = JSON_DIR / "m23_fixed_prime_sample_top_survivor_current.json"
 
     generate_cmd = [
         sys.executable,
@@ -63,6 +71,26 @@ def main() -> int:
         sys.executable,
         "lift_survivors.py",
         str(screen_path),
+        "--output",
+        str(survivor_path),
+    ]
+    sampler_cmd = [
+        sys.executable,
+        "m23_fixed_prime_sampler.py",
+        "--prime",
+        str(args.sampler_prime),
+        "--sample-count",
+        str(args.sampler_sample_count),
+        "--start-t0",
+        str(args.sampler_start_t0),
+        "--step",
+        str(args.sampler_step),
+        "--survivor-json",
+        str(survivor_path),
+        "--survivor-index",
+        str(args.survivor_index),
+        "--output",
+        str(sample_path),
     ]
 
     print("Running canonical M23 generator...")
@@ -71,6 +99,20 @@ def main() -> int:
     subprocess.run(screen_cmd, check=True)
     print("Promoting screened survivors...")
     subprocess.run(lift_cmd, check=True)
+    with survivor_path.open("r", encoding="utf-8") as handle:
+        survivor_payload = json.load(handle)
+    survivor_count = int(survivor_payload.get("survivor_count", 0))
+    print(f"Lifted survivor count: {survivor_count}")
+    if survivor_count <= 0:
+        print("No rationalized survivors available; skipping fixed-prime sampler handoff.")
+        return 0
+    if args.survivor_index < 0 or args.survivor_index >= survivor_count:
+        raise IndexError(
+            f"survivor index {args.survivor_index} out of range "
+            f"(survivor_count={survivor_count})"
+        )
+    print("Sampling top lifted survivor at a fixed prime...")
+    subprocess.run(sampler_cmd, check=True)
     return 0
 
 
