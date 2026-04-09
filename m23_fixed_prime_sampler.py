@@ -19,7 +19,138 @@ JSON_DIR = Path("testjson")
 SAGE_BIN = os.environ.get("SAGE_BIN", "sage")
 
 
-def build_sampler_script(prime: int, sample_count: int, start_t0: int, step: int) -> str:
+def load_survivor_entry(path: Path, survivor_index: int) -> dict:
+    with path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+
+    survivors = payload.get("survivors", [])
+    if not isinstance(survivors, list) or not survivors:
+        raise ValueError(f"no survivors found in {path}")
+    if survivor_index < 0 or survivor_index >= len(survivors):
+        raise IndexError(
+            f"survivor index {survivor_index} out of range for {path} "
+            f"(count={len(survivors)})"
+        )
+
+    survivor = survivors[survivor_index]
+    coeffs = survivor.get("integer_coefficients", [])
+    if not isinstance(coeffs, list) or not coeffs:
+        raise ValueError(
+            f"survivor {survivor_index} in {path} does not include integer_coefficients"
+        )
+
+    try:
+        integer_coeffs = [int(value) for value in coeffs]
+    except Exception as exc:
+        raise ValueError(
+            f"survivor {survivor_index} in {path} has non-integer coefficients"
+        ) from exc
+
+    return {
+        "source_json": str(path),
+        "survivor_index": int(survivor_index),
+        "candidate": survivor.get("candidate", {}),
+        "descent_score": survivor.get("descent_score"),
+        "integer_height": survivor.get("integer_height"),
+        "denominator_lcm": survivor.get("denominator_lcm"),
+        "signature_hit_count": survivor.get("signature_hit_count", 0),
+        "irreducible_prime_count": survivor.get("irreducible_prime_count", 0),
+        "screened_primes": survivor.get("screened_primes", []),
+        "integer_coefficients": integer_coeffs,
+    }
+
+
+def build_sampler_script(
+    prime: int,
+    sample_count: int,
+    start_t0: int,
+    step: int,
+    survivor_entry: dict | None = None,
+) -> str:
+    if survivor_entry is not None:
+        integer_coeffs = survivor_entry["integer_coefficients"]
+        survivor_metadata = {
+            key: value
+            for key, value in survivor_entry.items()
+            if key != "integer_coefficients"
+        }
+        coeff_literal = json.dumps(json.dumps(integer_coeffs))
+        metadata_literal = json.dumps(json.dumps(survivor_metadata))
+        return f"""# Auto-generated fixed-prime sampler
+import json
+import sys
+
+
+def factor_degree_signature(Q):
+    degrees = []
+    for factor, multiplicity in Q.factor():
+        degree = int(factor.degree())
+        for _ in range(int(multiplicity)):
+            degrees.append(degree)
+    return sorted(degrees)
+
+
+def sample():
+    p = {int(prime)}
+    target = {int(sample_count)}
+    start_t0 = {int(start_t0)}
+    step = {int(step)}
+    coeffs = json.loads({coeff_literal})
+    survivor_metadata = json.loads({metadata_literal})
+
+    if not coeffs:
+        raise RuntimeError("empty survivor coefficient list")
+
+    degree = len(coeffs) - 1
+    F = GF(p)
+    Rp.<y> = PolynomialRing(F)
+    P_red = sum(F(coeffs[index]) * y**(degree - index) for index in range(len(coeffs)))
+
+    samples = []
+    skipped = 0
+    t0 = start_t0
+    visited = 0
+    max_visits = max(target * 20, target + 100)
+    while len(samples) < target and visited < max_visits:
+        visited += 1
+        field_t0 = F(t0 % p)
+        Q = P_red - field_t0
+        if not Q.is_squarefree():
+            skipped += 1
+            t0 += step
+            continue
+        samples.append({{
+            "p": int(p),
+            "t0": int(t0 % p),
+            "factor_degrees": [int(d) for d in factor_degree_signature(Q)],
+            "irreducible": bool(Q.is_irreducible()),
+        }})
+        t0 += step
+
+    payload = {{
+        "construction": "lift_survivor",
+        "prime": int(p),
+        "g_mod_prime": None,
+        "requested_sample_count": int(target),
+        "collected_sample_count": int(len(samples)),
+        "visited_t0_count": int(visited),
+        "skipped_repeated_root_count": int(skipped),
+        "sample_mode": "sequential",
+        "start_t0": int(start_t0),
+        "step": int(step),
+        "polynomial_degree": int(degree),
+        "leading_coefficient": int(coeffs[0]),
+        "survivor": survivor_metadata,
+        "samples": samples,
+    }}
+    print(json.dumps(payload, indent=2))
+    return int(0)
+
+
+if __name__ == "__main__":
+    sys.exit(sample())
+"""
+
     return f"""# Auto-generated fixed-prime sampler
 import json
 import sys
@@ -157,13 +288,20 @@ if __name__ == "__main__":
 """
 
 
-def run_sampler(prime: int, sample_count: int, start_t0: int, step: int, timeout: int) -> dict:
+def run_sampler(
+    prime: int,
+    sample_count: int,
+    start_t0: int,
+    step: int,
+    timeout: int,
+    survivor_entry: dict | None = None,
+) -> dict:
     JSON_DIR.mkdir(exist_ok=True)
     sage_home = (JSON_DIR / ".sage_home_sampler").resolve()
     dot_sage = sage_home / ".sage"
     sage_home.mkdir(exist_ok=True)
     dot_sage.mkdir(exist_ok=True)
-    script = build_sampler_script(prime, sample_count, start_t0, step)
+    script = build_sampler_script(prime, sample_count, start_t0, step, survivor_entry=survivor_entry)
 
     with tempfile.NamedTemporaryFile(mode="w", suffix=".sage", delete=False, encoding="utf-8") as handle:
         handle.write(script)
@@ -216,6 +354,18 @@ def main() -> int:
     parser.add_argument("--step", type=int, default=1)
     parser.add_argument("--timeout", type=int, default=600)
     parser.add_argument(
+        "--survivor-json",
+        type=Path,
+        default=None,
+        help="optional lift_survivors JSON; when set, sample that survivor polynomial instead of the Elkies anchor",
+    )
+    parser.add_argument(
+        "--survivor-index",
+        type=int,
+        default=0,
+        help="0-based survivor index used with --survivor-json",
+    )
+    parser.add_argument(
         "--output",
         type=Path,
         default=None,
@@ -223,22 +373,49 @@ def main() -> int:
     )
     args = parser.parse_args()
 
+    survivor_entry = None
+    if args.survivor_json is not None:
+        survivor_entry = load_survivor_entry(args.survivor_json, args.survivor_index)
+
     payload = run_sampler(
         prime=args.prime,
         sample_count=args.sample_count,
         start_t0=args.start_t0,
         step=args.step,
         timeout=args.timeout,
+        survivor_entry=survivor_entry,
     )
-    output_path = args.output or JSON_DIR / (
-        f"m23_fixed_prime_sample_{args.prime}_{time.strftime('%Y%m%d_%H%M%S')}.json"
-    )
+    if args.output is not None:
+        output_path = args.output
+    elif survivor_entry is not None:
+        output_path = JSON_DIR / (
+            f"m23_fixed_prime_sample_survivor{args.survivor_index}_{args.prime}_"
+            f"{time.strftime('%Y%m%d_%H%M%S')}.json"
+        )
+    else:
+        output_path = JSON_DIR / (
+            f"m23_fixed_prime_sample_{args.prime}_{time.strftime('%Y%m%d_%H%M%S')}.json"
+        )
     with output_path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, indent=2)
 
     print(f"Saved fixed-prime sample to {output_path}")
     if "result" in payload:
         result = payload["result"]
+        print(
+            "Sampler source:",
+            result.get("construction", "unknown"),
+            f"prime={result.get('prime')}",
+            f"collected={result.get('collected_sample_count', 0)}",
+        )
+        if result.get("construction") == "lift_survivor":
+            survivor = result.get("survivor", {})
+            print(
+                "Survivor source:",
+                f"index={survivor.get('survivor_index')}",
+                f"height={survivor.get('integer_height')}",
+                f"signature_hits={survivor.get('signature_hit_count', 0)}",
+            )
         summary = result.get("cycle_summary", {})
         print(
             "Cycle summary:",
