@@ -20,6 +20,7 @@ Affine remains available as a narrower fallback family.
 from __future__ import annotations
 
 import argparse
+import heapq
 import itertools
 import json
 import math
@@ -73,43 +74,82 @@ def candidate_weight(a_basis: tuple[Rational, ...], b_basis: tuple[Rational, ...
     )
 
 
-def build_candidates(basis_values: list[Rational], family: str) -> list[dict]:
+def make_candidate(family: str, a_basis: tuple[Rational, ...], b_basis: tuple[Rational, ...]) -> dict:
+    return {
+        "family": family,
+        "a_basis": [str(value) for value in a_basis],
+        "b_basis": [str(value) for value in b_basis],
+        "weight": candidate_weight(a_basis, b_basis)[0],
+        "nonzero_terms": candidate_weight(a_basis, b_basis)[1],
+    }
+
+
+def bounded_candidates(
+    a_tuples: list[tuple[Rational, ...]],
+    b_tuples: list[tuple[Rational, ...]],
+    family: str,
+    target: int,
+) -> list[dict]:
+    if target <= 0 or not a_tuples or not b_tuples:
+        return []
+
+    visited = {(0, 0)}
+    heap = [(candidate_weight(a_tuples[0], b_tuples[0]), 0, 0)]
+    candidates = []
+
+    while heap and len(candidates) < target:
+        _, a_index, b_index = heapq.heappop(heap)
+        candidates.append(make_candidate(family, a_tuples[a_index], b_tuples[b_index]))
+
+        if a_index + 1 < len(a_tuples) and (a_index + 1, b_index) not in visited:
+            visited.add((a_index + 1, b_index))
+            heapq.heappush(
+                heap,
+                (candidate_weight(a_tuples[a_index + 1], b_tuples[b_index]), a_index + 1, b_index),
+            )
+        if b_index + 1 < len(b_tuples) and (a_index, b_index + 1) not in visited:
+            visited.add((a_index, b_index + 1))
+            heapq.heappush(
+                heap,
+                (candidate_weight(a_tuples[a_index], b_tuples[b_index + 1]), a_index, b_index + 1),
+            )
+
+    return candidates
+
+
+def build_candidates(
+    basis_values: list[Rational],
+    family: str,
+    *,
+    generation_limit: int = 0,
+    worker_count: int = 1,
+) -> tuple[list[dict], int, str]:
     a_tuples = list(itertools.product(basis_values, repeat=4))
     b_tuples = list(itertools.product(basis_values, repeat=4))
 
     a_tuples.sort(key=tuple_weight)
     b_tuples.sort(key=tuple_weight)
+    a_tuples = [values for values in a_tuples if any(value != 0 for value in values)]
+    total_possible = len(a_tuples) * len(b_tuples)
 
-    candidates = []
-    for a_basis in a_tuples:
-        if all(value == 0 for value in a_basis):
-            continue
-        for b_basis in b_tuples:
-            candidates.append(
-                {
-                    "family": family,
-                    "a_basis": [str(value) for value in a_basis],
-                    "b_basis": [str(value) for value in b_basis],
-                    "weight": candidate_weight(a_basis, b_basis)[0],
-                    "nonzero_terms": candidate_weight(a_basis, b_basis)[1],
-                }
-            )
-
-    candidates.sort(
-        key=lambda item: (
-            item["weight"],
-            item["nonzero_terms"],
-            tuple(item["a_basis"] + item["b_basis"]),
-        )
-    )
+    if generation_limit > 0:
+        generation_mode = "bounded_priority"
+        target = min(total_possible, generation_limit * max(1, worker_count))
+        candidates = bounded_candidates(a_tuples, b_tuples, family, target)
+    else:
+        generation_mode = "full_cartesian"
+        candidates = []
+        for a_basis in a_tuples:
+            for b_basis in b_tuples:
+                candidates.append(make_candidate(family, a_basis, b_basis))
 
     for index, candidate in enumerate(candidates):
         candidate["generator_index"] = index
 
-    return candidates
+    return candidates, total_possible, generation_mode
 
 
-def partition_candidates(candidates: list[dict]) -> tuple[str, list[dict]]:
+def partition_candidates(candidates: list[dict], total_possible: int, generation_mode: str) -> tuple[str, list[dict]]:
     instance_id, worker_index, worker_count = parse_worker_config()
     if not candidates:
         return f"worker {instance_id} received no candidates", []
@@ -119,7 +159,8 @@ def partition_candidates(candidates: list[dict]) -> tuple[str, list[dict]]:
     selected = candidates[start:end]
     summary = (
         f"worker {instance_id}/{worker_count} scanning candidate chunk "
-        f"[{start}:{end}] out of {len(candidates)} generated transforms"
+        f"[{start}:{end}] out of {len(candidates)} generated transforms "
+        f"(mode={generation_mode}, estimated_total={total_possible})"
     )
     return summary, selected
 
@@ -152,8 +193,14 @@ def main() -> int:
 
     JSON_DIR.mkdir(exist_ok=True)
     basis_values = parse_rational_values(args.basis_values)
-    candidates = build_candidates(basis_values, args.family)
-    section_summary, selected = partition_candidates(candidates)
+    _, _, worker_count = parse_worker_config()
+    candidates, total_possible, generation_mode = build_candidates(
+        basis_values,
+        args.family,
+        generation_limit=args.limit,
+        worker_count=worker_count,
+    )
+    section_summary, selected = partition_candidates(candidates, total_possible, generation_mode)
     if args.limit > 0:
         selected = selected[: args.limit]
 
@@ -172,7 +219,9 @@ def main() -> int:
             "worker_count": worker_count,
             "section_summary": section_summary,
         },
+        "candidate_generation_mode": generation_mode,
         "candidate_count_total": len(candidates),
+        "candidate_count_estimated_total": total_possible,
         "candidate_count_selected": len(selected),
         "candidates": selected,
     }

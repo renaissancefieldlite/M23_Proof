@@ -46,6 +46,10 @@ def main() -> int:
             {
                 "candidate": result["candidate"],
                 "descent_score": result["descent_score"],
+                "rationalization_mode": result.get("rationalization_mode"),
+                "rationalization_scalar_expr": result.get("rationalization_scalar_expr"),
+                "rationalization_scalar_basis_vector": result.get("rationalization_scalar_basis_vector"),
+                "rationalization_diagnostics": result.get("rationalization_diagnostics", {}),
                 "integer_height": result.get("integer_height"),
                 "denominator_lcm": result.get("denominator_lcm"),
                 "signature_hit_count": result.get("signature_hit_count", 0),

@@ -18,6 +18,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
+from collections import Counter
 from pathlib import Path
 
 from sympy import Poly, Rational, denom, expand, gcd, ilcm, resultant, symbols
@@ -28,6 +29,8 @@ from m23_cycle_signatures import annotate_factor_degrees
 
 JSON_DIR = Path("testjson")
 DEFAULT_PRIMES = [47, 139, 277, 461, 599]
+
+
 def basis_expr(values: list[str], g):
     coeffs = [Rational(value) for value in values]
     return expand(coeffs[0] + coeffs[1] * g + coeffs[2] * g**2 + coeffs[3] * g**3)
@@ -40,8 +43,7 @@ def is_rational_rows(rows: list[dict]) -> bool:
     return True
 
 
-def rational_integer_coefficients(rows: list[dict]) -> tuple[list[int], int]:
-    rational_coeffs = [expand(row["basis_exprs"][0]) for row in rows]
+def rational_integer_coefficients_from_values(rational_coeffs: list) -> tuple[list[int], int]:
     denominator_lcm = 1
     for coeff in rational_coeffs:
         denominator_lcm = ilcm(denominator_lcm, int(abs(denom(coeff))))
@@ -54,6 +56,88 @@ def rational_integer_coefficients(rows: list[dict]) -> tuple[list[int], int]:
     if common_divisor > 1:
         integer_coeffs = [value // common_divisor for value in integer_coeffs]
     return integer_coeffs, denominator_lcm
+
+
+def rational_integer_coefficients(rows: list[dict]) -> tuple[list[int], int]:
+    rational_coeffs = [expand(row["basis_exprs"][0]) for row in rows]
+    return rational_integer_coefficients_from_values(rational_coeffs)
+
+
+def basis_support_histogram(rows: list[dict]) -> dict[str, int]:
+    histogram: Counter[int] = Counter()
+    for row in rows:
+        support = sum(1 for component in row["basis_exprs"] if component != 0)
+        histogram[support] += 1
+    return {str(key): int(histogram[key]) for key in sorted(histogram)}
+
+
+def rationalization_diagnostics(rows: list[dict]) -> dict:
+    non_rational_rows = []
+    non_rational_component_count = 0
+    for row in rows:
+        non_rational_positions = [
+            index for index, component in enumerate(row["basis_exprs"][1:], start=1) if component != 0
+        ]
+        if non_rational_positions:
+            non_rational_component_count += len(non_rational_positions)
+            non_rational_rows.append(
+                {
+                    "power": int(row["power"]),
+                    "non_rational_basis_positions": non_rational_positions,
+                    "basis_vector": [str(component) for component in row["basis_exprs"]],
+                }
+            )
+
+    return {
+        "basis_support_histogram": basis_support_histogram(rows),
+        "non_rational_row_count": len(non_rational_rows),
+        "non_rational_component_count": int(non_rational_component_count),
+        "first_non_rational_rows": non_rational_rows[:5],
+    }
+
+
+def common_scalar_rationalization(rows: list[dict]) -> dict | None:
+    nonzero_rows = [row for row in rows if any(component != 0 for component in row["basis_exprs"])]
+    if not nonzero_rows:
+        rational_coeffs = [Rational(0) for _ in rows]
+        integer_coeffs, denominator_lcm = rational_integer_coefficients_from_values(rational_coeffs)
+        return {
+            "mode": "common_scalar",
+            "scalar_expr": "0",
+            "scalar_basis_vector": ["0", "0", "0", "0"],
+            "rational_coefficients": rational_coeffs,
+            "integer_coefficients": integer_coeffs,
+            "denominator_lcm": denominator_lcm,
+        }
+
+    base_row = nonzero_rows[0]
+    base_vector = base_row["basis_exprs"]
+    pivot_index = next((index for index, value in enumerate(base_vector) if value != 0), None)
+    if pivot_index is None:
+        return None
+
+    rational_coeffs = []
+    for row in rows:
+        vector = row["basis_exprs"]
+        if all(component == 0 for component in vector):
+            rational_coeffs.append(Rational(0))
+            continue
+
+        ratio = expand(vector[pivot_index] / base_vector[pivot_index])
+        for component, base_component in zip(vector, base_vector):
+            if expand(component - ratio * base_component) != 0:
+                return None
+        rational_coeffs.append(ratio)
+
+    integer_coeffs, denominator_lcm = rational_integer_coefficients_from_values(rational_coeffs)
+    return {
+        "mode": "common_scalar",
+        "scalar_expr": str(base_row["reduced"]),
+        "scalar_basis_vector": [str(component) for component in base_vector],
+        "rational_coefficients": rational_coeffs,
+        "integer_coefficients": integer_coeffs,
+        "denominator_lcm": denominator_lcm,
+    }
 
 
 def factor_degree_signature(integer_coeffs: list[int], prime: int) -> list[int]:
@@ -101,13 +185,31 @@ def screen_candidate(candidate: dict, construction, primes: list[int]) -> dict:
         "candidate": candidate,
         **score,
         "rationalized": False,
+        "rationalization_mode": "none",
+        "rationalization_diagnostics": {
+            **rationalization_diagnostics(rows),
+            "common_scalar_rationalizable": False,
+        },
         "screened_primes": [],
     }
 
-    if not is_rational_rows(rows):
+    if is_rational_rows(rows):
+        integer_coeffs, denominator_lcm = rational_integer_coefficients(rows)
+        payload["rationalization_mode"] = "direct"
+    else:
+        common_scalar = common_scalar_rationalization(rows)
+        payload["rationalization_diagnostics"]["common_scalar_rationalizable"] = bool(common_scalar)
+        if common_scalar is None:
+            return payload
+        integer_coeffs = common_scalar["integer_coefficients"]
+        denominator_lcm = common_scalar["denominator_lcm"]
+        payload["rationalization_mode"] = "common_scalar"
+        payload["rationalization_scalar_expr"] = common_scalar["scalar_expr"]
+        payload["rationalization_scalar_basis_vector"] = common_scalar["scalar_basis_vector"]
+
+    if not integer_coeffs:
         return payload
 
-    integer_coeffs, denominator_lcm = rational_integer_coefficients(rows)
     height = max(abs(value) for value in integer_coeffs) if integer_coeffs else 0
 
     payload["rationalized"] = True
@@ -203,17 +305,36 @@ def main() -> int:
         "generator_file": str(args.candidate_json),
         "screen_limit": len(candidates),
         "primes": primes,
+        "rationalization_summary": {
+            "rationalized_count": sum(1 for row in results if row.get("rationalized")),
+            "direct_rationalized_count": sum(1 for row in results if row.get("rationalization_mode") == "direct"),
+            "common_scalar_rationalized_count": sum(
+                1 for row in results if row.get("rationalization_mode") == "common_scalar"
+            ),
+            "common_scalar_opportunity_count": sum(
+                1
+                for row in results
+                if row.get("rationalization_diagnostics", {}).get("common_scalar_rationalizable")
+            ),
+        },
         "results": results,
     }
 
     with output_path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, indent=2)
 
-    rationalized = sum(1 for row in results if row["rationalized"])
+    rationalized_summary = payload["rationalization_summary"]
+    rationalized = rationalized_summary["rationalized_count"]
     hottest = results[0] if results else None
 
     print(f"Saved {len(results)} screened candidate(s) to {output_path}")
-    print(f"Rationalized survivors: {rationalized}/{len(results)}")
+    print(
+        "Rationalization summary:",
+        f"rationalized={rationalized}/{len(results)}",
+        f"direct={rationalized_summary['direct_rationalized_count']}",
+        f"common_scalar={rationalized_summary['common_scalar_rationalized_count']}",
+        f"common_scalar_opportunities={rationalized_summary['common_scalar_opportunity_count']}",
+    )
     if hottest is not None:
         print(
             "Top candidate:",
