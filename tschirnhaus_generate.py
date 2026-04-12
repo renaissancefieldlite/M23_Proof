@@ -66,12 +66,22 @@ def tuple_weight(values: tuple[Rational, ...]) -> tuple[float, int, tuple[str, .
     return l1, nonzero, tuple(str(v) for v in values)
 
 
+def tuple_priority(values: tuple[Rational, ...]) -> tuple[int, float, tuple[str, ...]]:
+    l1, nonzero, lex = tuple_weight(values)
+    return nonzero, l1, lex
+
+
 def candidate_weight(a_basis: tuple[Rational, ...], b_basis: tuple[Rational, ...]) -> tuple[float, int, tuple[str, ...]]:
     return (
         sum(abs(float(v)) for v in a_basis + b_basis),
         sum(1 for v in a_basis + b_basis if v != 0),
         tuple(str(v) for v in a_basis + b_basis),
     )
+
+
+def candidate_priority(a_basis: tuple[Rational, ...], b_basis: tuple[Rational, ...]) -> tuple[int, float, tuple[str, ...]]:
+    weight, nonzero, lex = candidate_weight(a_basis, b_basis)
+    return nonzero, weight, lex
 
 
 def make_candidate(family: str, a_basis: tuple[Rational, ...], b_basis: tuple[Rational, ...]) -> dict:
@@ -94,7 +104,7 @@ def bounded_candidates(
         return []
 
     visited = {(0, 0)}
-    heap = [(candidate_weight(a_tuples[0], b_tuples[0]), 0, 0)]
+    heap = [(candidate_priority(a_tuples[0], b_tuples[0]), 0, 0)]
     candidates = []
 
     while heap and len(candidates) < target:
@@ -105,13 +115,13 @@ def bounded_candidates(
             visited.add((a_index + 1, b_index))
             heapq.heappush(
                 heap,
-                (candidate_weight(a_tuples[a_index + 1], b_tuples[b_index]), a_index + 1, b_index),
+                (candidate_priority(a_tuples[a_index + 1], b_tuples[b_index]), a_index + 1, b_index),
             )
         if b_index + 1 < len(b_tuples) and (a_index, b_index + 1) not in visited:
             visited.add((a_index, b_index + 1))
             heapq.heappush(
                 heap,
-                (candidate_weight(a_tuples[a_index], b_tuples[b_index + 1]), a_index, b_index + 1),
+                (candidate_priority(a_tuples[a_index], b_tuples[b_index + 1]), a_index, b_index + 1),
             )
 
     return candidates
@@ -127,8 +137,8 @@ def build_candidates(
     a_tuples = list(itertools.product(basis_values, repeat=4))
     b_tuples = list(itertools.product(basis_values, repeat=4))
 
-    a_tuples.sort(key=tuple_weight)
-    b_tuples.sort(key=tuple_weight)
+    a_tuples.sort(key=tuple_priority)
+    b_tuples.sort(key=tuple_priority)
     a_tuples = [values for values in a_tuples if any(value != 0 for value in values)]
     total_possible = len(a_tuples) * len(b_tuples)
 
@@ -160,7 +170,7 @@ def partition_candidates(candidates: list[dict], total_possible: int, generation
     summary = (
         f"worker {instance_id}/{worker_count} scanning candidate chunk "
         f"[{start}:{end}] out of {len(candidates)} generated transforms "
-        f"(mode={generation_mode}, estimated_total={total_possible})"
+        f"(mode={generation_mode}, order=sparsity_then_weight, estimated_total={total_possible})"
     )
     return summary, selected
 
@@ -220,6 +230,7 @@ def main() -> int:
             "section_summary": section_summary,
         },
         "candidate_generation_mode": generation_mode,
+        "candidate_ordering_mode": "sparsity_then_weight",
         "candidate_count_total": len(candidates),
         "candidate_count_estimated_total": total_possible,
         "candidate_count_selected": len(selected),

@@ -453,16 +453,17 @@ def summarize_cycle_entries(entries: list[dict], max_subset_k: int = 5) -> dict:
         )
 
     transitivity_rows = [row for row in subset_average_rows if int(row["k"]) <= 4]
+    transitivity_delta_rows = [row for row in transitivity_rows if row.get("delta") is not None]
     transitivity_summary = {
         "k_values": [int(row["k"]) for row in transitivity_rows],
         "max_abs_delta_k1_to_k4": (
-            max(abs(float(row["delta"])) for row in transitivity_rows)
-            if transitivity_rows
+            max(abs(float(row["delta"])) for row in transitivity_delta_rows)
+            if transitivity_delta_rows
             else None
         ),
         "mean_abs_delta_k1_to_k4": (
-            sum(abs(float(row["delta"])) for row in transitivity_rows) / len(transitivity_rows)
-            if transitivity_rows
+            sum(abs(float(row["delta"])) for row in transitivity_delta_rows) / len(transitivity_delta_rows)
+            if transitivity_delta_rows
             else None
         ),
     }
