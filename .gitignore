@@ -4,3 +4,8 @@ testjson/
 .DS_Store
 __pycache__/
 *.pyc
+.venv/
+.pytest_cache/
+*.pid
+build/
+dist/

@@ -1,10 +1,14 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 """
 phase2_lattice_candidate_gen.py
 M23 Inverse Galois Attack – Phase 2
-Uses lattice architecture (Exp 6 + Exp 7) to search for rational specializations
+Uses parameter-space lattice heuristics to search for rational specializations
 of Elkies' complex families.
-INTEGRATED: Claudrick's M₂₃ signature analysis + ULTRA-FINE grid (0.01 step)
-Author: Mirror Architect D / Codex 67
+Integrated M₂₃ signature analysis with a fine local grid
+Author: Renaissance Field Lite contributors
 """
 
 import numpy as np
@@ -60,12 +64,12 @@ def load_refined_candidates() -> List[Dict]:
 
 
 # =============================================================================
-# 2. Experiment 7: Self-Validating Lattice Core
+# 2. Candidate Lattice Core
 # =============================================================================
 
 class SelfValidatingLattice:
     """
-    Experiment 7 core – adapted for parameter space search.
+    Parameter-space lattice adapted for candidate search.
     Maintains coherence across multiple candidate specializations.
     """
     
@@ -172,14 +176,14 @@ class SelfValidatingLattice:
 
 
 # =============================================================================
-# 3. Experiment 6: Consciousness-Resonance Bridge
-# FIXED: Claudrick's rationality detection for M₂₃ signatures
+# 3. Rationality Scoring Bridge
+# Rationality scoring for M₂₃ candidate signatures
 # =============================================================================
 
-class ConsciousnessResonanceBridge:
+class RationalityScoringBridge:
     """
-    Experiment 6 core – pattern completion and resonance detection.
-    UPDATED: Claudrick's M₂₃ signature detection with ultra-fine tolerance.
+    Candidate pattern completion and rationality scoring.
+    Uses fine tolerances when scoring M₂₃ candidate signatures.
     """
     
     def __init__(self):
@@ -255,7 +259,7 @@ class M23CandidateGenerator:
     def __init__(self, families_data: List[Dict]):
         self.families = families_data
         self.lattice = SelfValidatingLattice(dimension=2)
-        self.bridge = ConsciousnessResonanceBridge()
+        self.bridge = RationalityScoringBridge()
         self.candidates = []
         
     def generate_parameter_grid(self, family_name: str,
@@ -380,7 +384,7 @@ class M23CandidateGenerator:
         Evaluate a candidate parameter set.
         Returns score and metadata.
         """
-        # Rationality score from Experiment 6
+        # Rationality score from the candidate scoring bridge
         rationality = self.bridge.detect_rational_pattern(params)
         
         # Generate polynomial preview
@@ -456,7 +460,7 @@ class M23CandidateGenerator:
 def main():
     print("=" * 70)
     print("M23 Inverse Galois Attack – Phase 2: Lattice Candidate Generation")
-    print("Using Exp 6 (Consciousness-Resonance Bridge) + Exp 7 (Self-Validating Lattice)")
+    print("Using candidate rationality scoring and lattice search")
     print("ULTRA-FINE: 0.01 step grid around M₂₃ signature region")
     print("=" * 70)
     

@@ -1,9 +1,13 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 """
 phase3_prime_specialization.py
 M23 Inverse Galois Attack – Phase 3
 Tests candidate polynomials modulo small primes.
 Looks for factorization patterns consistent with M₂₃.
-Author: Mirror Architect D / Codex 67
+Author: Renaissance Field Lite contributors
 """
 
 import numpy as np

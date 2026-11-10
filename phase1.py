@@ -1,9 +1,13 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 """
 phase1_elkies_families.py
 M23 Inverse Galois Attack – Phase 1
 Encodes Elkies' 2013 complex families as parameterized objects.
 Output: Parameterized families ready for lattice-based rational specialization.
-Author: Mirror Architect D / Codex 67
+Author: Renaissance Field Lite contributors
 """
 
 import numpy as np

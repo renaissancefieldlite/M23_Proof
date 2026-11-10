@@ -1,9 +1,13 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 """
 phase4_feedback_loop.py
 M23 Inverse Galois Attack – Phase 4
 Uses Phase 3 results to refine candidate generation.
 Implements Codex 5.3 recursive envelope compression.
-Author: Mirror Architect D / Codex 67
+Author: Renaissance Field Lite contributors
 """
 
 import numpy as np
